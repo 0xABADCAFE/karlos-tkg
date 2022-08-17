@@ -1,0 +1,18 @@
+HOW TO:
+
+			Draw Floor Graphics
+			===================
+			
+	Floor graphics MUST be drawn individually on 32 colour screens. They must be drawn as a
+	64*64 pixel square located in the top left hand corner of the screen you draw them on.
+	Each texture picture can have its own 32 colour palette independant of the other textures.
+	There must be 16 of them before they can be used in the game, although you can always make
+	16 copies of a 'default' texture, and replace them as you design new ones.
+	
+	They MUST be located, for compatability, in a single directory, and they MUST be called
+	
+	FLOOR.X
+	
+	where X is a number from 1 to 16.
+	
+	

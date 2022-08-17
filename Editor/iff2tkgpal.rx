@@ -1,0 +1,71 @@
+/*
+   $VER: iff palette 2 256pal for TKG
+*/
+
+parse arg user_args
+main:
+   init()
+
+   pal.data = substr(source.raw, source.offset, source.datlen)
+   say "data length = "||length(pal.data)
+
+   convertpal()
+
+   writepal()
+
+   exit()
+
+convertpal:
+   say "converting..."
+   call open(TEMP, "T:iff2tkg", w)
+   do n = 1 to 768
+      writech(TEMP, '00'x||substr(pal.data, n,1))
+   end
+   call close(TEMP)
+   say "ok, writing..."
+   return 1
+
+writepal:
+   if exists("AB3:Includes/256PAL") then do
+      if exists("AB3:Includes/256PAL.bak") then call delete("AB3:Includes/256PAL.bak")
+      call rename("AB3:Includes/256PAL", "AB3:Includes/256PAL.bak")
+   end
+   address command 'copy T:iff2tkg to AB3:Includes/256PAL'
+   return 1
+
+exit:
+   exit
+
+exit.fail:
+   say "Error : "||arg(1)
+   exit()
+
+init:
+   iffpalname = init.args(user_args,"PALETTE:")
+   if init.srcfile(iffpalname) then do
+      say "IFF Palette loaded correctly"
+      return 1
+      end
+   exit.fail("Couldn't load palette file.")
+
+init.args:
+   procedure
+   args = arg(1)
+   if right(args,1) = '?' then do
+      options prompt Arg(2)
+      parse pull args
+      end
+   return args
+
+init.srcfile:
+   if open(PALETTE,arg(1),R) then do
+      source.raw = readch(PALETTE, 1024)
+      source.datlen = 768
+      source.offset = 49
+      close(PALETTE)
+      if left(source.raw, 16) ~= "464F524D00000334494C424D424D4844"x then,
+         exit.fail("File does not seem to be a valid 256 colour iff palette.")
+
+      return 1
+      end
+   return 0

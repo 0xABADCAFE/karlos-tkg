@@ -1,0 +1,14 @@
+.key LEVEL
+.def LEVEL A
+
+lab main
+   Failat 100
+   skip restorelevel_`requestchoice "Warning" "This operation will restore the last*nbackup of level '<LEVEL>',*nerasing any edits you may have made since*n*nProceed ?" "OK|Cancel"`
+
+lab restorelevel_1
+   Echo "Restoring level <LEVEL> from backup"
+
+   Copy ab3edit:Storage/levelbackups/Level_<LEVEL>.bak/#? to TKG1:Levels/Level_<LEVEL>/
+
+Lab restorelevel_0
+   Quit 0

@@ -1,0 +1,313 @@
+HOW TO:
+
+				Start A New Level
+				=================
+
+			THIS FILE INSTRUCTS ON USAGE OF THE LEVEL EDITOR. PLEASE
+			READ THE LEVEL EDITOR KEY-GUIDE FOR BASIC INSTRUCTIONS.
+				
+First of all, create a directory:
+
+MYDIR/LEVELS/LEVEL_A
+
+This is where the files for the first level will be created.
+
+Now run LEVED. You will be presented with a screen, the upper and largest part of which is
+blank, the lower part of which contains icons.
+
+USING THE ICON BAR:
+===================
+
+The icon bar may be scrolled left and right using the ( and ) keys on the keypad.
+Click on an icon with the LMB to select it. A short message will appear next to the icon bar to
+inform you which icon you have selected. For the present, DONT PRESS ANYTHING!
+
+We shall begin by creating a very simple level consisting of two rooms or, as they shall be
+referred to here, 'zones'. What you may think of as a single room will frequently consist of
+several zones, for reasons which will become apparent.
+
+1. Select the 'add point' icon. This is the one at the top left of the icon bar represented by
+   
+   +O
+   
+2. Move the mouse up to the top area of the screen and click four times in a square pattern, the
+   corners about 2 inches apart. Put them towards the left hand side of the screen, like so:
+   
+   
+   			*               *
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			*               *
+   			
+3. To create a zone, click on the icon immediately below 'add point', the one like a triangle with
+   dots in the corners. Move up to the edit area and select the points, one at a time, in a 
+   CLOCKWISE order, returning to the one you started from. The result should be a flashing grey
+   box, like this:
+   
+   
+   			*---------------*
+   			|               |
+   			|               |
+   			|               |
+   			|               |
+   			|      END      |
+   			|               |
+   			|               |
+   			|               |
+   			|               |
+   			*---------------*
+
+4. Now that you have one zone, you can add more points....
+
+   			*---------------*             *
+   			|               |
+   			|               |
+   			|               |
+   			|               |
+   			|      END      |
+   			|               |
+   			|               |
+   			|               |
+   			|               |
+   			*---------------*             *
+   			
+5. ....and connect the four rightmost points, again in a clockwise order:
+			
+   			*---------------*-------------*
+   			|               |             |
+   			|               |             |
+   			|               |             |
+   			|               |             |
+   			|      END      |             | 
+   			|               |             |
+   			|               |             |
+   			|               |             |
+   			|               |             |
+   			*---------------*-------------*
+
+6. Notice that the line common to both zones is dark, rather than bright. This indicates a border
+   between the zones. Bright lines are solid walls which stretch from floor to ceiling.
+   
+7. Now you'll have to place the player start position. Select the icon of the little man, and click
+   with the LEFT mouse button in the RIGHTMOST of the two zones. You should see something like this:
+   
+   			*---------------*-------------*
+   			|               |             |
+   			|               |             |
+   			|               |             |
+   			|               |             |
+   			|      END      |      P1     | 
+   			|               |             |
+   			|               |             |
+   			|               |             |
+   			|               |             |
+   			*---------------*-------------*
+   
+If you want to test the level out in the game, read the document
+
+	HOW2-Save_Levels_To_Disk
+	
+for full instructions.
+
+When you run the game, notice that the game ends as soon as you step into the 'end' zone.
+
+				BUILDING LEVEL OUTLINES
+				=======================
+
+Personally, I prefer the following method of level design:
+
+1. Design the level outline, that is, the plan view of the level.
+
+2. Run the game on the level and have a wander around.
+
+3. Assuming all is OK, I put in the floor and ceiling heights.
+
+4. Have another quick run around to make sure all is well.
+
+5. Next, I put in all the wall and floor and ceiling graphics
+
+6. Check out what it looks like.
+
+7. Put in all the snazzy lighting effects
+
+8. Have another look.
+
+9. Put in objects like keys, medipacks and guns, together with doors and lifts.
+
+10. play the level through, ensuring that it can be completed by collecting the right keys and so on.
+
+11. Put in the control points for aliens to use
+
+12. Put in aliens.
+
+13. Final playtest.
+
+
+This is also a very good way for you to learn how to use the features of the game, as it introduces new
+concepts one step at a time.
+
+See these files for information about later stages of level development:
+
+HOW2-Change_Floor_and_Ceiling_Heights
+HOW2-Set_Wall_Floor_and_Ceiling_Graphics
+HOW2-Change_Level_Lighting
+HOW2-Add_Doors_And_Lifts
+HOW2-Add_Objects_To_Levels
+HOW2-Add_Control_Points
+HOW2-Add_Aliens_To_Levels
+
+This document will now concentrate on the rules of designing level outlines.
+
+RULES and REGULATIONS:
+----------------------
+
+1.
+	Zones MUST ALWAYS be defined by selecting points in CLOCKWISE ORDER.
+
+2.
+	Zones can have a MAXIMUM of ten sides.
+	
+3.
+	Zones MUST ALWAYS be convex.
+	
+	Several definitions of convexity (pick the one which makes sense to you):
+	
+	a. A convex shape is one where you can walk all the way around the edge and only have to turn in
+	   ONE direction.
+	   
+	b. If you draw a straight line between any two points in a convex shape, that line will always lie 
+	   ENTIRELY within the shape, ie it will never cross out of the shape and back in again.
+	
+4.
+	No zone must ever be visible on more than ONE side of a hole in the map from any other zone.
+	
+	This is a bit trickier to explain, but I'll do my best:
+	
+	
+	*------------*
+	|            |
+	|     A      |
+	|            |
+	*===*----*===*
+	|   |    |   |
+	| B |HOLE| C |
+	|   |    |   |
+	*===*----*===*
+	|            |
+	|     D      |
+	|            |
+	*------------*
+
+	The shape above consists of FOUR zones A,B,C and D; a large one at the top and at the bottom, and two 
+	smaller connecting ones on either side, with a hole inbetween. The hole DOES NOT count as a zone,
+	even though it is completely surrounded by zones. You can tell that it is a hole and not a zone in the
+	level editor because the walls around it are BRIGHT WHITE, indicating impassable walls, whereas the
+	borders between zones (shown as double lines '=' above) will be in grey.
+	The above design is NOT ALLOWED, because zone A is visible from zone D on both sides of the hole.
+	There are TWO ways of fixing this situation:
+	
+	a. Delete zones A and D, then add points and zones to get the following:
+	
+	*---*----*---*
+	|   #    #   |
+	| A # D  # F |
+	|   #    #   |
+	*===*----*===*
+	|   |    |   |
+	| B |HOLE| C |
+	|   |    |   |
+	*===*----*===*
+	|   #    #   |
+	| G # H  # I |
+	|   #    #   |
+	*---*----*---*
+
+	This is legal, because no zone is visible on either side of the hole from any other zone.
+	
+	b. Add one extra zone, covering the hole:
+	
+	*------------*
+	|            |
+	|     A      |
+	|            |
+	*===*====*===*
+	|   #    #   |
+	| B # E  # C |
+	|   #    #   |
+	*===*====*===*
+	|            |
+	|     D      |
+	|            |
+	*------------*
+	
+	then change the floor height of zone E to be the same as its roof height, or vice versa.
+	
+	Method a. is good because HOLES in the map allow the game to ignore anything on the other side.
+	Thus, if the player stands in zone H, zone D will not be drawn because it is invisible from anywhere
+	in zone H.
+	However, method a. is not always feasable except in very simple or regular patterns of holes. The
+	difficulty involved in making sure this rule is obeyed in complex rooms is prohibitive. That is
+	why method B is often used, despite the fact that it prevents the game eliminating invisible zones;
+	in this case, zone C would be drawn if the player was in zone B, despite the fact that zone E
+	completely obscures it.
+	
+5.
+	Try to avoid using sharp, pointy zones when designing the level; for various reasons the game doesn't
+	really like them. If you find yourself about to add an excessively pointed zone, try rethinking the
+	way you have designed the room.
+	
+6.	Zones MUST NOT contain within them any other zones, or any points be they connected or not. 
+	One of the most tempting things people try to do is to create a raised pedastle in the following
+	manner:
+	
+	*-----------------------*
+	|                       |
+	|                       |
+	|     A                 |
+	|                       |
+	|                       |
+	|     *-----------*     |
+	|     |           |     |
+	|     |           |     |
+	|     |    B      |     |
+	|     |           |     |
+	|     |           |     |
+	|     |           |     |
+	|     *-----------*     |
+	|                       |
+	|                       |
+	|                       |
+	|                       |
+	|                       |
+	*-----------------------*
+
+	This WILL NOT WORK. If you want such a pedastle you must create it in the following way:
+
+	*-----------------------*
+	|#                     #|
+	| #                   # |
+	|  #        B        #  |
+	|   #               #   |
+	|    #             #    |
+	|     *-----------*     |
+	|     |           |     |
+	|     |           |     |
+	| A   |    E      |  C  |
+	|     |           |     |
+	|     |           |     |
+	|     |           |     |
+	|     *-----------*     |
+	|    #             #    |
+	|   #               #   |
+	|  #        D        #  |
+	| #                   # |
+	|#                     #|
+	*-----------------------*
+

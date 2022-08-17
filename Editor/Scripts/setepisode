@@ -1,0 +1,31 @@
+; editing setup script
+failat 100
+
+if exists ab3:levels/lastgame
+   rename ab3:levels/level_#? as `type ab3:levels/lastgame`
+   delete >nil: ab3:levels/lastgame
+   endif
+
+avail flush >nil:
+skip ep_`requestchoice "Alien Breed 3D II" "Please select an episode to edit*n*n1 Escape from Osiris*n2 The Killing Grounds (Enhanced)*n3 Deathamtch" " 1 | 2 | 3 |Exit"`
+
+lab ep_0
+   quit 0
+
+lab ep_1
+   echo "sorry, not done yet..."
+   quit 0
+
+lab ep_2
+   copy ab3:episode1/episode1.lnk ab3:includes/test.lnk
+   copy ab3:episode1/lastgame to ab3:levels
+   rename ab3:episode1/level_#? as ab3:levels
+   skip editgame
+
+lab ep_3
+   copy ab3:deathmatch/deathmatch.lnk ab3:includes/test.lnk
+   copy ab3:deathmatch/lastgame to ab3:levels
+   rename ab3:deathmatch/level_#? as ab3:levels
+   skip editgame
+
+lab editgame

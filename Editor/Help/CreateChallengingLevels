@@ -1,0 +1,103 @@
+HOW TO:
+
+					Create Challenging Levels
+					=========================
+
+	There are an awful lot of features in TKG, and how to use them all together may not seem obvious
+	at first. This document tries to show how to use features to create levels which are challenging
+	for the player by being well-designed, not simply by having lots of aliens and no health packs!
+	
+1. Layout of the level
+----------------------
+
+	Before putting mouse to screen, draw out your level on paper. The worst way to do this is to
+	just draw a room, then a corridor, then another room with a couple of corridors, then another
+	room and so on. Levels drawn like this tend to be dull and samey. Instead, try one or more of
+	these techniques:
+	
+a) Designing to a purpose.
+
+	Think of a function the level might serve. It could be a hospital, or a training camp, or a sewage
+	system, or perhaps two areas linked together. Once you have an idea in mind, layout ideas will
+	usually follow. For example, the sewage system would have a lot of tunnels, with steps or lifts
+	leading up into various buildings, perhaps.
+	
+b) Designing to fit a space
+
+	Draw an outline on you paper, a 'perimeter wall' which your level must fit into. Make it excitingly
+	chunky and purposeful. I find this helps a lot; having to fit your level into the shape prevents
+	it sprawling like a very old bag of potatoes.
+	
+c) Designing to suit an alien
+
+	When you design your aliens you are probably going to have one or more big, tough critters that
+	are going to severely impede the player's progress. Such aliens should have levels custom-designed
+	to suit their abilities.
+	
+2. Useful level building blocks
+-------------------------------
+
+a) Did I just step on something...?
+
+	A very useful thing to define is an 'invisible trigger'. This can be used to set off messages and
+	trigger doors and lifts, preferably with lots of aliens behind/on them. Simply place the trigger
+	somewhere the player has to go and arrange for it to dispense aliens at the most inconvenient
+	moment possible.
+	
+b) They're appearing out of thin air! AAARGGHH!
+
+	This is a good one. When the player picks up a gun, shoots a particular alien or whatever, this 
+	can trigger several aliens to teleport from their 'homes' outside the level, into the room the
+	unlucky player is standing in. How to do it? Well, first of all, define several alien 'houses'.
+	An alien 'house' is a pair of zones not connected in any way to the rest of the level:
+	
+	*------*
+	|      |
+	|      |
+	|      |
+	*======*
+	|      |
+	|      |
+	|      |
+	*------*
+	
+	Define one zone as a lift and the other as a teleporter. Put your alien(s) on the lift, making
+	sure that their 'permanent calculation' flag is ON. Make sure the lift starts at the TOP of its
+	movement, and that at that height it is ABOVE the ceiling height of the teleporter (this prevents
+	flying aliens making their way into the teleporter before the lift is triggered). 
+	Arrange the alien/gun/health pack/key or whatever so that it triggers the lift into falling to the
+	same height as the teleporter. Place a control point in each zone and link them together. This will
+	ensure the aliens will wander onto the teleporter as soon as they can.
+	
+c) Smithers, did you just press that big, red button?
+
+	Even more annoying to the player than tripping invisible triggers is when he voluntarily pulls a
+	large, inviting lever only to discover that it removes the only barrier between him and an alien
+	horde. Don't over-use this one.
+	
+d) We're going to need BIGGER guns.
+
+	The 'immensely powerful-looking gun' trick is so ludicrously annoying that it should only ever be
+	used once, if at all. Define a really really impressive looking weapon and place it somewhere
+	obvious but extremely difficult to reach. Only when the player, after hours of trying, finally
+	manages to pick it up, will he discover that it does, in fact, fire ping-pong balls. For real
+	humiliation make it trigger a horde of aliens which the player will confidently attempt to dispatch,
+	failing miserably and probably dying in the process.
+
+e) Neighbourhood Watch.
+
+	You've all got one; a weird neighbour who 'keeps himself to himself' and watches people through
+	his bedroom window. These slightly disconcerting people can now be put to good use in TKG. Stick
+	one up in an alcove, preferably near a door the player will come through. Make him part of a team,
+	the rest of whom are waiting in a room down a side corridor. As soon as the watcher sees the player,
+	it will trigger the others. If the watcher can shoot, too, it will usefully distract the player
+	while the bulk of the squad come running. However, if the player is good (or has played the level
+	before), he will pop out and shoot the watcher before he is seen, then run down and lob a grenade
+	or seven into the room with all his mates in.
+	
+f) I'm gonna get my big brother on you *sniff*.
+
+	Fill a maze of corridors with small, useless aliens and one big, dangerous one, making them all part
+	of the same team. If the player is seen, all the little aliens will converge on him, reporting
+	his position to the big guy.
+	

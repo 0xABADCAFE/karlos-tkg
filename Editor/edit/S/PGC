@@ -1,0 +1,7 @@
+.key arg/a
+.bra {
+.ket }
+ab3:
+packlha levels/level_{arg}/twolev.bin
+packlha levels/level_{arg}/twolev.graph.bin
+packlha levels/level_{arg}/twolev.clips

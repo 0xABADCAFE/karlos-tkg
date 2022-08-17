@@ -1,0 +1,21 @@
+; $VER: TKG startup script by Mendoza
+
+lab main
+   Failat 20
+   avail flush >nil:
+   skip main_`requestchoice "Alien Breed 3D II" "Select an episode to play*n*n1. The Killing Grounds*n2. Deathmatch" " 1 | 2 |Exit"`
+
+lab main_0
+   Quit 0
+
+lab main_1
+   copy >nil: AB3:Levels/Episode1/episode1.lnk ab3:includes/test.lnk
+   skip playgame
+
+lab main_2
+   copy >nil: AB3:Levels/Deathmatch/deathmatch.lnk ab3:includes/test.lnk
+   skip playgame
+
+lab playgame
+   cd ab3:
+   tkgpatch.exe c

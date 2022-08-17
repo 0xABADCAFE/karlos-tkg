@@ -1,0 +1,138 @@
+HOW TO....
+
+	Make a Clean Slate
+	==================
+	
+First of all, a bit of explanation about how Alien Breed 3D II works.
+
+Before you can design your levels and populate them with vile denizens, you have to
+specify the parameters within which the game will operate. These parameters include
+such things as the types of aliens you will meet, the wall and floor graphics, the
+type of weapons you can pick up and so on. This information is stored in the
+GAME LINK FILE.
+
+To begin with you will need a directory on your hard drive within which you will
+place all the graphics, sounds and other files your game will use. For simplicity,
+AB3DII requires the following subdirectories to be created:
+
+MYDIR
+	LEVELS
+	INCLUDES
+	GRAPHICS
+
+Within the graphics drawer, you must also create two further subdirectories:
+
+MYDIR
+	LEVELS
+	INCLUDES
+	GRAPHICS
+		FLOORS
+		TEXTURES
+		
+Also, an assign to your directory must be made, preferably in your user-startup:
+
+ASSIGN AB3: MYDIR
+
+This will allow the editor programs to access your files easily and without
+endless prompting for filenames.
+
+Copy all the files from the
+
+	EXAMPLES/INCLUDES/
+
+directory on your editor disk into
+
+	MYDIR/INCLUDES
+
+These are the palette files used by the game, the title screen graphic and
+other files used by the game when run. For instructions on changing the
+palette, refer to the file
+
+	HOW2-Change-global-palette
+
+Once such a directory structure has been made, you can start to build your game.
+
+You cannot, however, just dive into the level editor. There are some things you
+must do first...
+
+For the purpose of this tutorial, I recommend you follow this procedure:
+
+1.
+Make a directory called:
+
+MYDIR/WALLGFX
+
+2.	
+Copy the file "ExampleWall" from your editor disk (it can be found in the 
+
+EXAMPLES/WALLS/
+
+drawer) into the new WALLGFX directory.
+
+3.
+Make another directory called:
+
+MYDIR/WALLINC
+
+4.
+Consult the document 'HOW2-Convert_Wall_Graphics', placing the resulting files
+in the WALLINC directory.
+
+5.
+Copy all the files from the EXAMPLES/FLOORS directory into your FLOORS directory
+
+6.
+Consult the document 'HOW2-Convert_Floor_Graphics', placing the resulting file
+in the INCLUDES directory.
+
+7.
+Make a directory called:
+
+MYDIR/VECTOBJ
+
+8.
+Copy all the files from the EXAMPLES/VECTOBJ directory into your VECTOBJ directory.
+
+9.
+Copy the TKG file from your game disk into MYDIR.
+
+This process gives you some example graphics to work with when designing your levels.
+
+NB:
+	It is likely that at a later stage you may want to design your own graphics
+	instead of using those provided. It is a simple matter to remove the given
+	graphics and replace them, so for now it's probably best if you follow the
+	above procedure so you can get something up and running as quickly as possible.
+
+What you have done so far is place some files, eg floor graphics and wall graphics,
+in conveniently accessable positions. The next stage is to incorporate them into the
+game.
+
+For this purpose, the GAMELINKER program loads and saves a file called TEST.LNK which
+contains all the information about alien behaviour, weapons, graphics and sounds and
+where to find the relevant files on disk. Consult the following documents:
+
+How2-Incorporate_Converted_Walls
+How2-Incorporate_Converted_Floors
+
+to incorporate the background graphics you have converted.
+
+Once that is done, you can begin editing levels. Consult these documents:
+
+How2-Start_A_New_Level
+How2-Run_Your_Game
+
+for further instructions. The file:
+
+How2-Create_New_Aliens
+
+contains information about creating new alien types, or
+
+How2-Edit_Alien_Stats
+
+tells you how to modify existing aliens.
+
+How2-Design_Weapons
+
+gives full instructions on creating new weapon types. You are given one weapon to
+begin with as an example; the shotgun.

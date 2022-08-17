@@ -1,0 +1,129 @@
+HOW TO:
+
+				Define Bitmap Alien Animations
+				==============================
+				
+	This document assumes that you have read and understood the 'HOW2-Define_Aliens' document
+	and that you have got as far as selecting the 
+	
+	[ DEFINE ANIMATION FRAMES ]
+	
+	option from the alien statistics screen.
+	
+	You will see a list of all the animations which an alien will perform.
+	
+	NB: The diagonal views (Front-left, Front-right, Back-left and Back-right) are NOT IMPLEMENTED
+	    in the current version, so don't bother drawing or defining animations of aliens in those
+	    directions.
+	    
+	All the animations have the same format, but their usage varies as follows:
+	
+	The 'movement' animations refer to the various directions it is possible to see the alien
+	from as it walks/flies around. These animations are played looped, ie when the last frame is
+	reached, animation continues from the first frame.
+	
+	NB: It is VERY important that all the direction animations have the same number of frames.
+	    This is because, to improve continuity, the program DOES NOT reset the animation when
+	    your view of an alien changes. In other words, if it reaches frame 5 whilst walking
+	    away from you, then turns left, it will start from frame 5 as it walks left.
+	
+	The other, 'action' animations are one-shot anims played when the specified action occurs.
+	
+DEFINING AN ANIMATION SEQUENCE
+------------------------------
+
+	Click on the animation sequence you wish to define.
+	
+	You will see a complicated looking line of values at the top, and buttons for adding a new
+	frame to the end of the list and deleting the last in the list. As for objects and bullets,
+	when a new frame is added, it takes on the values of its predecessor, so set up invariants,
+	for example which graphic file the frames are from, before adding frames.
+	
+	The values, from left to right, are:
+	
+	0-19	Frame number
+	
+	GF:	Graphic File. This is the number of the file the frame is to come from. Click on the
+		value and then on the name of the file you have previously loaded.
+		
+	FN:	Frame number. This is the actual frame within the graphic file which will be drawn.
+		an 'R' in front of the number indicates the frame will be flipped horizontally before
+		drawing on-screen. This is handy as you can have one set of frames for left AND right
+		movement, with the computer flipping them as needed.
+	
+	SW:	Scaled Width. This is the width to which the frame will be scaled (Not including the
+		effects of distance). Must be 255 or less. Click to change.
+	
+	SH:	Scaled Height. This is the height to which the frame will be scaled (Not including the
+		effects of distance). Must be 255 or less. Click to change
+	
+	VO:	Vertical offset. Normally the frame is drawn centred on the alien's positon, however with
+		this value you can offset each frame vertically by a set amount, perhaps to make it
+		appear to bob up and down. Click to change.
+	
+	FX:	This is the number of the sound effect which will be played whenever the alien reaches
+		this frame of animation. Click on the number to get a list of currently loaded sound
+		effects, and click on an effect OR at the top of the screen for no effect. With this
+		you can easily synchronise footstep sounds with the correct frames of animation on-screen,
+		or shooting effects with the precise frame the gun appears to fire!
+		
+	AC:	Action Star. Clicking next to this toggles on and off an 'action star'. If an action
+		star is present, the alien will perform an action, such as moving or shooting. The precise
+		nature of the action is dependant upon which animation sequence you are defining. Using
+		the action stars you can make an alien walk slowly by having a sequence like this:
+		
+		0 GF: 1 FN: 1 . . . . . . . . . . . . . . . AC: *
+		1 GF: 1 FN: 1 . . . . . . . . . . . . . . . AC: 
+		2 GF: 1 FN: 1 . . . . . . . . . . . . . . . AC: 
+		3 GF: 1 FN: 1 . . . . . . . . . . . . . . . AC: 
+		4 GF: 1 FN: 2 . . . . . . . . . . . . . . . AC: *
+		5 GF: 1 FN: 2 . . . . . . . . . . . . . . . AC: 
+		6 GF: 1 FN: 2 . . . . . . . . . . . . . . . AC: 
+		7 GF: 1 FN: 2 . . . . . . . . . . . . . . . AC: 
+		
+		Assuming frames 1 and 2 are part of a walking sequence, the above would instruct the
+		computer to display each frame for 4 time units, and only move the alien in the first
+		of the four time units, thus preventing the alien 'moonwalking' between frames.
+
+		You can make an alien fire a specific number of times by including several repetitions
+		of the shooting animation, with an Action Star next to the appropriate frame in each
+		repetition.
+		
+	AI:	Animation Instruction. Usually, this contains a downward arrow 'v', indicating that the
+		animation will proceed to the next frame in sequence (or to the first if the last one is
+		reached). However, it is sometimes very useful to be able to repeat a certain sequence
+		a set number of times, or perhaps even a random number of times. There are therefore
+		another 3 Animation Instructions:
+		
+		S X	Store number X in counter.
+		R X	Add a random number between 0 and X to the counter
+		D X	Subtract 1 from the counter, and jump to frame X if the result was NOT zero.
+		
+		Hence you could make an alien howl, then take a random number of steps between
+		10 and 20 before howling again, like this:
+		
+		0 GF: 1 FN: 5 . . . . . . . . . . . FX: 3 AC:   AI S10
+		1 GF: 1 FN: 5 . . . . . . . . . . . FX: 0 AC:   AI R10
+		2 GF: 1 FN: 1 . . . . . . . . . . . FX: 0 AC: * AI  v
+		
+				* WALKING ANIMATION
+				
+		9 GF: 1 FN: 4 . . . . . . . . . . . FX: 0 AC: * AI D 2
+		
+		Click and follow the instructions to change the AI value of a frame.
+		
+	AUX:	Auxilliary object frame number. This selects a frame defined in the auxilliary object
+		for that alien to be displayed over the top of the alien. Click on the value and you
+		will be shown the animation sequence you defined for the auxilliary object. Simply click
+		on the appropriate frame OR at the top of the screen for no frame.
+		
+	XO:	Auxilliary object X Offset. The amount by which the centre of the auxilliary object is
+		offset from the centre of the alien graphic. Useful for gun barrel flashes, so you
+		can make gun flashes appear over the top of the gun they appear from, wherever the gun
+		may be!
+	
+	YO:	Auxilliary object Y Offset. As above, but vertically rather than horizontally.
+
+
+
+

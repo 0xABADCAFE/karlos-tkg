@@ -1,0 +1,172 @@
+   ***************************************************************
+   *     Alien Breed 3D II: The Killing Grounds TURBO patch      *
+   *                                                             *
+   * Author:        Aki Laukkanen (amlaukka@cs.helsinki.fi)      *
+   * with help from  Mikael Kalms (kalms@vasa.gavle.se)          *
+   * and           Jyrki Saarinen (jxsaarin@cs.helsinki.fi)      *
+   *                                                             *
+   * Download the newest version from aminet or my home page:    *
+   *              http://www.helsinki.fi/~amlaukka/              *
+   ***************************************************************
+
+                   * Read this document, please! *
+
+    OVERVIEW
+
+    Alien Breed 3D II: The Killing Grounds by Team17 and Andy
+Clitheroe is the peak of the Doom clones for Amigas. It was met with
+acclaim and criticism in the general public. Most of the negative
+feedback geared towards the speed department which was a somewhat
+lacking on most of machines and just adequate on top-of-the-line
+equipment.
+
+    FEATURES
+
+    This patch is designed to address some of the quirks and problems.
+It replaces the somewhat outdated C2P routine of the game with a
+nearly optimal CPU only C2P solution by Mikael Kalms
+(kalms@vasa.gavle.se) and modified by me to support chunky and plane
+buffer x modulos. This routine is four times faster on fast 030
+processors and 040 upwards. The 2x? C2P routine is almost the same but
+modified by me to double pixels horizontally.
+
+    Just the other day me and Jyrki Saarinen took the task of
+optimizing the drawing loops of the game. We got as far as patching
+normal and gouraud walls and ceiling and floor mapping routines. At
+the moment still unpatched inner loops include sprites and other
+lighting effects, transparent walls (if anybody finds them, please mail
+me), "water" bump mapping and polygon routines.
+
+    FPS counter is one of the most useful features of this patch. With
+this you can check what the frame rate really is and not just make bad
+guesses. However at this point FPS counter isn't entirely reliable but
+the results are still comparable with others.
+
+    Other unfinished features are the VGA patch which should promote
+the display to 30.00 KHz, 50 Hz one and Exit patch. These patches
+mightn't happen for a while too. There are some problems which I have
+to solve first.
+
+    USAGE
+
+    Copy the TKGPatch executable to your AB3DII directory and run it
+with your preferred settings.
+
+TKGPatch E=TKGEXE/K,D=TKGDIR/K,C=C2P/S,V=VGA/S,Q=QUIT/S,EN=ENGINE/S,F=FPS/S
+
+    - TKGEXE lets you set the name of the TKG executable. (PROGDIR:TKG
+      is default)
+    - TKGDIR is needed for the assigns to work. (PROGDIR: is default)
+    - C2P patches the chunky to planar routines.
+    - VGA alters the screen mode.
+    - QUIT adds an "exit" option.
+    - ENGINE optimizes some of the mapping routines a bit.
+    - FPS displays a FPS counter during the game.
+
+    NOTES
+
+    TKGPatch works by loading and relocating the TKG executable into
+memory and then adding patches to appropriate places. This is the
+reason why TKGPatch absolutely needs the original 4 MB executable
+(182820 bytes long) from install disks so no patched or otherwise
+altered executable will do. However if you are certain that you have
+the correct executable but TKGPatch still complains about incompatible
+executable then contact me (maybe there are several versions of TKG on
+sale).
+
+    If you want to compare the existing and patched chunky to planar
+routines download aminet://game/gag/crap_c2p.lha and ask Jyrki
+Saarinen (jxsaarin@cs.helsinki.fi) to post his c2p benchmark to you.
+
+    You might not notice any significant speedup with the ENGINE
+patch. TKG was programmed with slower approaches from the ground level
+so the most optimized loops couldn't be used. Also there is fairly
+big constant time which consists of outer loops of the mapping
+routines, BSP traversal and other game operations.
+
+    If you are using the C2P patch in full screen mode, you might
+wonder why the screen is shifted 16 pixels to the right. This is
+because normally the address where the chunky buffer is c2p'ed isn't
+aligned by a long word and then the long word writes would be divided
+into to two word writes which result into a two times slower c2p.
+
+    TKGPatch can't be started from Workbench at the moment. (It
+crashes miserably, sorry :( ) but all the tooltypes are implemented
+and equal to keywords from the command line interface. Also I need a
+better icon so please send your MagicWB, ordinary and NewIcons ones to
+me.
+
+    VGA patch doesn't probably work at the moment. I already patched
+like tens of places but to no avail. I have to take a look a this some
+day. 
+
+    Quit patch doesn't work either (It hangs on exit). I'll have to
+investigate it too.
+
+    QUESTIONS AND ANSWERS
+
+    Q: I got the patch working but TKG still isn't lightning fast in full
+screen 1x1 on my <insert computer model here>.
+
+    A: There's not much I can do without rewriting huge parts of the
+game code, sorry. You'll have to live with it or get a faster
+computer.
+
+    Q: Will this patch support graphic cards or other screen sizes?
+
+    A: Most unlikely. Too much is hard coded in to the executable and
+there's too much code to rewrite.
+
+    FUTURE
+
+    Bug fixes and maybe an MMU speedup feature for 040/060.
+
+    Some other features under consideration:
+
+    - AmigaGuide documents
+    - a GUI frontend which would replace the current frontend by Daniel
+Hansen. This would be intuition friendly (maybe MUI) and allow easy
+access to all options of TKGPatch and the current frontend, adding
+several others.
+    - selectable module playing during the control screen, during game
+and when dying or completing a level. Send your suggestions please.
+    - Ability to change much of the graphics and sounds of the game.
+(If anyone wants to draw alternative panel graphics, please contact).
+    - Some one requested save option for key combinations.
+
+    Of course I'm open for all suggestions so please e-mail me at
+amlaukka@cs.helsinki.fi.
+
+    HISTORY
+
+    33.1    22.10.96
+
+            - created
+
+    33.6    23.10.96
+
+            - beta release for Andy Clitheroe
+
+    34.0    26.10.96
+
+            - first public beta version
+            - added VGA patch, QUIT patch and assigns patch (though not
+              all of them working atm) 
+            - removed NOPROTECT because of legal problems
+
+
+    34.4    30.10.96
+
+            - first aminet release
+            - added 2x? C2P, ENGINE, FPS and other patches
+
+    34.5    31.10.96
+
+            - FPS counter is now always in the upper left corner of the
+              screen
+            - some documentation fixes
+            - added some icons
+            - large parts of the data needed by TKG are in chip ram
+              thus slowing things down. Made a little patch which
+              copied for example sin/cos table to fast ram and patched
+              all references to it. 

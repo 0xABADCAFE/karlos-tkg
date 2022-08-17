@@ -1,0 +1,6 @@
+.key LEVEL/A
+.def LEVEL A
+
+Failat 100
+Echo "Making backup of level '<LEVEL>'"
+Copy ab3:Levels/Level_<LEVEL>/#? to ab3edit:Storage/Levelbackups/Level_<LEVEL>.bak

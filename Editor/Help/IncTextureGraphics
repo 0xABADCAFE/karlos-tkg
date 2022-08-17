@@ -1,0 +1,26 @@
+HOW TO:
+
+			Incorporate Converted Texture Graphics
+			============================================
+	
+	PLEASE NOTE:
+	
+		If you change texture graphics, and save over your existing texture file when converting
+		them, you DO NOT NEED to follow this proceedure. Only if the name of the texture file
+		has changed do you need to proceed.
+	
+	1. Run the GAMELINKER program.
+	
+	2. Select 'LOAD LINK FILE' from the menu and select
+	
+	MYDIR/INCLUDES/TEST.LNK
+	
+	3. Select GRAPHICS->SET TEXTURE FILENAME
+		   
+	4. Select the file you wish to load, presumably created using the 'FLOORCONVERT' utility.
+	
+	7. Select 'SAVE LINK FILE' and select the file
+	
+	MYDIR/INCLUDES/TEST.LNK.
+	
+	The new floor tile file will now be available in the level editor and the game itself!

@@ -1,0 +1,22 @@
+HOW TO:
+
+			Define Floor Damage Values and Sound Effects
+			============================================
+			
+	Each floor tile you draw can have a damage value and sound effect assigned to it, so the player
+	can actually hear the difference between each tile!
+	
+	To define these values, load the link file into the game linker in the usual way.
+	
+	Select MISC -> DEFINE FLOOR DAMAGE VALUES
+	
+	Click on each tile number and type the damage inflicted on the player by that tile. The amount
+	you enter will be taken off the player's health every couple of seconds, so don't make it too
+	big an amount; about 10 for a really damaging floor, or 4 or 5 for a slightly damaging floor.
+	
+	Click on DONE when you've finished, and select MISC -> DEFINE FLOOR FOOTSTEP SOUNDS.
+	
+	Click on the number of each tile and select the sound effect most appropriate to the floor tile.
+	
+	Click on DONE, and save the link file!
+

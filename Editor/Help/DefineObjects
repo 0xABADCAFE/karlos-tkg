@@ -1,0 +1,208 @@
+HOW TO:
+
+						Define Objects
+						==============
+						
+	The term 'Object' in AB3DII has quite a broad meaning. Basically, anything which isn't a bullet,
+	a player, an alien or background (walls, floors and ceilings) is an object. There are several
+	main types that an object can be, and this determines its behaviour:
+	
+	1. Collectable
+	
+		The object may be collected by the player. When this happens, the player will recieve
+		whatever ammunition or other supplies the object is defined to provide, and the object
+		will remove itself from the map. Once so removed it will also cease to hold any doors
+		and lifts.
+		
+	2. Activatable
+	
+		The object can be 'activated' by the player being within its activation radius and pressing
+		the space bar. When this happens the object switches to 'active mode'. The player can
+		switch it back, or it can 'timeout' and return to its inactive state. Whilst active the
+		object will cease to hold any doors or lifts.
+		
+	3. Destructable.
+	
+		The object can be damaged by player bullets and explosions. Once destroyed it will cease
+		to hold any doors or lifts, and will no longer impede the player.
+		
+	4. Decoration
+	
+		The object cannot be interacted with in any way and simply sits there playing through
+		its animation sequence.
+	
+	To define an object, select OBJECTS -> DEFINE OBJECT STATS.
+	
+	Click on an empty space or an object you want to redefine with the LEFT mouse button, and type
+	the new name. Clicking on the object with the RIGHT mouse button instead takes you into the
+	actual definiton screen. On this screen are several options, some of which are only visible
+	for certain types of object. They are listed here in top-bottom order:
+	
+1. Type Of Object
+
+	Click to cycle through the four types above.
+
+2. Graphic Type
+
+	Click to cycle through:
+	
+	BITMAP
+		Simplest type of object; uses ordinary bitmap graphics
+	POLYGON
+		An object of this type uses frames of animation from 3D objects designed using
+		the ANIMEDITOR program.
+	GLARE/SMOKE
+		The object is drawn transparently, brightening or darkening the graphics behind it.
+		See HOW2-Draw_Glare_Objects for instructions.
+
+3. Deactivate after..
+
+	ONLY FOR ACTIVATABLE OBJECTS
+	
+	This value is the time in 50ths of a second between the player activating the object and it
+	deactivating automatically.
+
+3. Number Of Hit Points
+
+	ONLY FOR DESTRUCTABLE OBJECTS
+	
+	The number of damage points the object can take before it is destroyed.
+
+4. Explosive Potential
+
+	ONLY FOR DESTRUCTABLE OBJECTS
+	
+	The explosive force with which the object detonates upon its destruction.
+	
+5. Impassable in default state
+
+	DESTRUCTABLE AND DECORATION OBJECTS ONLY
+	
+	Does the object obstruct the player until destroyed? This value gives you the answer.
+	
+6. [ Define Default state Animation ]
+
+	Clicking here provides you with a screen containing information about the default animation
+	sequence for an object. The values andd buttons you can use are as follows:
+	
+	BITMAP AND GLARE OBJECTS
+	------------------------
+
+	GF:	Graphic file to read the frame of animation from. Click on the number to pick
+		one of your object-graphic filenames.
+		
+	FN:	Frame to draw from within the selected graphic file. Click here with the LEFT mouse button
+		to simply type a number in, or click with the RIGHT mouse button to be shown the
+		ANIMATION FRAME SELECTION SCREEN. See the document
+		
+		'HOW2-Use_Animation_Frame_Selection_Screen'	
+		
+		for details, as this screen is re-used several times in the program.
+		
+	SW:	Scaled Width and Scaled Height of graphic on-screen. Values similar to those defined in
+	SH:	the animation frame in the graphic file are about right, although you can squash any 
+		size and shape of graphic into any size and shape of box. SW and SH have a maximum value
+		of 255.
+		
+	VO:	Vertical offset. By varying the vertical offset, you can make objects bounce or wobble up
+		and down as they animate. For this to work, you will need several frames of animation.
+	
+	NF:	Next Frame Number. Click on this and then select the 'next frame' you want the object to
+		change to after the one you just clicked on. In this way you can make objects perform
+		a loop within their animation, or as is more usual, stop on the last frame rather than
+		looping back to the beginning (eg switches). 
+				
+	ADD FRAME:
+		Adds a frame to the end of the list, copying all the values from the previous last in
+		the list to the new last in the list. It is therefore a good idea to set up the first
+		frame with the graphic file, scaled width and height and so on, then add more frames and
+		just tweak the values you want to change afterwards.
+	
+	DEL FRAME:
+		Removes the last frame in the list.
+
+	VECTOR OBJECTS
+	--------------
+
+	VF:	Vector file to read the frame of animation from. Click on the number to pick
+		one of your vector filenames.
+		
+	FN:	Frame to draw from within the selected graphic file. Click here with the LEFT mouse button
+		to simply type a number in.
+		
+	AO:	The amount the object should turn this frame. A value of 8192 represents 360 degrees.		
+		
+	VO:	Vertical offset. By varying the vertical offset, you can make objects bounce or wobble up
+		and down as they animate. For this to work, you will need several frames of animation.
+	
+	NF:	Next Frame Number. Click on this and then select the 'next frame' you want the object to
+		change to after the one you just clicked on. In this way you can make objects perform
+		a loop within their animation, or as is more usual, stop on the last frame rather than
+		looping back to the beginning (eg switches). This is also extremely useful for GUN objects.
+		See the file 'HOW2-Define_Gun_Objects' for fuller instructions after reading the rest of
+		THIS file.
+		
+	ADD FRAME:
+		Adds a frame to the end of the list, copying all the values from the previous last in
+		the list to the new last in the list. It is therefore a good idea to set up the first
+		frame with the graphic file, then add more frames and just tweak the values you want to 
+		change afterwards.
+	
+	DEL FRAME:
+		Removes the last frame in the list.
+
+7. [ Define Active/Destroyed Animation ]
+
+	Similar to 6. except that this is the animation which will be played when the object is activated
+	or destroyed. It is ALSO the sequence displayed if this object is defined as the ON-SCREEN OBJECT
+	of a player gun.
+	
+8. [ Define Guns/Jetpack/Shield Given ]
+
+	Clicking here brings a list of toggles as to what the object provides the player with when he
+	collects or activates it.
+	
+	NB: Jetpack and shield are not implemented in this version.
+	
+9. [ Define Ammo/Fuel given ]
+
+	Clicking here gives a list of what ammo and health is given by the object when collected/activated.
+	Hence a 'gun' object would give the player the appropriate gun, and also some of the ammo that the
+	gun fires.
+
+	NB: Fuel is not implemented in this version.
+
+10. Collision cylinder radius
+
+	This is the distance a player has to be within to collect or activate the object. About 100-150
+	is usually about right.
+
+11. Collision cylinder height
+
+	This is the height within which the player must be to collect the object. About 100 is usually
+	ok.
+	
+12. Position vertically relative to:
+
+	Either the FLOOR or the CEILING can be toggled between here, and the object will be positioned
+	next to the one selected. Thus the Vertical Offset in the animation data is important to pull
+	the object up or down into the room.
+
+13. Lock to nearest wall?
+
+	If this is enabled, then the object will 'snap' to the nearest wall when placed in the level
+	and will face outwards into the room (vector objects only)
+	
+14. Activation/Collection/Destruction sound effect
+
+	Click here to set the appropriate sound effect for whatever action is appropriate to the type
+	of object.
+
+	
+	
+	
+	
+	
+	
+	
+	

@@ -1,0 +1,18 @@
+HOW TO:
+
+            Incorporate lightsourced objects for use
+            ========================================
+
+    Design an alien in a 3D package (THIS IS ESSENTIAL). Save it out .Change the
+    WHOLE MODEL to matte white (keeping any bumpmaps). Save it as another file.
+    Render the `alabaster model` lit from directly above, then directly below,
+    then directly from the left, then from the right. Save out the four images as
+    `myalien.top`, `myalien.bot`, `myalien.lft` and `myalien,rgt`.
+
+    Render the original colour model BUT with ambient lighting set at 100% (ie no
+    shading or shadows) to produce a colourmap. Save this image as `myalien.cmp`.
+    Position all the images in the top left corner of their screens. Run the
+    `256lit` program and click on one of the images. It will convert them all and
+    save a large .HQN file. Now run `complight` and select the HQN file. It will
+    compress the data as before and hey presto, you have a lightsourcablealien!
+

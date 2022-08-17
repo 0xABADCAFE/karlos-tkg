@@ -1,0 +1,15 @@
+Short: SBunpack - an experimental unpacker of the =SB= format files
+
+This one is a small hack I made a while ago. It can unpack the =SB=
+format packed and encrypted files which has been used in practically
+every external data file of the game. You can convert ordinary LHA3
+packed archives to this format with LHACONV from the TKG-Editors/c
+directory. As the name implies this packer routine was made by Stefan
+Boberg (boberg@team17.com). 
+
+Usage:
+    SBunpack <packed file> <unpacked file>
+
+Notes:
+    It has no error checking and probably even some bugs so be
+careful. I can't be held responsible from any lost data.

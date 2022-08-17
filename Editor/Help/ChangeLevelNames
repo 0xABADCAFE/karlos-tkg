@@ -1,0 +1,19 @@
+HOW TO:
+
+			Change Level Names
+			==================
+			
+	Levels are described briefly by their names on the option screen when playing the game,
+	and also saved game positions are referred to by the name of the level you are about to
+	start when you load the position.
+	
+	To change these names, load the gamelinker program and load the link file
+	in the usual manner.
+	
+	Select 
+	
+	LEVELS -> CHANGE LEVEL NAMES
+	
+	then click on level names and type to change them. Click on 'DONE' when you have finished
+	and save the link file again.
+	

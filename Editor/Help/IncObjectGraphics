@@ -1,0 +1,65 @@
+HOW TO:
+
+				Incorporate Object Graphics
+				===========================
+				
+	Before any aliens or pickups can be defined, you must provide the graphics for them, and before
+	you can do that, they must be converted using the appropriate supplied utilities. Please refer
+	to the document
+	
+	HOW2-Convert_Object_Graphics
+	
+	for full instructions on creating these files.
+	
+	Assuming you have converted some object graphics and wish to use them in the game, here is how
+	to go about incorporating them:
+	
+	1. Load the GAMELINKER program and load the 'TEST.LNK' file in the usual way.
+	
+	2. Select 'GRAPHICS -> SET OBJECT GFX FRAMES'
+	
+	3. You will see a list of currently loaded graphics and a blank space for inserting a new one.
+	   Either click on one to replace, or click on the blank space. In either case, you must use the
+	   LEFT mouse button. Use the requester which appears to select EITHER the '.ptr' or
+	   '.wad' file produced by the convertors.
+	   
+	4. Assuming all is well, the filename will appear in the list on the screen. Now you must define
+	   the frames of animation within the file. Click on the name but this time with the RIGHT mouse
+	   button.
+	   
+	5. You will be shown a strip of the graphics, in the height you converted them. Do not worry if
+	   the palette is not right; this is a failing of AMOS. The following will be shown also,
+	   at the bottom of the screen:
+	   
+	   X,Y			These are the mouse coordinates within the graphic file. Clicking with the
+	   			LEFT mouse button with the cursor within the graphic file area of the
+	   			screen copies the X and Y value shown into the FRAME LEFT and FRAME TOP
+	   			values below.
+	   
+	   SCROLL LEFT
+	   SCROLL RIGHT		These buttons can be clicked upon to scroll the graphic file across to
+	   			display parts of it currently off-screen.
+	   
+	   FRAME NUMBER 	This is the frame number you are currently defining, from 0 to 31.
+	   
+	   PREVIOUS/NEXT FRAME	Changes the current frame number.
+	   
+	   FRAME LEFT		These values represent the left side, top side, width and height of the
+	   FRAME TOP		current frame. You can click upon and type to change any of them, the
+	   FRAME WIDTH		idea being that they enclose each seperate 'frame' of animation you
+	   FRAME HEIGHT		have designed.
+	   
+	   Copy width/height	These options allow you to quickly copy the width and height you have typed
+	   to previous/next	into the current frame into all previous or succeeding frames.
+	   frames
+	   
+	   GENERATE FRAMES	If you have drawn and converted the graphics in line with the guidelines
+	   FROM GRAPHIC DATA	set down in the document 'HOW2-Convert_Object_Graphics', you can shortcut
+	   			this whole process and click on this button. The position and size of all
+	   			the frames will be defined. However, you cannot use this function if some
+	   			frames are different sizes, or located at different heights within the
+	   			graphic file. In such cases you must simply type or click all the values in
+	   			manually.
+	   
+	   DONE			return to graphic file list
+	   

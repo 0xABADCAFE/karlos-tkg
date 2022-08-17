@@ -1,0 +1,97 @@
+[HOW TO:
+
+				Change Level Lighting
+				=====================
+				
+	One of the most important aspects of AB3D as far as atmosphere is concerned is how the levels
+	are lit.
+	
+	In AB3D, the walls and floors are smoothly shaded between brightness's defined at their corners.
+	
+	Each zone contains four 'layers' of brightnesses; a lower floor layer, a lower ceiling layer,
+	an upper floor layer and an upper ceiling layer. Brightnesses are defined at the corners of
+	zones, i.e. at the points which you selected to create the zone in the first place.
+	
+	NB: In the diagram below, where the two zones share two points, remember that you must define
+	    brightnesses for the two shared points in BOTH zones individually. This may sound odd and
+	    long-winded, but it allows you to have sharp edged bright and dark areas.
+	    
+	    
+	    				SHARED POINTS
+	    				       |
+	                                       V
+	                                       
+	    			*--------------*--------------*
+	    			|              #              |
+	    			|              #              |
+	    			|              #              |
+	    			|              #              |
+	    			|              #              |
+	    			|              #              |
+	    			|              #              |
+	    			|              #              |
+	    			*--------------*--------------*
+	    			
+	The procedure for defining a layer of brightnesses is as follows:
+	
+	1. Select the appropriate icon. They are arranged in a line of four in the
+	   middle row, fourth from the left end. Listed left to right, they are:
+	   
+	   UPPER ROOF BRIGHTNESS
+	   UPPER FLOOR BRIGHTNESS
+	   LOWER ROOF BRIGHTNESS
+	   LOWER FLOOR BRIGHTNESS
+	   
+	2. Notice that as you click, three sliding bars appear, labelled BRIGHT, ANIM and DIST. These
+	   values are clipboard values which will be pasted onto points.
+	
+	   BRIGHT:
+		The default brightness value, ranging from -20 to +20. NEGATIVE numbers represent the
+		same on-screen brightness as positive numbers, BUT they contribute nothing to the
+		illumination of aliens, vector objects (e.g. the player's gun) and so on. Also, 
+		remember that numbers close to 0 are BRIGHT, whereas numbers towards -20 or +20 are
+		DIM.
+		The reason for the positive/negative values is simple: the light-sourceing of objects
+		doesn't work well without it! For example, a brightly lit room with glowing panels
+		on the ceiling means that the light should be coming from above, and so aliens and
+		guns should similarly be lit from above. In this case, the floor brightnesses should
+		be set to -1, and the roof brightnesses to +1, so the room appears uniformly lit BUT
+		aliens are lightsourced from above.
+		
+	   ANIM:
+	   	There are several pre-defined lighting animations available:
+	   	
+	   	0 	= no animation
+	   	1-5 	= 5 out of phase steady pulsing anims
+	   	6-7	= Flickering effects.
+	   	8-15    = Undefined at this time.
+	   
+	   DIST:
+	   	This is used to describe how far towards the animation the brightness of the point is
+	   	'pulled' from its default brightness. 0 means it doesn't animate at all, 15 means it
+	   	animates completely, independent of the brightness it is given.
+	   	
+	   Set these values as desired.
+	   
+	3. Select a zone in which you want to change some brightnesses with the RIGHT mouse button, and
+	   click on the point(s) you wish to set to the new values with the LEFT mouse button.
+	   If you wish to grab brightness settings from a point, move the cursor near it and press 'g'.
+	   
+OTHER TOOLS:
+------------
+
+	There are several pre-defined settings which can be pasted into entire zones with one keypress.
+	Simply select the zone with the right mouse button and press one of the following keys:
+	
+	1	Zone bright, lit from roof
+	2	Zone bright, lit from floor
+	3	Bright floor, dark roof
+	4	Bright roof, dark floor
+	5	Zone dark, lit from roof (i.e. what little light there is is coming from above)
+	6	Zone dark, lit from floor (i.e. what little light there is is coming from below)
+	7	Zone roof glowing (each roof point glowing in one of the five pulsing anims)
+	8	Zone floor glowing
+	9	Zone Glowing in sync (i.e. corresponding floor and ceiling points are glowing with
+					the same animation)
+	0	Zone Glowing out of sync (all floor and ceiling points pulse randomly and independently)
+	

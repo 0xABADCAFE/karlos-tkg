@@ -1,0 +1,22 @@
+HOW TO:
+
+					Incorporate sound effects
+					=========================
+					
+	Sound effects in AB3DII are a little restricted, because of the 8-channel feature. They
+	will only ever be played at about 8000hz, which is usually referred to as 'C2' in packages
+	like Octamed or Protracker. They must also be a multiple of 200 bytes in length. Finally,
+	they must cover NO MORE THAN HALF of the full scale deflection available. In other words,
+	if you have an ordinary sample, you must HALVE its volume before you can use it in AB3DII.
+	Oh, and the sample must be saved in RAW format.
+	
+	Assuming you have, or have created, some samples in this format, you can incorporate them:
+	
+	1. Load the link file into the GAMELINKER as usual.
+	
+	2. Select SAMPLES -> Set SFX Filenames
+	
+	3. Click on any of the sample spaces and select your sample using the requester.
+	
+	4. Click on 'DONE' and save the link file!
+	

@@ -1,0 +1,384 @@
+
+LZX 1.21 (Registered) Archive/Extract utility - 68040/68060 Version.
+Copyright © 1995 Data Compression Technologies.  All rights reserved.
+Registered to the Amiga community for non-commercial use.
+
+Viewing archive 'SourceGFX.lzx':
+
+Original  Packed  Ratio   Date      Time   Name
+-------- -------- ----- --------- -------- -----------
+   22166   merged  n/a  24-Jul-98 17:42:25 Graphics/EditorButtons
+   34558   merged  n/a  24-Jul-98 17:42:25 Graphics/PAL2.LBM
+   34556   merged  n/a  24-Jul-98 17:42:25 Graphics/pal3.lbm
+   73722   merged  n/a  24-Jul-98 17:42:25 Graphics/Backdrops/32-25-8.LBM
+   26338   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/alien64x64x32
+   26968   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/alien64x64x64
+   10638   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/crawler
+   30212   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/eyemonster
+    1902   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/tex1.bmp
+  261060   156442 59.9%
+   18566    18566 100 % 24-Jul-98 17:42:25 Graphics/FASTC2P.LZH
+    4408   merged  n/a  17-Oct-80 10:00:08 Graphics/tile1.iff
+    5622   merged  n/a  17-Oct-80 10:00:36 Graphics/tile2.iff
+   12864   merged  n/a  17-Oct-80 12:27:38 Graphics/tile3-7.iff
+   26780   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/RedAlien.iff
+   29350   merged  n/a  24-Jul-98 17:42:25 Graphics/Backdrops/AB-PANEL.IFF
+   12538   merged  n/a  24-Jul-98 17:42:25 Graphics/Backdrops/AB-SIDEPANEL.IFF
+  101160   merged  n/a  24-Jul-98 17:42:25 Graphics/Backdrops/ALIEND.IFF
+    4778   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/bump1.iff
+    4806   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/bump2.iff
+    2892   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/bump3.iff
+    4920   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/bump4.iff
+    2550   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/bump5.iff
+    2740   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/bump6.iff
+    1902   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/bump7.iff
+    2850   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/bump8.iff
+    3838   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/bump9.iff
+    5334   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/spec1.iff
+    4470   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/spec2.iff
+    4324   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/spec3.iff
+    4920   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/spec4.iff
+    4272   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/spec5.iff
+    4280   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/spec6.iff
+    4280   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/spec7.iff
+    4146   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/spec8.iff
+    1536   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/shadow.pal
+  261560   153058 58.5%
+   88972   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/bigclawframes
+    3676   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/flamelamp
+   39426   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/flyingalien_newpal
+   73952   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/halfworm
+   28708   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/HARDMUTANT
+   15760   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/marine
+   10408   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/tree+eye
+  260902   146762 56.2%
+   28708   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/mutmarframes
+   15302   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/myalien
+   13090   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/myalien.64cols
+   14322   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/myalien4frames
+   23430   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/newmarine
+  140376   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/newrobot.32
+    2864   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.32
+    2820   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.32
+    2864   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.32
+   12878   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/shark
+    3484   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture4
+    1614   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/grenade
+  261752   142460 54.4%
+   20796   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/nmframes
+   28708   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/OTHERMUTANT
+   30000   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/ReallyBigScaryAlien
+  134124   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/robot.32
+   11932   merged  n/a  24-Jul-98 17:42:25 Graphics/Aliens/treeframes
+   22354   merged  n/a  24-Jul-98 17:42:25 Graphics/Backdrops/backpic.bak
+   13852   merged  n/a  24-Jul-98 17:42:25 Graphics/Backdrops/border16
+  261766   152862 58.3%
+   54782   merged  n/a  17-Oct-80 12:38:16 Graphics/Aliens/alien1.anim
+   35074   merged  n/a  17-Oct-80 10:20:48 Graphics/Aliens/alien2.anim
+   42298   merged  n/a  17-Oct-80 21:05:26 Graphics/Aliens/shark.anim
+   62988   merged  n/a  24-Jul-98 17:42:25 Graphics/Backdrops/alienbreed3.128
+    7428   merged  n/a  24-Jul-98 17:42:25 Graphics/Backdrops/borderchars
+   18850   merged  n/a  24-Jul-98 17:42:25 Graphics/Backdrops/borders
+   17918   merged  n/a  24-Jul-98 17:42:25 Graphics/Backdrops/newborder
+    9586   merged  n/a  24-Jul-98 17:42:25 Graphics/Backdrops/Panel
+    2526   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/floor.12
+    2724   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.12
+    2820   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.12
+    2724   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.12
+    1486   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/rocket1
+  261204   131476 50.3%
+  207246   merged  n/a  24-Jul-98 17:42:25 Graphics/Backdrops/64-51-6.LBM
+   31138   merged  n/a  24-Jul-98 17:42:25 Graphics/Backdrops/t17
+    5766   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/Floor.1
+    3722   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/Texture.1
+    2704   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/bump.1
+    2864   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.1
+    2868   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.1
+    3420   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/stairfronts
+    1642   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/brilshadpal
+  261370   199918 76.4%
+  126318   merged  n/a  24-Jul-98 17:42:25 Graphics/Backdrops/ALIENS5.IFF
+    4280   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/spec9.iff
+    5334   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/tex1.iff
+    5286   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/tex2.iff
+    4286   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/tex3.iff
+    4520   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/tex4.iff
+    4272   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/tex5.iff
+    4390   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/tex6.iff
+    4232   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/tex7.iff
+    4164   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/tex8.iff
+    4232   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/tex9.iff
+   41160   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/AB-NEW.IFF
+   20362   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/ALIENREDWALL.IFF
+   17556   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/Explosiom2_af16.iff
+    7838   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/Rocket
+    1536   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/shadowpal
+    1536   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/subtlpal.bin
+  261302   181730 69.5%
+   90620   merged  n/a  24-Jul-98 17:42:25 Graphics/Backdrops/justclouds
+    2944   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/floor.10
+    3664   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.10
+    3120   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/bump.10
+    3538   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.10
+    3542   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.10
+    2814   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/Floor.11
+    2118   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.11
+    3080   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/bump.11
+    3482   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.11
+    3486   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.11
+    5128   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/Floor.13
+    3014   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.13
+    2820   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.13
+    3014   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.13
+    3214   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/floor.14
+    1890   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.14
+    2820   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.14
+    1890   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.14
+    3642   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/floor.15
+    2978   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.15
+    2820   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.15
+    2978   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.15
+    3824   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/floor.16
+    2996   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.16
+    2996   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.16
+    2248   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.16
+    7954   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/floor.16.plain
+    2784   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/Floor.2
+    3682   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/Texture.2
+   10194   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/BATHTILE.2
+   10328   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/DTHSTR.2
+   10308   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/plain.2
+    9878   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/SHINGLES.2
+   10320   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/TRITILE.2
+    2158   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/bump.2
+    2230   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.2
+    2072   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Texture.2
+   10360   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/Floor.3
+    2752   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/Texture.3
+     846   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/bump.3
+    1748   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.3
+    2646   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Texture.3
+  260940   142414 54.5%
+    2118   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/Floor.4
+    3648   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/Texture.4
+    2566   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/bump.4
+    3592   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.4
+    3624   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Texture.4
+   46264   merged  n/a  24-Jul-98 17:42:25 HQN/GUARD.BOT
+   75308   merged  n/a  24-Jul-98 17:42:25 HQN/insect.bot
+   38518   merged  n/a  24-Jul-98 17:42:25 HQN/priest.bot
+   32608   merged  n/a  24-Jul-98 17:42:25 HQN/insect.cmp
+   27468   merged  n/a  24-Jul-98 17:42:25 HQN/priest.cmp
+  235714   125934 53.4%
+    5614   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/floor.5
+    3656   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/Texture.5
+    1992   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/bump.5
+    3256   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.5
+    3256   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Texture.5
+   56168   merged  n/a  24-Jul-98 17:42:25 HQN/GUARD.lft
+   75852   merged  n/a  22-Aug-98 18:09:03 HQN/Worm.lft
+   89236   merged  n/a  24-Jul-98 17:42:25 HQN/insect.lft
+  239030   126176 52.7%
+    2964   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/Floor.6
+    3316   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.6
+    2186   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/bump.6
+    3014   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.6
+    3014   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.6
+   54930   merged  n/a  22-Aug-98 18:19:30 HQN/Worm.top
+   75450   merged  n/a  24-Jul-98 17:42:25 HQN/insect.top
+   37562   merged  n/a  24-Jul-98 17:42:25 HQN/priest.top
+   17928   merged  n/a  24-Jul-98 17:42:25 HQN/triclaw.top
+   42628   merged  n/a  24-Jul-98 17:42:25 HQN/priest.lft
+  242992   142512 58.6%
+    3078   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/Floor.7
+    2790   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/Texture.7
+    3708   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/bump.7
+    3716   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.7
+    3716   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Texture.7
+   17008     8136 47.8%
+    3014   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/Floor.8
+    3172   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/Texture.8
+    3522   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/bump.8
+    3302   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.8
+    3302   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Texture.8
+   16312     7178 44.0%
+    2944   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/Floor.9
+    2278   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/Texture.9
+    4900   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/256tex.9
+    3926   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/bump.9
+    3572   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.9
+    3572   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Texture.9
+   21192    10904 51.4%
+    5614   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/floor5
+   43606   merged  n/a  24-Jul-98 17:42:25 Graphics/Floors/jackiefloor
+    3330   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/glare.17
+    3330   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/glare.17
+    2820   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.17
+    2414   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.17
+    3484   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.18
+    3012   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.18
+    2054   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.18
+    3086   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.19
+    2704   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/bump.19
+    2864   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.19
+    1110   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.19
+    3736   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.20
+    2820   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.20
+    1490   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.20
+    2798   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.21
+    2820   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.21
+    1760   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.21
+    3906   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.22
+    2820   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.22
+    2058   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.22
+    3886   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.23
+    2820   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.23
+    1962   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.23
+    3812   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.24
+    2820   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.24
+    3812   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.24
+    2752   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.25
+    2820   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.25
+    2752   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.25
+    2736   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.26
+    2820   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.26
+    3722   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.26
+    2924   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.27
+    2820   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.27
+    3722   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.27
+    3084   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.28
+    2820   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.28
+    3722   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.28
+    3758   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.29
+    2820   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.29
+    3722   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.29
+    3790   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/Texture.2bck
+    3790   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Texture.2bck
+    2384   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.30
+    2820   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.30
+    3722   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.30
+    3068   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures/texture.31
+    2820   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/Specular.31
+    3036   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture.31
+   41166   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/SpaceWalls
+   10810   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/andyswall
+   12260   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/BlueGreyMetal
+    2362   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/splash
+  261770   111572 42.6%
+   19282   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/andytest
+   21560   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/BIGDOOR
+   27660   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/bluemechanic
+    7672   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/BlueStone
+    9590   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/brownwall
+   14426   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/brownwithyellowstripes
+   12426   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/dirt
+   10416   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/dthstar
+   15176   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/GreenMechanic
+   22884   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/jackieroof
+   28566   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/jackiesillygreen
+   32718   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/jackiestone
+   19300   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/jackietest
+    5980   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/metal
+    5988   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/metal2
+    2982   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/switches
+    4512   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/jackienew
+  261138   124306 47.6%
+   13544   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/metal3
+   11030   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/metal4
+   23820   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/metal5
+   45278   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/metaldoor
+   13296   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/mikedoor
+   47604   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/mycastle
+    8438   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/mywierd
+   10412   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/plain
+   15896   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/RedAlert
+   12244   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/RedRock
+    9590   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/ribbed
+   10140   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/Rock
+   19934   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/scummy
+   20370   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/shinymetal
+  261596   134274 51.3%
+    8454   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/STAMPED
+   10452   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/techno
+   25682   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/TechnoDetail
+   20286   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/ALIENREDWALL
+    7172   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/BrownSpeakers
+   13456   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/CHEVRONDOOR
+   46244   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/GIEGER
+   20838   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/HULLMETAL
+    9292   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/REDHULLMETAL
+   41526   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/ROCKY
+   36014   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/steampunk
+   19282   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/STONEWALL
+    2490   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/bump
+  261188   200696 76.8%
+   15570   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/TECHNOLIGHTS
+   20494   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/TECHNOTRITILE
+   31120   merged  n/a  24-Jul-98 17:42:25 Graphics/Walls/weirdalien
+   64572   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/Explosion2_af256.iff
+   24882   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/Explosion2_af32.iff
+    6546   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/Blast_af32.iff
+   18182   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/Explosion3_af32.iff
+   17610   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/Explosion_af.iff
+    7558   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/barrel
+   10656   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/bigbullet
+   15368   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/calcglare
+    4102   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/lamps
+   11440   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/lamps256
+    5104   merged  n/a  23-Aug-98 10:31:11 Graphics/Effects/newblue
+    5162   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/passkeys
+    2160   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/PLAQUEPAL
+  260526   156386 60.0%
+   31986   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/glare
+   13848   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/pickups
+    4146   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/rocket2
+    9440   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/Shotanim
+    4506   merged  n/a  24-Jul-98 17:42:25 Graphics/Effects/splutch
+   65536   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/blurfile
+   23928   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/bump.anim
+   30796   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/spec.anim
+   16928   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/shadowpalette
+   16384   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/singlemap
+    3484   merged  n/a  24-Jul-98 17:42:25 Graphics/Textures2/texture4
+   40770   merged  n/a  24-Jul-98 17:42:25 HQN/GUARD
+  261752   105252 40.2%
+  524288   103990 19.8% 24-Jul-98 17:42:25 Graphics/Textures2/SHADOWMAPS
+   67916   merged  n/a  24-Jul-98 17:42:25 HQN/ashnarg.bot
+   26460   merged  n/a  24-Jul-98 17:42:25 HQN/globe.bot
+   87500   merged  n/a  24-Jul-98 17:42:25 HQN/Defender.bot
+   44762   merged  n/a  22-Aug-98 18:19:56 HQN/Worm.bot
+   22990   merged  n/a  24-Jul-98 17:42:25 HQN/triclaw.bot
+  249628   134308 53.8%
+   57876   merged  n/a  24-Jul-98 17:42:25 HQN/ashnarg.cmp
+   24480   merged  n/a  24-Jul-98 17:42:25 HQN/Globe.cmp
+   95210   merged  n/a  24-Jul-98 17:42:25 HQN/Defender.cmp
+   34624   merged  n/a  24-Jul-98 17:42:25 HQN/GUARD.CMP
+   33680   merged  n/a  17-Sep-98 13:47:57 HQN/Worm.cmp
+   11518   merged  n/a  24-Jul-98 17:42:25 HQN/triclaw.cmp
+  257388   133474 51.8%
+   85794   merged  n/a  24-Jul-98 17:42:25 HQN/ashnarg.lft
+  109956   merged  n/a  24-Jul-98 17:42:25 HQN/Defender.lft
+   32696   merged  n/a  24-Jul-98 17:42:25 HQN/globe.lft
+   23576   merged  n/a  24-Jul-98 17:42:25 HQN/triclaw.lft
+  252022   133068 52.8%
+   86048   merged  n/a  24-Jul-98 17:42:25 HQN/ashnarg.rgt
+  106620   merged  n/a  24-Jul-98 17:42:25 HQN/Defender.rgt
+   32882   merged  n/a  24-Jul-98 17:42:25 HQN/globe.rgt
+   22620   merged  n/a  24-Jul-98 17:42:25 HQN/triclaw.rgt
+  248170   129416 52.1%
+   88574   merged  n/a  24-Jul-98 17:42:25 HQN/ashnarg.top
+   92980   merged  n/a  24-Jul-98 17:42:25 HQN/Defender.top
+   26298   merged  n/a  24-Jul-98 17:42:25 HQN/globe.top
+   51284   merged  n/a  24-Jul-98 17:42:25 HQN/GUARD.Top
+  259136   154500 59.6%
+   55618   merged  n/a  24-Jul-98 17:42:25 HQN/GUARD.rgt
+   60704   merged  n/a  22-Aug-98 18:16:24 HQN/Worm.rgt
+   90320   merged  n/a  24-Jul-98 17:42:25 HQN/insect.rgt
+   41446   merged  n/a  24-Jul-98 17:42:25 HQN/priest.rgt
+  248088   136936 55.1%
+-------- -------- ----- --------- --------
+ 6749360  3604706 53.4% 01-Dec-98 23:43:30 342 file(s)
+
+Operation successful
+
+ 

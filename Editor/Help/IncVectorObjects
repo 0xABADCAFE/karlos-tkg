@@ -1,0 +1,21 @@
+HOW TO:
+
+				Incorporate Vector Objects
+				==========================
+				
+	If you've spent the last three weeks thrashing around with the unwieldy and unfriendly
+	vector object editors (sorry Charles :->) you'll probably want to see them in the game, whether
+	as objects or aliens or guns or whatever.
+	
+	Before you can use them, you have to load them into the game link file:
+	
+	1. Load the link file into the game linker as usual.
+	
+	2. Select VECTORS -> SET VECTOR FILENAMES
+	
+	3. Click on a name to replace OR a blank space to load a new file.
+	
+	4. Select a file written out by the ANIMEDITOR program.
+	
+	Click on 'DONE' and save the link file again!
+	

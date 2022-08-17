@@ -1,0 +1,39 @@
+HOW TO:
+
+			Draw Texture Graphics
+			=====================
+			
+	Texture graphics MUST be drawn individually on 32 colour screens. They must be drawn as a
+	64*64 pixel square located in the top left hand corner of the screen you draw them on.
+	Each texture picture can have its own 32 colour palette independant of the other textures.
+	There must be 32 of them before they can be used in the game, although you can always make
+	32 copies of a 'default' texture, and replace them as you design new ones.
+	
+	They MUST be located, for compatability, in the directory:
+	
+	AB3:GRAPHICS/TEXTURES/
+	
+	And they MUST be called either
+	
+	TEXTURE.X or GLARE.X
+	
+	where X is a number from 1 to 32.
+	
+	GLARE textures are special. You MUST draw them in the 32 colour palette provided
+	on the editor disk:
+	
+	GRAPHICS/GLAREPAL
+	
+	When drawing a GLARE texture, anything left BLACK is perfectly transparent.
+	Anything drawn in shades of WHITE will appear 'added' to the background in the game, so
+	dim white will look pale and transparent, whilst bright white will look solid and, well,
+	bright.
+	
+	Shades of RED represent progressively more opaque shades of shadow, with BRIGHT RED representing
+	almost pure black. Smoke and other effects can be created using these shades.
+	
+	REMEMBER: you MUST use the palette provided for the effect to work!
+	
+	GLARE textures can only be used on GLARE polygons, and TEXTURE textures can only be used on NON-
+	GLARE polygons.
+	

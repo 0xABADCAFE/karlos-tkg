@@ -1,0 +1,187 @@
+HOW TO:
+
+				Define Aliens
+				=============
+				
+	This is probably the most arduous task facing the prospective game designer, as it requires
+	the most data to be input.
+	
+	Select ALIENS -> DEFINE ALIEN STATS.
+	
+	You will be shown a list of aliens to define. To change their name, click on the existing name
+	and type the new one. You can copy an aliens name and characteristics by clicking on the
+	appropriate 'COPY' button and clicking on the target space.
+	
+	You can also change the scale of an alien by clicking on the button near the bottom of the
+	screen, then clicking on the alien in question, then typing the percentage by which you wish
+	to scale the alien.
+	
+	NOTE: The game DOES NOT REMEMBER any previous sizes you have defined for aliens, so if you
+	      scale an alien up by 200%, you CANNOT scale it down again by scaling it by 100% later on.
+	      You must scale it by 50% to reduce it to the first size you gave it.
+	     
+	Clicking on DEFINE CHARACTERISTICS of an alien brings up the following menu:
+	
+1. GRAPHIC TYPE:
+	
+	This can be one of three main types:
+		
+	BITMAP
+		The alien will use standard bitmap graphics converted by the OBJECTCONVERTOR
+		program. The alien will only be lightsourced so far as to be made brighter in
+		bright rooms and dimmer in dark rooms. This option is the one used in all other
+		games of this sort.
+	
+	VECTOR
+		If you have designed animation frames for a vector alien, you can specify that
+		you wish to use them by selecting this option.
+	
+	LIGHTSOURCED PALETTE 1/2/3/4
+		These options can be selected, but you won't be able to use them because the
+		support programs for producing lightsourced graphics were not included in this
+		package. Look out for a coverdisk with tutorials and support programs soon! For
+		now, you'll have to be content with the options above.
+		
+2. [ DEFINE ANIMATION FRAMES ]
+
+	If you are designing a BITMAP alien, consult the file
+	
+	HOW2-Define_Alien_Animations
+	
+	otherwise check out
+	
+	HOW2-Define_Vector_Alien_Anims
+	
+	AFTER YOU HAVE READ THE REST OF THIS FILE!!!
+	
+3. Default Behaviour
+
+	Aliens can either walk, or fly. This can be indicated by either
+	WALK RANDOMLY or FLY RANDOMLY
+	being selected (click to toggle)
+	
+4. Reaction time
+
+	This is the amount of time the alien must see you for (uninterrupted) before it will notice
+	you and take appropriate action. If you shoot it and it doesn't die, it will immediately
+	spot you. This value is measured in 50ths of a second. If your aliens are too easy, try
+	decreasing this value rather than increasing hit points or whatever.
+	
+5. Default Movement Speed
+
+	This is the speed which the alien wanders around at when it can't see you and is not attacking.
+	5 is an average sort of speed, 10 is zippy and more than 10 is ludicrous.
+
+6. Response Behaviour
+
+	This is what the alien will do when it notices you; either:
+	
+	CHARGE			Run straight at player, biting and munching him when close enough.
+	CHARGE TO SIDE		Run towards player, keeping out of line of fire, biting when close enough.
+	ATTACK WITH GUN		Execute the 'attacking frames' animation, with each 'action star'
+				corresponding to a bullet being fired.
+	There are three more options, identical to the above but for flying aliens.
+
+7. Response Movement Speed
+
+	Only used in charging aliens, this governs how quickly the alien will charge.
+	
+8. Response Timeout
+
+	You can make the alien 'get bored' and stop charging after a certain amount of time. IF you don't
+	want this to happen, type in a nice big number like 10000, representing over three minutes!
+	Value is measured in 50ths of a second.
+
+9. Damage Taken Limit -> Retrest
+
+	NOT IMPLEMENTED IN THIS VERSION
+	
+10. Damage Inflicted Limit -> Followup
+
+	NOT IMPLEMENTED IN THIS VERSION
+
+11. Followup Behaviour
+
+	Once the alien has executed its attack animation, or has timed out of its response counter,
+	it will 'followup'. In this mode it can:
+	
+	PAUSE
+		Stop dead for a moment, watching you
+	Approach
+		Move straight towards player (but inflicts no damage when it reaches him).
+	Approach To Side
+		Same as above, but keeping out of line of fire.
+	Approach flying
+		Same as above but flying
+	Approach to side flying
+		Do I really need to explain?
+	
+12. Followup Movement Speed
+
+	The speed at which the alien will approach you (if at all)
+	
+13. Followup Timeout
+
+	Assuming the alien can still see you once this timer expires, it will attack again.
+	This value is measured in 50ths of a second.
+
+14. RETREAT BEHAVIOUR/RETREAT MOVEMENT SPEED/RETREAT TIMEOUT
+
+	NOT IMPLEMENTED IN THIS VERSION.
+	
+15. NUMBER OF HIT POINTS
+
+	The 'toughness' of the alien. Think about how tough you want the alien to be relative to
+	each of your guns. Do you want it to keel over after a single shotgun blast? Then make its
+	hit points less than the damage done by your shotgun rounds. Want it to soak up rockets and
+	laugh chestily? Then make its hit points HUGE, so that the damage of the rocket PLUS its
+	explosive force (the maximum amount of damage it can do to an alien or yourself) is much
+	less.
+
+16. Physical Height
+
+	How tall is your alien? To make it walk on the ground, a good height to use is TWICE the SH
+	(Scaled Height) of the animation frames you are using. Notice that aliens CANNOT WALK into
+	rooms whose floor-ceiling height is LESS than this value, and CANNOT MOVE in rooms which
+	are too short if you plonk them in there to begin with.
+
+17. Minimum distance to walls
+
+	Small or thin aliens can get quite close to walls, so a value of 0 will suffice. But if it's
+	a fat beasty, a value of 1 or 2 will prevent it squeezing unrealisically into narrow tunnels.
+	
+18. Projectiles Ejected Upon Death
+
+	Clicking on this will bring up a list of projectiles (bullets) which the alien can splurt out
+	when it dies. Interestingly, you can make it spit out actual bullets (as long as they are
+	VISIBLE ones) when it dies, thus allowing sneaky aliens to hemmorhage grenades as their innards
+	rupture, which makes the player's situation just a little dicey...
+	
+	Alternatively, you can choose to click on 'Select Alien to spawn instead' and pick a type of
+	alien. Upon death, the alien will spawn FOUR of the aliens you selected. Please don't be silly
+	and make aliens spawn themselves, or make them spawn other aliens which in turn spawn them back.
+	You'll only get annoyed playing the game as hordes of replicating aliens engulf you mercilessly.
+	
+19. Auxilliary Object Type:
+
+	Click on this and select an object whose frames have been set up correctly.
+	
+	By 'correctly', what do I mean? Well, if you define a DECORATION object, and make it
+	look like an animation of a gun barrel flash, you can use it as an AUXILLIARY OBJECT.
+	At any point in any animation sequence for the alien, you can make the game paste a frame
+	from the auxilliary object somewhere over the top of the alien graphic. This is how the
+	muzzle flashes and glaring lights of the various alien guards were produced. Auxilliary objects
+	may be BITMAP or GLARE/SHADOW, but not VECTOR. If you are not using any auxilliary graphics
+	on the alien, you don't have to define this value at all.
+
+20. Torch Brightness
+
+	Aliens can carry 'torches', illuminating the level in front of them. A value of 30 is a reasonable
+	torch brightness, whilst a value of 0 indicates no torch.
+	
+21. Bullet Source X and Y offsets.
+
+	These value indicate how far from the centre of the alien its bullets should originate. This is
+	largely a matter of trial and error, but remember that negative values mean the bullet comes from
+	the left or the top, whilst positive values mean the right or the bottom.
+	

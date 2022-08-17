@@ -1,0 +1,166 @@
+HOW TO:
+
+				Add Doors and Lifts To Levels
+				=============================
+				
+	No level would be complete without some doors (locked or otherwise) and lifts (stuck or
+	otherwise) for the player to negotiate.
+	
+DEFINING A DOOR:
+----------------
+
+	Select the 'Define door' icon. This is fifth from the left on the bottom row, and depicts
+	a red door with an arrow pointing upwards beneath it to show it opening.
+	You will be presented with a bewildering array of options, including:
+	
+	DOOR NUM: X
+		You are currently editing door X, which is a letter from A to P (16 doors). Pressing
+		'<' and '>' with the cursor in the edit area scrolls through these values.
+		NB: Holding down RSHIFT when pressing '<' or '>' not only moves to the previous or
+		next door, but also copies all the settings from the current door to it. This is useful
+		when most of the doors in your level are of the same type.
+	
+	Stays Open For (50=1 sec)
+		This value represents the amount of time the door will remain open for after it reaches
+		its full open height. By experimenting with this value you can create combinations of
+		doors and switches which require the player to run across the map before the door
+		closes again! Click on the value to change it.
+	
+	Opening Speed
+		Opening and closing speeds can be more or less anything you like, but for example,
+		an opening speed of 16 is fast, whilst an opening speed of 1 is very, very slow (useful
+		for very big, heavy doors) Click on the value to change it.
+	
+	Closing Speed
+		Same as above, but in the opposite direction.
+		
+	Opening SFX:
+		This is the sound effect triggered by the door being opened. Click and type the number
+		of a sound effect (0=no sound) which you have loaded into the game linker.
+	
+	Closing SFX:
+		Same as above but triggered by the door starting to close.
+		
+	Open SFX:
+		Similar to above, but triggered by the door REACHING its fully open state.
+		
+	Closed SFX:
+		Ditto, but triggered by the door reaching its completely closed state.
+		
+	RAISE CONDITIONS:
+		Plr touch+Space
+			The player must come into contact with the door and press the space bar to trigger
+			it into opening.
+		Plr Touch
+			The player only needs to touch the door to trigger it into opening.
+		Bullet Touch
+			NOT IMPLEMENTED IN CURRENT VERSION; DO NOT USE.
+		Alien Touch
+			NOT IMPLEMENTED IN CURRENT VERSION; DO NOT USE
+		On Timeout
+			As soon as the door becomes unlocked, or finishes closing, it will begin to
+			open again.
+		Never
+			Fairly obvious; the door will never open. Not a lot of use, but included for
+			completeness.
+		
+	LOWER CONDITIONS
+		On Timeout
+			Once the timer has expired (see above) the door will begin to close once more.
+		Never
+			Once open the door will never begin to close again.
+		
+	
+PLACING A DOOR ON THE MAP
+-------------------------
+
+	1. Click on the 'define door' icon as above.
+	
+	2. Select the zone which you want to act as the door (i.e. its ceiling will rise and fall) with
+	   the RIGHT mouse button.
+	  
+	3. Press 'r'. The letter of the door will appear roughly in the middle of the zone.
+	
+	4. This bit requires a bit of thought. Remember that the walls of zones face INWARDS, not outwards,
+	   so you will now have to specify which walls in the surrounding zones you want to rise and
+	   fall with the ceiling of the door zone:
+	   
+	   			1
+	   	 ----------------*-------*-----------------
+	   	 		 #       #
+	   	 		 #       #
+	   	 		 #       #
+	   	 		 #       #
+	   	 	ZONE X	 #       #	ZONE Y
+	   	 		 #  DA   #
+	   	 		 #       #
+	   	 		 #       #
+	   	 		 #       #
+	   	 		 #       #
+                 ----------------*-------*-----------------
+                 			  2
+                 
+	   In this case, where a corridor is interrupted by a door, zones X and Y each have ONE wall
+	   which must appear to rise and fall with the ceiling marked 'DA'.
+	   
+	   To select these walls, click in, for example, zone X with the RIGHT mouse button. Then click
+	   with the LEFT mouse button on the point at the LEFT END of the wall you wish to change.
+	   
+	   NB: The 'LEFT END' refers to the end of the wall which would be on the left when you looked at
+	   it in the game from within zone X; i.e. point 1 in the diagram.
+	   
+	   Notice that the wall selected becomes blue. You can deselect a wall just by clicking on it
+	   again.
+	   
+	   Repeat this process for all other zones bordering the door zone, (e.g. zone Y and point 2).
+	   
+	5. You have done it! The door will now rise and fall between the defined floor height and the
+	   defined roof height of the zone in which it was placed. You can now place objects which hold
+	   the door shut until collected, or put in aliens which hold it shut until killed, or anything!
+	   
+	NB: The list of settings for the door in the bottom right of the screen is NOT a clipboard; these
+	    are the ACTUAL settings for the door. You can change the settings at any time before or after
+	    placing the door, and the changes will take effect automatically.
+
+DELETING A DOOR:
+----------------
+
+	Sometimes it may be necessary to delete a door from the map. The ONLY safe way to do this, boys
+	and girls, is to follow this procedure:
+	
+	1. Click on the 'DEFINE DOOR' icon, and use < and > to reach the door you want to delete.
+	
+	2. Use the technique described above to toggle OFF all the blue walls in zones around the door.
+	
+	3. Select the door zone itself with the RIGHT mouse button and press 'r'. The door letter should
+	   vanish.
+	   
+	NB: It is not possible to delete a zone which is either a door, or contains a wall bordering a door.
+	    I made this so because every time I deleted a zone containing or bordering a door whilst
+	    programming AB3D, the level corrupted irretrievably. I never did find out why, so I put in a
+	    safety feature which prevents zones being deleted in such a situation. You MUST delete the
+	    door before deleting neighbouring zones or the door zone itself.
+
+DEFINING A LIFT:
+----------------
+
+	This is very, very similar to the above process, with the following changes:
+	
+	LOWER CONDITIONS:
+		Plr touch+Space
+			The player must come into contact with the lift and press the space bar to trigger
+			it into coming down.
+		Plr Touch
+			The player only needs to touch the lift to trigger it into descending.
+		On Timeout
+			As soon as the lift becomes unlocked, or finishes rising, it will begin to
+			lower again.
+		Never
+			The lift, once raised, will never descend.
+	
+	There is an additional setting, defining where the lift begins (at the top or the bottom of its
+	movement) which can be set by pressing 't' or 'b' with the cursor in the edit area.
+	
+	Once a lift zone has been defined, in the same way as above, there is one extra piece of
+	information you must give: the maximum height to which the lift rises. Define this by selecting the
+	lift zone with the right mouse button	

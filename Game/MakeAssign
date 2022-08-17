@@ -1,0 +1,15 @@
+; set up assigns for game and editing 
+
+assign ab3: ""
+assign tkg1:  ""
+assign tkg2: ""
+assign sfx:  ""
+assign tkgfx: SoundFX
+
+if exists /Editor
+   assign ab3edit: /Editor
+   assign ab3: ab3edit:activedata add
+   cd ab3edit:
+   path scripts editors editors/utils add ; paths
+   alias togglepack rx ab3edit:scripts/packer.rexx []
+   endif

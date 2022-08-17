@@ -1,0 +1,158 @@
+HOW TO:
+
+		Change Floor and Ceiling Heights
+		================================
+		
+Since levels are a little dull without things like stairs, cliffs, low tunnels etc., you will
+no doubt want to alter the default floor and ceiling heights of your level. Here is how you do it:
+
+1. Overview
+-----------
+
+	The floor and ceiling height changing routines work on a 'clipboard' principle. The height
+	of a floor or ceiling is read into the clipboard by clicking with the RIGHT mouse button on
+	a zone. The height in the clipboard can then be changed and pasted back into the zone, or
+	as many zones as you wish, by clicking within them with the LEFT mouse button. This allows
+	you to speedily change the floor or ceiling heights of many zones.
+	
+	There are four heights which can be changed in each zone. These are:
+	
+		Upper Roof Height
+		Upper Floor Height
+		Lower Roof Height
+		Lower Floor Height
+		
+	The icons to click on to edit each of the above are arranged on the top row of the icon bar
+	in the level editor, starting on the fourth icon from the left. Remember, the icon bar can be
+	scrolled left and right using '(' and ')' on the keypad.
+	
+	Normally, only the Lower Roof and Lower Floor heights are defined. The other two are initialised
+	to 5000, meaning 'DO NOT USE'. The Upper Floor and Roof heights are used in the definition of
+	gantries or two-storey rooms (see below).
+	
+	NB: VERY VERY VERY IMPORTANT! In AB3DII, heights are measured DOWNWARDS! This means that a height
+	    of -16 is HIGHER UP than a height of 0, which is HIGHER UP than a height of 16. 
+	    
+	NB: VERY IMPORTANT: Floor and ceiling heights are measured as absolute values. The floor is not
+	    measured by its distance from the ceiling, and neither is the ceiling measured by its distance
+	    from the floor. If the floor height in a room is 128, and the ceiling height is 64, then the
+	    height of the room is 128-64=64.
+	    
+	Rooms default to being 128 high, with the floor at 0 and the roof at -128.
+		
+2. General Usage
+----------------
+
+	Click on the icon corresponding to the value you wish to change. If you wish to grab the
+	corresponding height of a zone, click in that zone with the RIGHT mouse button.
+	
+	Use the + and - keys to alter the height in the clipboard. Holding RSHIFT down allows you
+	to change them in increments of 8 rather than increments of 1. Note that due to a bug, either
+	in AMOS or the keyboard hardware itself, you cannot hold down RSHIFT and + on the keypad to
+	make the key auto-repeat (e.g. if you want to change a height by a great deal). If you wish to
+	autorepeat, press RSHIFT and the + key on the main keyboard.
+	
+	When the desired height has been achieved, click with the LEFT mouse button in any zones whose
+	height you wish to set to the new value.
+	
+	Heights can be positive or negative, but REMEMBER that heights are measured DOWNWARDS!
+	
+3. Creating... Stairs
+---------------------
+
+	Usually, stairs go down in steps of 16. There's no reason you can't make them steeper or
+	shallower than this, but 16 is a good value.
+	
+4. Creating... Gantries
+-----------------------
+
+	This is a feature unique to AB3D on the Amiga. It is possible to define overhead walkways or
+	corridors for the player to use:
+	
+	
+	UPPER roof height ->  ---------------- -------- <-- Roof height of neighbouring Zone
+			 		      .
+					      .
+					      .
+					      .
+	UPPER floor height -> ________________.
+	                     		      |              
+	                     	SOLID	      |              
+	                     	WALKWAY	      |              
+	       Roof Height -> ________________|
+			                      .
+			                      .
+			                      .
+			                      .
+	      Floor Height -> ---------------- -------- <-- Floor height of neighbouring zone
+
+	
+	This is a simple procedure for creating a gantry.
+	
+	1. Define the area in which the gantry is to be created. REMEMBER: Gantries can only be
+	   built from ENTIRE ZONES. You CANNOT HAVE a big room made of a single zone, with a gantry
+	   across it. You must have something like this:
+	   
+	   *--------*----*-------------------*
+	   |        #    #                   |	      
+	   |        #    #                   |	      
+	   |   A    # B  #        C          |	      
+	   |        #    #                   |	      
+	   |        #    #                   |	      
+	   *--------*----*-------------------*
+	   
+	   If you want to be able to see both under and over the gantry in zone B, ensure the floor
+	   and ceiling heights of zones A and C are far enough apart (about 256 apart is adequate).
+	   Now, select 'DEFINE ROOF HEIGHT'. Click with the RIGHT mouse button on zone A, to grab the
+	   height.
+	   Now select 'DEFINE UPPER ROOF HEIGHT'. Click ONLY in zone B with the LEFT mouse button. The
+	   Roof height from zone A will be copied into the Upper roof height of zone B.
+	   Repeat the above, but with the Floor Height of zone A and the Floor height (not the UPPER
+	   floor height) of Zone B.
+	   
+	   You have now defined the upper ceiling and lower floor heights of B. It remains to define the
+	   in-between values to describe the walkway.
+	   
+	   You should still have the Floor height of A in the clipboard. Click on 'DEFINE UPPER FLOOR
+	   HEIGHT' and then adjust the value upwards using 'RSHIFT -' until it is about 128 above
+	   the floor height. Click with the LEFT mouse button in zone B. This defines the upper surface
+	   of the walkway.
+	   
+	   Select 'DEFINE UPPER ROOF HEIGHT' and click in zone B with the RIGHT mouse button. Select
+	   'DEFINE ROOF HEIGHT' and adjust the value to something slightly further down than the upper 
+	   floor value you just defined. A difference of 8 is a very thin walkway; greater differences
+	   mean greater thicknesses of gantry.
+	   
+	   There is no reason why the floor height and upper roof height of B should be the same as the
+	   floor and roof heights of A and C, so feel free to change any of them to create any
+	   setup you wish. For example, the following yields a pair of corridors which cross but
+	   are invisible from one another:
+	   
+	   		___________________
+	   		|                 |
+	   		|                 |
+	   		|                 |
+	   		|     UPPER B     |
+	   		|                 |
+	   		|                 |
+	   		|_________________|
+			.                 .
+			.                 .
+	_____________________________________________________
+			.                 .
+			.                 .
+			.                 .
+		A	.     LOWER B     .         C
+			.                 .
+			.                 .
+			.                 .
+	_____________________________________________________
+	
+	   You can put gantries in as many zones as you wish, even ones next to each other, which allows
+	   for all sorts of nice effects, eg:
+	   
+	   Floating platforms
+	   Two storey rooms with a connecting hole or lift or flight of stairs.
+	   Bridges over water
+	   Multi-level staircases (tricky but possible; check out level 11 of the first AB3D)
+

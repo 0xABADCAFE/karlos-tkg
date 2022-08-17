@@ -1,0 +1,135 @@
+HOW TO:
+
+				Change Wall Floor and Ceiling Graphics
+				======================================
+				
+			THIS FILE INSTRUCTS ON USAGE OF THE LEVEL EDITOR. PLEASE
+			READ THE LEVEL EDITOR KEY-GUIDE FOR BASIC INSTRUCTIONS.
+				
+				
+	One of the more arcane and impenetrable stages of level editing is the defining of graphics
+	for the walls, floors and ceilings of your levels. It is therefore imperative that the proper
+	runes are cast and the traditional ceremonies carried out TO THE LETTER to avoid the incomparable
+	wrath of the editor gods.
+	
+	Ok, so thats a lie. Graphics aren't that hard to include. However, it IS time consuming and rather
+	dull, particularly when you're on level 15 of 16 and you really can't be arsed thinking too
+	carefully about what you're doing, which is why I've included a shortcut or two for the lazier
+	of you.
+	
+	
+WALLS:
+------
+
+	Walls are the most complicated things to define graphics for. The main ingredients cast into the
+	cauldron for a successful wall graphic are:
+	
+	1. Which wall file the graphics are to be drawn from
+	2. Which part of the file is to be mapped onto the wall
+	3. Whether the section of graphic is to be stretched so that an exact number of tiles of that
+	   strip fit onto the wall OR
+	4. Whether the section of graphic is to be squashed so that an exact number of tiles of that
+	   trip fit into the wall OR
+	5. Whether the strip of wall is to be drawn in strict 1x1 ratio regardless of the number of
+	   tilings.
+	6. Assorted eyes, toes, and the occsional spleen from small furry animals (optional)
+	
+	The procedure you should follow is this:
+	
+	1. Select the 'define wall graphic' icon. This can be found near the right hand end of the icon
+	   bar on the middle row, and looks like a letter C with a red vertical bar and grey horizontal
+	   bars.
+	   
+	2. Move the cursor into the edit area. The icon bar will vanish and be replaced with a rather
+	   dotty and transparent vision of a wall graphic. Press 'v' to get a better look at it.
+	
+	3. Use the '<' and '>' keys to scroll along the wall graphic, or if you want to select the
+	   next or previous graphic in series, press RSHIFT along with '<' or '>'. To change the
+	   length of the tile (multiply or divide it by two, in fact), press Q or W. Once the section
+	   of graphic visible corresponds to the part of the graphic you want pasted on the wall, move
+	   on.
+	   
+	4. Is it important that the wall contains a whole number of tiles of the graphic selected? Such
+	   cases arise with doors, where the door graphic must be stretched to fit the exact width of
+	   the door, and so on. If you want to STRETCH OUT the wall graphic so that a whole number of
+	   tiles covers the wall, pressing '-' toggles the effect on or off. Similarly, '+' toggles 
+	   SQUASHING the graphic into the wall on/off.
+	   
+	5. Assuming all is OK, select the zone containing the wall to be pasted onto with the RIGHT
+	   MOUSE BUTTON. Clicking on the LEFTMOST point of the wall as you would see it in the game
+	   pastes the graphic onto that wall, eg:
+	   
+	   
+	   		*---------------------* <- Clicking on THIS point...
+	   		|                     |
+	   		|                     |
+	   		|                     |
+	   		|                     |
+	   		|                     | <- Changes THIS wall.
+	   		|                     |
+	   		|                     |
+	   		|                     |
+	   		|                     |
+			*---------------------*
+			
+OTHER TOOLS:
+------------
+
+	You can grab the graphic settings from a wall by selecting the zone with the right mouse button,
+	holding the mouse pointer near to the left hand end of the wall as above, and pressing 'g'.
+	
+	You can fill all the walls in a zone with your graphic by selecting the zone with the
+	right mouse button and pressing 'f'.
+
+THINGS TO REMEMBER:
+-------------------
+
+	It is possible for a single wall to have two different textures on it, depending upon which
+	side you are on. For example, this SIDE ON VIEW of a step:
+	
+	
+			_____________________
+			|                   |
+			|          Side A ->|
+			|                   |_________________
+			|                   .                |
+			|                   .                |
+			|                   .                |
+			|                   .                |
+			|                   .                |
+			|___________________.                |
+					    |                |
+					    |<- Side B       |
+					    |________________|
+					    
+	Hence you must define wall graphics from BOTH SIDES in cases like this.
+	
+	To help you in this task, pressing SHIFT and 'D' will redraw the level with all visible
+	walls or steps still containing default graphics drawn in flickering grey, so you can see
+	where you have missed.
+
+	There is a corresponding DEFINE UPPER WALL GRAPHIC icon, which defines graphics for walls
+	visible in the upper part of a zone (if it exists). It works in exactly the same way.
+	
+FLOORS and CEILINGS:
+--------------------
+
+	These are a little easier. Select the 'DEFINE FLOOR GRAPHIC' icon (near the right hand end of
+	the scrollable icon bar; it looks like a letter C with a red bottom). Moving the cursor
+	into the edit area replaces the icon bar with a picture of the graphic you are going to paste.
+	
+	Clicking in a zone with the RIGHT mouse button grabs the graphics already there.
+	
+	Q and W scale up or down the graphic by a factor of 2. This is shown next to the graphic by
+	a number from -5 to +5. -5 is very, very big, and +5 very, very small.
+	
+	'<' and '>' scroll backwards and forwards through the available tiles.
+	
+	NB: When defining ceiling graphics, note that in addition to the 16 graphic textures, there
+	    an additional option of having no roof (ie 'sky'). This cannot be scaled.
+	    
+	Clicking with the LEFT mouse button in a zone pastes the selected graphic into it. It is
+	also possible to hold down the mouse button and 'smear' a texture over a number of zones without
+	having to tediously click in each one. Useful for defining stairs and such like.
+	
+	

@@ -1,0 +1,47 @@
+HOW TO:
+
+				Define Player Guns
+				==================
+				
+	The player is likely to feel a little defenseless without guns to shoot, and indeed you MUST
+	have the first weapon defined before you can play the game (the default game link file
+	contains one pre-defined weapon, the shotgun).
+	
+	Select GUNS -> DEFINE GUN TYPES
+	
+	You will be shown a list of 10 guns, along with various items of information:
+	
+	<GUN NAME>
+	
+		Click to type a new name for the gun.
+	
+	<BULLET TYPE>
+
+		Click, and then select a bullet from the list shown. This is the type of bullet
+		the gun will fire.
+	
+	Bullets Fired/Shot
+	
+		Click and type a number from 1 upwards. Only used by instant effect bullets, so
+		shotguns can be double-barrelled and fire two bullets (either of which has an
+		independant chance of hitting the target).
+	
+	Delay between shots
+	
+		A value in 50ths of a second representing the delay between the gun firing successive
+		times. Thus a machine gun might have a value of 5, a rocket launcher a value of 50 or
+		100. Of course, you could always have a rapid-fire rocket launcher....
+		
+	Gun SFX
+	
+		Click and select a sound effect for the gun to trigger when you shoot.
+		
+	On Screen Object
+	
+		Click and select an object whose COLLECTED/ACTIVATED/DESTROYED frames are set up to
+		work as the gun. See
+		
+		HOW2-Define_Objects
+		
+		for instructions.
+		

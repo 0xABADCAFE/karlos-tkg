@@ -1,0 +1,79 @@
+HOW TO:
+
+					Add Objects To Levels
+					=====================
+					
+	NB: This document ONLY covers instructions for placing or changing OBJECTS. See the file
+	HOW2-Add_Aliens_to_levels for details on placing aliens.
+	
+	To add an object, click on the small smiley face in the bottom left corner of the icon strip.
+	You will be presented with an extra set of options representing the object 'clipboard' from which
+	you can paste multiple copies of a single object into the level. Click on the 'Object Type'
+	line of the options until it reads 'Object'.
+		
+	Adding objects to levels is quite simple, but there are a few things to bear in mind:
+	
+	1. Any object can act as a 'key' for lifts and doors. To avoid difficulties, try to think
+	   of keys as things that 'hold doors shut' and 'hold lifts still' until they are removed
+	   from the map by collecting or destroying them, or until they are activated (e.g. a switch).
+	   The doors and lifts held by an object are represented by two lists of letters, A-P. Click
+	   on each letter to toggle it from dark to highlighted. Highlighted letters represent doors
+	   or lifts which will be held by that object. Any number of doors and lifts can be held by
+	   a single object, and similarly any number of objects can hold any one door or lift. The player
+	   must remove or activate them ALL before the door/lift will operate.
+	
+	2. Any object can trigger a text message when it is activated, collected or destroyed. This
+	   is represented by the 'Text:' number. Click on this number and type the number of the text
+	   string you wish it to trigger (See 'HOW2-Define-In-Game-Text' for details).
+	
+	3. Clicking on the 'Type' line with the left and right buttons of the mouse scrolls forward and
+	   backwards through the 30 possible objects you can define in the game linker. Objects MUST be
+	   defined in the game linker before you can use them in levels.
+	   
+	4. The 'START FRAME' of an object is a very, very useful function indeed. If you read the
+	   document 'HOW2-Define_New_Objects' you will know that it is possible to define loops of
+	   animation within the animation data of each object. Using that, along with the START FRAME,
+	   allows a single object to have many different graphical appearances in the game without
+	   needing any more than ONE object defined in the game linker! For example, the keys in
+	   AB3DII were defined as a single object with 13 frames of animation. Each frame of animation
+	   was edited to display a DIFFERENT colour/number of key (e.g. red or green or blue or yellow etc.)
+	   and also to point at ITSELF as the 'next frame' to be used. There are therefore 13 independent
+	   animations within the animation definition for 'key'. The 'START FRAME' value was set before
+	   pasting a key into the level. This value represents which frame of animation the object
+	   will first be drawn using. Since in this case all frames pointed to themselves as 'NEXT' frames,
+	   this also meant that the object would remain in that frame throughout its life! In effect
+	   there were 13 different LOOKING keys in the game, but only one 'KEY' object was ever defined!
+	   
+	5. In the game, the computer keeps track of all objects and aliens which you can see or are near
+	   to, and only moves and animates those. So that aliens can chase you, there is also a short
+	   'timeout' so that an object or alien continues to be active for a few seconds after you move out
+	   of range. The 'PERMANENT CALCULATION' toggle disables this feature for the object you paste,
+	   and forces the computer to animate and control it constantly.
+	   
+	   NB: The computer will never ignore the 'holding shut' of doors, no matter how far away objects
+	   become, so don't worry about doors springing open as soon as you move out of range of the
+	   key; it won't happen!
+	   
+	6. Because of the availability of gantries and the like, it is important to specify whether the
+	   object is to be placed in the upper or lower part of a zone. The 'Start in Up/Lo rooms:'
+	   toggle allows you to specify where to place the object.
+	   
+	7. Finally, to place an object somewhere, just click in a zone with the LEFT mouse button.
+	   If you specified in the gamelinker that the object should be locked to the nearest wall,
+	   the object will appear, stuck to the wall in the zone nearest where you clicked.
+	   
+OTHER TOOLS:
+------------
+
+	If, when you have the 'place object' icon selected, you move the cursor over an existing object
+	and press 'g', you will grab the settings of that object into the clipboard. You can then modify
+	them if necessary and paste them back into the same, or indeed any other object, by moving the
+	cursor over it and pressing 'p'.
+	
+	The icon immediately to the right of 'place object' is 'move object'. If you wish to move an
+	object, select this icon then click on the object to move with the RIGHT MOUSE BUTTON, then
+	on the position you wish it to move to with the LEFT mouse button.
+	
+	The icon to the right of the 'move object' icon is 'delete object'. Clicking in the edit area
+	with this icon selected will delete the nearest object to your cursor.
+	

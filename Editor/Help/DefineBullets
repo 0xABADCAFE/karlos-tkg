@@ -1,0 +1,192 @@
+HOW TO:
+
+					Define Bullet Types
+					===================
+					
+	No doubt you will want aliens to shoot at you and vice-versa, and before you can make them do
+	this, you have to define some bullet types. Aliens fire selected bullet types, as do the player's
+	guns, and ammo you collect also gives you specified ammounts of each bullet type to shoot.
+	The term 'bullet' is a bit of a misnomer and should really be 'projectile' since it can refer
+	to bullets, mines, grenades, rockets, and, curiously enough, the bits of splatch that aliens
+	spurt when shot.
+					
+	Load your link file into the game linker as usual.
+					
+	Select BULLETS -> DEFINE BULLET DATA
+	
+	To define the NAME of a bullet, click on the existing name with the LEFT mouse button and
+	type in your new name. You can now click on 'EDIT BULLET STATISTICS' and begin creating your
+	projectile.
+	
+1. DAMAGE TO TARGET PER BULLET
+------------------------------
+
+	This refers to the amount of damage the target (ie an alien, an object or you yourself) will
+	take on being struck directly by the projectile. A value of zero disables collision with
+	other objects, useful for stuff like the blood which spurts out of aliens.
+
+2. VISIBLE BULLET OR INSTANT EFFECT
+-----------------------------------
+
+	Bullets can either be visible, like grenades or plasma bolts, or invisible and instantly
+	effective like shotgun blasts or rifle bullets.
+
+3. GRAVITY VALUE
+----------------
+
+	ONLY AVAILABLE FOR VISIBLE BULLETS
+	
+	This indicates the effect gravity has upon the projectile. Grenades should have a value of
+	about 20 or so, with 0 representing gravity having no effect. NOTE that negative values are
+	possible, and will cause the bullet to fall towards the roof!
+	
+4. BOUNCE OFF WALLS Y/N
+-----------------------
+
+	ONLY AVAILABLE FOR VISIBLE BULLETS
+	
+	Toggles bouncing off walls on/off. NB: Bullets which are subject to gravity will be slowed
+	down by contact with walls, but those unaffected by gravity (Gravity Value = 0) are assumed
+	to be some sort of lazer weapon and are not slowed down.
+	
+5. BOUNCE OFF FLOORS/CEILINGS
+-----------------------------
+
+	ONLY AVAILABLE FOR VISIBLE BULLETS
+	
+	Toggles bouncing off floors and ceilings. Slowdown rules same as above.
+	
+6. BOUNCE NOISE
+---------------
+
+	NOT IMPLEMENTED IN THIS VERSION.
+	
+	This setting has no effect at present, although updates may rectify this absence.
+	
+7. BULLET LIFETIME
+------------------
+
+	ONLY AVAILABLE FOR VISIBLE BULLETS
+
+	Bullets may last forever (a value of -1 denotes this) or may fizzle out or detonate after
+	a certain time. This value is measured in 50ths of a second. Projectiles not defined as 
+	bouncing will detonate or fizzle prematurely if they strike a wall, and will detonate in
+	any case if they strike an enemy target (either you or an alien depending upon who fired it).
+	
+8. EXPLOSIVE FORCE
+------------------
+
+	ONLY AVAILABLE FOR VISIBLE BULLETS
+
+	When the bullet runs out of time or hits an alien or wall, it may explode. A value of zero
+	represents no explosion, with about 40-50 representing a reasonably powerful blast.
+	NOTE: The visual effect of an explosion is created by producing several copies of the
+	'impact' frames of animation around the central blast area, so if you have an explosive bullet,
+	ensure that the impact frames are of a suitable type to look right when the explosion occurs.
+
+9. MOVEMENT SPEED 0-7
+---------------------
+
+	ONLY AVAILABLE FOR VISIBLE BULLETS
+
+	The speeds of bullets are not measured linearly, but in powers of two. Thus '0' is very, very
+	slow (in practice, not movement at all, particularly if you use it for mines which drop and hit
+	the ground, slowing down and therefore stopping entirely) and 7 is, well, 128 times faster than
+	that! A speed of 7 is extremely fast, with speeds of 5 and 6 more suitable for standard fireballs
+	and so on.
+
+10. IMPACT NOISE
+----------------
+
+	ONLY AVAILABLE FOR VISIBLE BULLETS
+
+	Click on this and you will be presented with a list of the currently loaded samples. Select one
+	to make the bullet trigger that noise when it hits, or click at the top of the screen to select
+	'none'.
+
+11. [ DEFINE BULLET ANIMATION ]
+-------------------------------
+
+	ONLY AVAILABLE FOR VISIBLE BULLETS
+
+	Here you can define the animation of your protectile. Bullets are not 'sided'; ie they look
+	identical from all directions, and hence you only need define one animation sequence for each
+	of them.
+
+	Clicking here will present you with, initially, a single, incomplete frame description and
+	some extra buttons. These are the values you can change in each frame:
+	
+	GF:	Graphic file to read the frame of animation from. Click on the number to pick
+		one of your object-graphic filenames.
+		
+	FN:	Frame to draw from within the selected graphic file. Click here with the LEFT mouse button
+		to simply type a number in, or click with the RIGHT mouse button to be shown the
+		ANIMATION FRAME SELECTION SCREEN. See the document
+		
+		'HOW2-Use_Animation_Frame_Selection_Screen'	
+		
+		for details, as this screen is re-used several times in the program.
+		
+	SW:	Scaled Width and Scaled Height of graphic on-screen. Values similar to those defined in
+	SH:	the animation frame in the graphic file are about right, although you can squash any 
+		size and shape of graphic into any size and shape of box. SW and SH have a maximum value
+		of 255.
+		
+	VO:	Vertical offset. By varying the vertical offset, you can make bullets weave up and down
+		as they animate. For this to work, you will need several frames of animation.
+		
+		HINT: If you want to create an effect similar to that seen in Breathless, define only
+		one frame of animation for each bullet.
+	
+	BV:	Brightness Value. Bullets can be defined to 'glow', lighting up their surroundings.
+		A value of 20 gives a reasonably bright glow.
+		
+	ADD FRAME:
+		Adds a frame to the end of the list, copying all the values from the previous last in
+		the list to the new last in the list. It is therefore a good idea to set up the first
+		frame with the graphic file, scaled width and height and so on, then add more frames and
+		just tweak the values you want to change afterwards.
+	
+	DEL FRAME:
+		Removes the last frame in the list.
+		
+	The bullet, when fired, will cycle through these animation frames until it explodes, or fizzles,
+	or otherwise expires, at which point it will proceed into:
+	
+12. [ DEFINE IMPACT ANIMATION ]
+-------------------------------
+
+	Same as above, except the animation will be played through only once, before the bullet disappears.
+
+13. BULLET GRAPHIC TYPE
+-----------------------
+
+	There are three options, which should be selected according to what sort of graphic you have
+	drawn:
+	
+	BITMAP:
+		Simplest option of the three, this just draws the frame onto the screen scaled appropriately.
+	
+	GLARE:
+		Uses the 'GLARE/SHADOW' rules to either brighten or dim the screen behind. See
+		
+		HOW2-Draw_And_Convert_Glare_Graphics
+		
+		for instructions.
+	
+	ADDITIVE TRANSPARENCY:
+		Uses a different routine again to 'add' the graphic in a transparent fashion to the
+		graphics already on-screen, thus giving a 'firey' or 'smokey' or 'blazing plasma death
+		bolt' impression. See
+		
+		HOW2-Draw_And_Convert_Additive_Transparency_Objects
+		
+		for instructions.
+	
+14. IMPACT GRAPHIC TYPE
+-----------------------
+
+	Same as above, but for the impact frames.
+
+
+		

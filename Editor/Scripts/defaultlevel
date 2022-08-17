@@ -1,0 +1,14 @@
+.key LEVEL/A
+.def LEVEL A
+
+lab main
+   Failat 100
+   skip resetlevel_`requestchoice "Warning" "This operation will set level '<LEVEL>' to defaults,*nerasing any edits you may have made*n*nProceed ?" "OK|Cancel"`
+
+lab resetlevel_1
+   Echo "Setting level defaults for level <LEVEL>"
+
+   ;Copy ab3edit:Storage/TKGLevels/Level_<LEVEL>/#? to TKG1:Levels/Level_<LEVEL>/
+
+Lab resetlevel_0
+   Quit 0

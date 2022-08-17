@@ -1,0 +1,47 @@
+HOW TO...
+
+		Convert Wall Graphics.
+		======================
+		
+Before graphics can be used in AB3DII they must be converted into a special, compressed
+format.
+
+NOTE: Wall graphics MUST obey the following rules:
+
+1. They MUST be in 32 colours, IFF format. The palette you use is up to you,, but they must
+   be drawn on a 32 colour screen.
+   
+2. They MUST be a power of 2 in height i.e. 16 (min),32,64,128 (max) pixels high. The height of
+   the screen they are drawn on is unimportant, but the graphics themselves must comply to this
+   rule.
+
+It is a good idea to keep all the wall graphics you are going to use in a separate
+directory, for example:
+
+MYDIR
+	WALLGFX
+	
+and to keep all the converted files in another directory e.g.
+
+MYDIR
+	WALLINC
+	
+If you have a picture which you want to convert, e.g.
+
+MYDIR
+	WALLGFX
+		examplewall
+
+then you should run the "WALLCONVERT" program provided. This program will prompt you for
+a filename to load. Select your file, and follow the on screen instructions. You will be
+asked for various parameters including height in pixels and width in pixels. Once conversion
+is complete you will be prompted for a filename to save, e.g.:
+
+MYDIR
+	WALLINC
+		examplewall
+
+This file is in the correct format to be used in AB3DII. The program will automatically append
+'.256wad' to the filename you supply, so if you click on an existing file to over-write,
+make sure you delete the '.256wad' from the end before selecting OK or pressing RETURN.
+

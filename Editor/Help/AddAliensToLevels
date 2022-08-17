@@ -1,0 +1,28 @@
+HOW TO:
+
+				Add Aliens To Levels
+				--------------------
+				
+	Before reading this, make sure you understand the process of placing objects as laid out
+	in 'HOW2-Place_Objects_In_Levels'.
+	
+	Adding aliens rather than objects is very similar. Just select the smiley face as usual and
+	click on the 'Object Type' line until it shows 'Alien'.
+	
+	You can select what type of alien to paste in the same way as selecting which object to paste,
+	and you can specify doors and lifts to be held until the alien is killed in the usual way also.
+	
+	Instead of 'start frame' which is not applicable to aliens, you have a 'team' option. A value
+	of '-1' represents 'no team', i.e. the alien works alone. Entering a different value allows you
+	to place several aliens on the same 'team'. Team members share information about your whereabouts;
+	the team member who saw you most recently will tell all the other team members (activating them
+	if they are out of range of you) where it saw you. You can set up lots of nice things like
+	ambushes in this way (See HOW2-Create_Challenging_Levels for tricks and tips on using things
+	like teamwork to cause the player grief)
+	
+	Also, by clicking in the edit area with the RIGHT mouse button, you can select the control point
+	which the alien will head towards as soon as the game starts. In this way you can set up initial
+	alien movements to your satisfaction (e.g. making a squad of aliens run towards where the player
+	starts, killing him unless he hides before they get there).
+	
+	

@@ -1,0 +1,120 @@
+HOW TO...
+
+		Change the Global Palette
+		=========================
+		
+AB3DII runs on a 256 colour screen, which requires a palette. There are three files supplied
+containing the original AB3DII palette information in three different formats:
+
+EXAMPLES/INCLUDES/IFFPAL
+
+	This is in the form of an IFF palette and can therefore be loaded into most commercial
+art packages.
+
+EXAMPLES/INCLUDES/256PAL
+
+	This file contains the same information in a format specifically for use by the editors
+	and conversion programs supplied with AB3DII
+	
+EXAMPLES/INCLUDES/256PALETTE
+
+	This file is the one loaded by the game itself when run.
+	
+Say you are drawing a wall graphic. You can do this in one of two ways:
+
+Method ONE:
+-----------
+
+	Using an art package with a 256 colour screen, load in the IFFPAL file as a palette.
+	Draw your graphics WITHOUT making any changes to the palette, and save it to disk. Then
+	convert the picture down to 32 colours (most art packages will allow you to do this
+	automatically) and save it again under a different filename. You will notice that the
+	colours you have used from the 256 palette will be present in the smaller 32 colour
+	palette. You can now convert the graphics as normal (see HOW2-Convert_Wall_Graphics).
+	
+	This method usually gives best results because the colours you use are actually present
+	in the palette the game will use.
+	
+Method TWO:
+-----------
+
+	Draw your wall on a 32 colour screen using whatever palette you wish, and save it to disk.
+	The conversion program will match each colour you use to the best one available in the
+	global palette stored in 256PAL.
+	
+	This method may not work very well if you try to draw a wall using colours not present
+	or very different from those in the global palette.
+	
+The palette supplied with AB3DII was used in the game but may not be to everyone's taste. If you
+want to change the palette, this is the procedure you must follow:
+
+RECOMMENDED METHOD:
+	Use your favourite art package to edit the IFFPAL file (make sure you are editing a copy
+	in your own directory, not the original file), then use the PALETTECREATOR program to
+	produce equivalent 256PAL and 256PALETTE files.
+	
+ALTERNATIVE METHOD:
+	Use the PALETTECREATOR program to edit the palette and save out the 256PAL and 256PALETTE
+	files. It is not possible to save out IFFPAL files from the PALETTECREATOR program.
+
+HINT:
+
+	When designing your own palette, make sure there are plenty of shades of each colour, from
+	the brightest one you ever use down to very dark or black. Remember, the game only has YOUR
+	palette to work from; if you only have a bright red in the palette it's going to look very
+	wrong when it tries to draw something dark red (for example a red object in a dark room).
+	
+NB:
+	If you convert some graphics and then change the 256PAL file so that some colours you have used
+	are in different places or gone altogether, you MUST reconvert all the graphics you have
+	previously converted. The reason for this is that the old converted graphics won't otherwise
+	know that the file has changed and if, for example, you have changed a red colour to a green,
+	anything previously converted which used the red colour will suddenly start drawing it in
+	green instead! For this reason it is a VERY good idea to decide upon a palette before beginning
+	to draw and stick to it.
+
+					SPECIAL EFFECTS:
+					================
+					
+It is possible, with only a little effort, to enhance the appearance of your game by modifying the palette
+file the game itself loads, without changing the IFF palette file or the 256pal file used by the converters.
+How does this work? Easy. The converters will load your graphics and make decisions about which colours should
+be used from the global palette not only for the graphics as you drew them, but also at all the
+darker shades in which they may be visible. Hence if you have a grey wall, the conversion program will find
+the nearest greys available when the wall is viewed in full brightness down to full darkness.  It is very likely
+that you will have a grey-scale in your palette somewhere (and I suggest that you set aside
+AT LEAST 32 colours for this purpose, because grey is the most difficult colour to shade smoothly). Assuming
+that you do, use the palette creator to change the high and low extremes of the grey scale, just slightly.
+For example, you could make it shade from a dark, slightly red-tinted grey to a very bright, slightly yellow-
+tinted white, rather than simply dark-white. Save out the modified 256palette file BUT NOT the 256pal file.
+What happens when you run the game? Well, since the conversion programs are none the wiser about your 
+tampering, they will still match up dark grey to what is now dark, reddish grey. In the game, this means that
+everything which is grey shades off to a slight red tinge in the distance, which works wonders for the
+atmosphere of the game. AB3DII used this technique, changing the grey scale to be slightly green at the
+dark end, which accented the alien surroundings.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

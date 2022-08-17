@@ -1,0 +1,8 @@
+.bra {
+.ket }
+.key FILE/A
+
+ab3edit:editors/utils/lha3 a ram:clip {FILE} cspeed=5 hdrlvl=0 >nil:
+delete ram:clip.lha.cat quiet
+ab3edit:editors/utils/lhaconv ram:clip.lha {FILE}              >nil:
+delete ram:clip.lha quiet

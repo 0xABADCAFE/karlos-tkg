@@ -1,0 +1,344 @@
+@DATABASE AB3 Guide
+
+@REM AB3D2 Editor guide
+
+@$VER: 0.3 (27.03.98)
+@AUTHOR Simon Tyrrell (lip95smt@sheffield.ac.uk)
+
+@NODE main "ab3d2 editor guide"
+
+              AB3DII Editor Suite 0.70
+              ========================
+
+    @{"Introduction" link intro}
+    @{"Legal stuff" link legal}
+    @{"Requirements" link requi}
+    @{"Installation" link instl}
+    @{"Usage" link usage}
+    @{"History" link histo}
+    @{"Future" link futur}
+    @{"Thanks" link thank}
+
+
+  Any bug reports, flames, suggestions etc., email me at
+
+  lip95smt@sheffield.ac.uk
+
+@endnode
+
+@node intro "Introduction"
+
+  When AB3DII was initially released along with an editing
+  package, it was expected that there would soon be a flood
+  of custom levels onto the Amiga PD scene. Unfortunately
+  this turned out not to be the case, the unfriendliness of
+  the editors being the main reason cited.
+
+  To this end, I decided to see if parts of the package
+  could be recoded and made more user friendly. All the AMOS
+  code has been removed and replaced with C code, giving a
+  substantial speed up to the programs. The actual degree of
+  speed up varies from program to program. For instance, the
+  Brighten program is roughly 400% faster, whereas Linkup is
+  virtually unchanged (since the main code is in assembler in
+  both cases).
+@endnode
+
+@node requi "Requirements"
+
+  An Amiga (clone / emulator) obviously!.
+  @{"IFF Library" link iff}
+  @{"MUI" link mui}
+  An unpirated copy of AB3D2 (TKG or RTG).
+@endnode
+
+@node instl "Installation"
+
+  The package can be installed anywhere, with @{" IFF library " link iff} in
+  your LIBS: path. @{" MUI " link mui} has to be installed on your system.
+  There are a number of editor files which can be deleted.
+  Currently these are
+
+      256texture, 256Brighten, 256Wallchunk, 256Obj, 256Lit,
+      Linkup, includes/newlinkup.aminc, includes/shadepal.aminc.
+@endnode
+
+@node usage "Usage"
+
+  The editor is split into two panels. The left hand panel is
+  just a list of options with the chosen one being displayed
+  in the right hand panel.The current editor options are
+
+    @{" Brighten " link brigh}
+    @{" Floor " link floor}
+    @{" Texture " link textu}
+    @{" Wall " link wall}
+    @{" Bitmap Object " link bitma}
+    @{" Lightsourced Object " link light}
+    @{" Link Up " link linku}
+
+  For further infomation on what these programs are used for,
+  consult the docs that came with the game.
+
+@endnode
+
+@node histo "History"
+
+  @{b}0.10@{ub}   (14.11.97):    256Brighten converted.
+
+  @{b}0.15@{ub}   (26.11.97):    LinkUp converted.
+
+  @{b}0.20@{ub}   (23.12.97):    Added iff handling code.
+                        256floor converted.
+
+  @{b}0.25@{ub}   (26.12.97):    Tweaked iff handling code.
+                        256Texture converted.
+
+  @{b}0.30@{ub}   (28.12.97):    256obj converted.
+                        Internal code changes.
+
+  @{b}0.32@{ub}   (30.12.97):    256Wallchunk converted.
+
+  @{b}0.60@{ub}   (10.03.98):    Er, rather a long lay off here.
+                        MUI interface added and internal code changes.
+
+  @{b}0.61@{ub}   (11.03.98):    Displayed the level names from the gamelink
+                        file in the linkup bit, instead of just a, b, c, etc.
+
+  @{b}0.70@{ub}   (26.03.98):    256lit converted.
+                        Fixed wall suffix as .256wad instead of .256pal.
+                        Added default level names display if test.lnk
+                        is compressed.
+@endnode
+
+@node futur "Future"
+
+  Basically the conversion of the other editor programs and
+  and bug fixes.
+@endnode
+
+@node thank "Thanks"
+
+  I wish to thank
+
+  - Andy Clitheroe and Team 17
+
+    ... for writing the game in the first place and letting
+    the source code become freely available. Also for help and
+    tips while I've been writing this, the program not the guide
+    file :-).
+
+  - Stefan Stuntz
+
+    ... for MUI, which made coding the interface a darned sight easier
+
+  - Christian A. Weber
+
+    ... for the excellent IFF library, which I found to be a lot better,
+    both in documentation and execution, than the IFFParse library.
+
+  - Magnus Holmgren and Martin Taillefer
+
+    ... for the AsyncIO library.
+
+
+@endnode
+
+@node brigh "Brighten"
+
+  This dictates how the lighting effects will appear on the screen and
+  is derived from the palette file stored at ab3:includes/256pal.
+  The editing panel is split into 3 sections. The filename must be
+  the same as that of the file created by @{" Texture " link textu} with a .PAL
+  extension e.g. if the @{" Texture " link textu} created a file called
+  ab3:includes/NewTextureMaps, the file made by Brighten must be
+  called ab3:includes/NewTextureMaps.PAL.
+
+  The three sliders dictate the ratios of red, green and blue
+  that in turn give the contrast of the lighting effects. It is
+  important to note that the values indicate the ratios of the
+  three colours NOT the absolute values. For instance, the values
+
+      red = 4, green = 2, blue = 2
+  and
+      red = 8, green = 4, blue = 4
+
+  will create exactly the same file, since in both cases the ratios
+  of RGB are 2:1:1. To restore the default values that the original
+  game uses, simply press the defaults button.
+
+  The start button starts the calculation of the glare / shadow file.
+
+@endnode
+
+@node textu "Texture"
+
+  This takes the 32 texture / glare files and merges them into a single
+  file which the game uses. Simply set the source directory to the place
+  where the graphic files are stored, and specify the name of the output
+  file.
+
+@endnode
+
+@node floor "Floor"
+
+  This takes the 16 floortile files and merges them into a single file
+  which the game uses. Simply set the source directory to the place where
+  the graphic files are stored, and specify the name of the output file.
+
+@endnode
+
+@node wall "Wall"
+
+  This is used to convert the wall graphic files. Set the names of the
+  input and output files in the relevant gadgets. There is no need to add
+  a .256wad extension to the output file's name as the program will do that
+  automatically. Set the width and height of the graphic files in their
+  respective gadgets. Note that there are no limits to the width, but the
+  height is limited to 16, 32, 64 or 128 pixels.
+
+@endnode
+
+@node linku "Link Up"
+
+  Choose the level you want to link from the listview, and press 'go' to
+  create the map and flymap files.
+
+@endnode
+
+@node bitma "Bitmap Object"
+
+  This will take your object graphic file and convert it to the game format
+  Set the input file to your graphic file, and specify your output file.
+  The four number gadgets specify the width and height of each of your frames,
+  the width of the screen and the number of frames you want to create. The
+  conversion process will create 2 files, automatically tagging .256pal and .dat
+  onto the end of the name you specified for the output file.
+
+  Note that these still need to be crunched before they can be used in the game,
+  use CompactObj for this.
+
+@endnode
+
+
+@node light "Lightsourced Object"
+
+  This option allows you to create an object in a 3D rendering package such as Imagine,
+  Cinema4D, etc. and import it into TKG. For the input file, choose one of the .cmp,
+  .top, .bot, .lft and .rgt files created from the 3D package. Specify the frame data,
+  the screen width and the output filename in their respective gadgets. If you have
+  only changed the palette of the object within your 3D package but kept the image and
+  lighting otherwise intact, set the `Palette Only?' gadget, and only the .256pal file
+  will be generated. If you are just recreating the palette, there is no need to specify
+  the frame data and screen width.
+
+  For more information see the `How2' doc that I've included in this archive, which was
+  basically a posting to Breed Talk by Andy Clitheroe.
+
+  NOTE: If you are not just recreating the palette, this option requires a LARGE amount
+        of graphics memory as it has to load all five screens simultaneously. Try reducing
+        the resolution and number of colours on Workbench if you encounter memory problems.
+
+@endnode
+
+@node mui "MUI"
+
+                          This application uses
+
+
+                        MUI - MagicUserInterface
+
+                (c) Copyright 1992-97 by Stefan Stuntz
+
+
+MUI is a system to generate and maintain graphical user interfaces. With
+the  aid  of  a  preferences program, the user of an application has the
+ability to customize the outfit according to his personal taste.
+
+MUI is distributed as shareware. To obtain a complete package containing
+lots of examples and more information about registration please look for
+a  file  called  "muiXXusr.lha"  (XX means the latest version number) on
+your local bulletin boards or on public domain disks.
+
+          If you want to register directly, feel free to send
+
+
+                         DM 30.-  or  US$ 20.-
+
+                                  to
+
+                             Stefan Stuntz
+                        Eduard-Spranger-Straße 7
+                             80935 München
+                                GERMANY
+
+
+
+             Support and online registration is available at
+
+                          http://www.sasg.com/
+@endnode
+
+@node iff "IFF Library"
+
+                 THE UNIVERSAL IFF LIBRARY FOR THE AMIGA
+
+                         VERSION 23.2, 24-May-93
+
+                                   BY
+
+                           CHRISTIAN A. WEBER
+                              BRUGGERWEG 2
+                             CH-8037 ZURICH
+                              SWITZERLAND
+
+                  INTERNET: weber@amiga.physik.unizh.ch
+                     UUCP: chris@mighty.adsp.sub.org
+          BANG: cbmehq!cbmswi!mighty!chris@cbmvax.commodore.com
+
+
+THIS PROGRAM IS IN THE PUBLIC DOMAIN.  IT MAY BE FREELY DISTRUBUTED, COPIED
+AND USED FOR COMMERCIAL OR NON-COMMERCIAL PURPOSES.   IT MAY BE DISTRIBUTED
+WITH OR WITHOUT THIS DOCUMENTATION FILE. NO WARRANTY. USE AT YOUR OWN RISK.
+
+TO MAINTAIN COMPATIBILITY,  YOU SHOULD NOT MAKE  ANY CHANGES TO THE LIBRARY
+ITSELF.  UPDATES WILL BE RELEASED BY THE AUTHOR.  HOWEVER, YOU  MAY  CHANGE
+THE EXAMPLE SOURCE CODES AND/OR USE THEM IN YOUR OWN PROGRAMS.
+
+
+WHAT IS THE IFF LIBRARY ?
+-------------------------
+
+The iff.library is an easy to  use  Amiga  library  which  gives  you  some
+powerful routines to deal with IFF files, especially ILBM files (pictures),
+ANIM files (animations) and 8SVX files (digitized sounds).
+It was fully written in Assembler and is  only  3.2 KBytes  long.  The  de-
+compression routines are the fastest I've ever written :-)
+To use iff.library, copy it to the 'LIBS:' directory of your boot partition
+or Workbench disk.
+Since the iff.library is a standard Amiga library,  it can be used from any
+programming language such as C, C++, Modula-2, Assembler, Pascal, ARexx and
+many more.
+
+I started writing this library in September 1987, and now it is really bug-
+free (I hope) and it can handle any IFF files I know, including DPaint pic-
+tures with stencils, HAM and halfbrite pictures, ANIM files (with a trick),
+SHAM, AGA and 24bit pictures, SoundFX instruments, and all other IFF FORMs.
+
+If you have questions or suggestions, don't hesitate to contact me!
+
+@endnode
+
+@node legal "Legal"
+
+   `TKG ED' is Copyright (C) 1997-98 Simon Tyrrell and it's freely
+distributable as long as all of its files are included in their original
+form without additions, deletions, or modifications of any kind, and only a
+nominal fee is charged for its distribution. This software is provided *AS
+IS* without warranty of any kind, either expressed or implied. By using
+`TKG ED', you agree to accept the entire risk as to its performance. If your
+hard drive explodes while using it, don't come running to me!
+
+@endnode
+
+

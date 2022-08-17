@@ -1,0 +1,37 @@
+HOW TO:
+	
+			Convert Floor/Ceiling Graphics
+			==============================
+			
+	For this to work, you must place all your floor and ceiling tiles in a single directory.
+	There must be exactly 16 of them, and they must be called
+	
+	FLOOR.1
+	 . . .
+	 . . .
+	FLOOR.16
+	
+	If you don't have enough different tiles, it's a good idea to have one 'default tile'
+	which you make 16 copies of and overwrite when you create new ones. This way you can
+	test out the ones you HAVE drawn.
+	
+	Run the 'FLOORCONVERT' program.
+	
+	Use the requester to select the DIRECTORY in which the floor tiles are located. DO NOT
+	select an individual floor tile, but make sure their names are visible in the requester.
+	
+	The program is fully automatic, loading and converting the graphics, then matching colours to
+	the ones in
+	
+	AB3:INCLUDES/256PAL
+	
+	for this reason, make sure you have set up the assign for AB3: to the directory you are building
+	your levels in.
+	
+	When the program is finished, just select the save name under which you wish to save the
+	floor tile file, and the program will self-terminate after saving is complete.
+	
+	See document 'HOW2-Incorporate_Floor_Ceiling_Graphics' for instructions on incorporating them
+	into your game.
+
+	

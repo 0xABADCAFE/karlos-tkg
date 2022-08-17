@@ -1,0 +1,26 @@
+HOW TO:
+
+			Incorporate Converted Floor/Ceiling Graphics
+			============================================
+			
+	PLEASE NOTE:
+		You do not need to follow this procedure if you have converted your floor graphics and
+		saved them over the existing texture file. Only if you have created a new file or changed
+		the name or path of the old file do you need to proceed further.
+	
+	1. Run the GAMELINKER program.
+	
+	2. Select 'LOAD LINK FILE' from the menu and select
+	
+	MYDIR/INCLUDES/TEST.LNK
+	
+	3. Select GRAPHICS->SET FLOOR TILE FILENAME
+		   
+	4. Select the file you wish to load, presumably created using the 'FLOORCONVERT' utility.
+	
+	7. Select 'SAVE LINK FILE' and select the file
+	
+	MYDIR/INCLUDES/TEST.LNK.
+	
+	The new floor tile file will now be available in the level editor and the game itself!
+			

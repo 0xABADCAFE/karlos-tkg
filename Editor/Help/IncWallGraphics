@@ -1,0 +1,43 @@
+HOW TO:
+
+			Incorporate Converted Wall Graphics
+			===================================
+		
+	Once a wall has been converted from IFF format to the special .256wad format used by the
+	game, it can be incorporated into your levels. To do this, you must modify the gamelink
+	file. Here's how to go about it:
+	
+	1. Run the GAMELINKER program.
+	
+	2. Select 'LOAD LINK FILE' from the menu and select
+	
+	MYDIR/INCLUDES/TEST.LNK
+	
+	3. Select GRAPHICS->SET WALL GFX FILENAMES
+	
+	4. You will be presented with a list of currently loaded files. Pick one to overwrite, or
+	   the last (blank) one to add a new file. Click on it with the LEFT mouse button.
+	   
+	5. Select the .256wad file you wish to load.
+	
+	6. Repeat steps 4 and 5 until all the new walls you want to load are loaded, then click on
+	   'DONE'.
+	   
+	7. Select 'SAVE LINK FILE' and select the file
+	
+	MYDIR/INCLUDES/TEST.LNK.
+	
+	The new walls will now be available in the level editor and the game itself!
+			
+	PLEASE NOTE:
+	
+		If you subsequently modify an existing wall graphic and reconvert it, you only need
+		to execute the above procedure IF:
+		
+		1. The width and/or height of the wall graphic has been changed
+		
+		OR
+		
+		2. You have converted it to a different path or filename and wish to select it
+		   instead of the old version.
+		   

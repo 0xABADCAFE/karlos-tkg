@@ -1,0 +1,153 @@
+@database Alien Breed 3D II - The Killing Grounds Save Game Editor.guide
+@master Alien Breed 3D II - The Killing Grounds Save Game Editor.guide
+@$VER: 1.0
+@font topaz.font 8
+
+@node "main" "Contents"
+@next ""
+@prev ""
+
+ Alien Breed II - The Killing Grounds Save Game Editor v1.1
+ Copyright © 1996 Element Productions
+
+   I. @{" Introduction " link "intro"}
+  II. @{" Installation " link "insta"}
+ III. @{" Requirements " link "requi"}
+  IV. @{" Using Editor " link "using"}
+   V. @{" Authors      " link "autho"}
+  VI. @{" History      " link "histo"}
+ 
+ Written by /\\/\\uffin
+ Save game format cracked by Ghandi
+
+@endnode
+
+@node "intro" "Introduction"
+@next "insta"
+@prev "main"
+
+ Welcome to the Alien Breed 3D II - TKG Save Game Editor, as you have
+probably already guessed this program allows you to edit the saved game
+data used in Alien Breed 3D II - TKG.
+
+ With the editor you are able to alter the following parameters;
+
+ · Playing level
+ · Players health
+ · Players weapons
+ · Weapon ammunition
+ · Whether player has the jetpac
+
+ Note : Team 17 have been rather sneaky with the way that the save game
+data works, when you choose the load game option you have the choice of
+five game slots and a `New Game' option, this `New Game' option is actually
+game slot 0!  As such with the editor you are also able to change this,
+however when Alien Breed 3D II - TKG first loads it does not use this `New
+Game' to set up the defaults, so you will have to load it in for it to take
+effect.
+
+@endnode
+
+@node "insta" "Installation"
+@next "requi"
+@prev "intro"
+
+ To install the editor to your harddisk, just copy the executable to where
+you want it.
+
+@endnode
+
+@node "requi" "Requirements"
+@next "using"
+@prev "insta"
+
+ · Alien Breed 3D II - The Killing Grounds ;-)
+ · reqtools.library v38+
+ · workbench 3.0+
+
+@endnode
+
+@node "using" "Using The Editor"
+@next "autho"
+@prev "requi"
+
+ @{b}TKG1: Path@{ub}
+
+ Use the string gadget to type in the path to the tkg1: assign, or location
+of the `boot.dat' file.  Or use the `?' gadget to select a path using a
+requester.  (Note, tkg1: is the default path, even if it does not exist!)
+
+ If the string gadget is empty the `Load' and `Save' gadgets will be
+ghosted.
+
+ @{b}Playing Level@{ub}
+
+ This cycle gadget denotes the level that the save game will start on, this
+currently only supports levels `A-P' not having tried the level editors I
+am unsure whether you can create levels past `P'.
+
+ @{b}Game Slots@{ub}
+
+ Select a game slot to edit, once selected the gadgets will be updated with
+that slots data.
+
+ @{b}Weapons@{ub}
+
+ Click the checkboxes to select which weapons the player is to have, once a
+weapon is selected you will be able to alter the ammunition for that weapon.
+(Note, Shotgun is always selected!)
+
+ @{b}Health@{ub}
+
+ Move the scroll bar to alter the amount of health the player will have
+from 0-10000.  (Note, if you choose `0' the player will start off dead!)
+
+ @{b}Options@{ub}
+
+  Load - This loads the `boot.dat' file from the selected path.
+  Save - This saves the `boot.dat' file to the selected path.
+ About - This displays information about the editor.
+
+ @{b}Ammunition@{ub}
+
+ Move the scroll bars to alter the amount of ammunition for each weapon the
+player will have from 0-10000.  (Note, during the game `Laser' and
+`MegaLaser' both use the same ammunition therefore there is only one scroll
+bar.  This is also the same for `Single-Plasma' and `Multi-Plasma'.)
+
+@endnode
+
+@node "autho" "Authors"
+@next "histo"
+@prev "using"
+
+ Alien Breed 3D II - TKG Save Game Editor was written by /\\/\\uffin
+ Save game format cracked by Ghandi
+
+ For bug reports or suggestions contact /\\/\\uffin or Ghandi at,
+
+   BBS : The Cremlin BBS +44 (0)121 378 5322 (21:00-06:00)
+
+  Mail : 86 Antrobus Road
+         Boldmere
+         Sutton Coldfield
+         West Midlands
+         B73 5EL
+         ENGLAND
+
+ EMail : ghandi@skittles.demon.co.uk
+
+@endnode
+
+@node "histo" "History"
+@prev "autho"
+
+ Version   Date         Comments
+
+ 1.0       10.08.1996   ·First public release.
+
+ 1.1       11.08.1996   ·Fixed a major bug that stopped the jetpac being
+                         detected and enabled if it had been used during a
+                         game.
+
+@endnode

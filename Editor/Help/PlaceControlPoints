@@ -1,0 +1,192 @@
+HOW TO:
+
+				Add Control Points to Levels
+				============================
+				
+				
+	Control points are a wonderful new invention which allows aliens to follow you all over the
+	level without all that tedious mucking about in hyperspace. Erm.
+	
+	Ok, what control points actually do is give the aliens a 'road map' of the level; sort of
+	invisible lines on the floor for them to trundle around. Such paths have been used in other
+	games to make aliens patrol around convincingly. The difference with AB3D is that the aliens
+	can use this map to get to you, if they know where you are, from the other side of the level,
+	assuming there is a path from where they are to where you are.
+	Also, if you make a sound somewhere near to an alien which is active, it will 'hear it' and
+	run to the control point it heard the sound coming from. If you continue shooting, therefore,
+	it will eventually make its way all the way over to where you are! In the diagram below, for
+	example, the player is standing near control point A. He has just fired his gun, and the
+	alien at point C will therefore run to control point B, which is the one towards where the player
+	is. When the alien reaches point B it will listen for the player to make more sounds, trying
+	to see if it can track him further. If it doesn't hear anything, it will wander off looking for
+	him.
+	
+	
+	
+	
+	
+	A +---------------------+
+	                        |
+	                        |
+	                        |              B
+	                        |               +------------+ C
+	                        |               |
+	                        |               |
+	                        |               |
+	                        |               |
+				+---------------+-----------+
+				
+PLACING CONTROL POINTS
+----------------------
+
+	Control points must be joined with straight lines and MUST NOT cross walls which the aliens
+	cannot climb over. Therefore control points must be placed at all junctions and corners
+	so that aliens can navigate properly. Also, if you want aliens to venture into a dead end,
+	even if it is only a short one, you must put a control point near the end of the dead end.
+	
+	1. To place control points, select the icon on the right hand end of the scrollable icon bar;
+	   it looks like the 'add point' icon only with a pink dot rather than a green one.
+	
+	2. Move the cursor into the edit area and click where you want to position a control point
+	   with the mouse buttons. If you click the LEFT mouse button, the control point will be pink,
+	   indicating that it is in the LOWER part of a zone. If instead you use the RIGHT mouse button,
+	   the control point will be BLUE, indicating that it is in the upper part of the zone. Hence
+	   you can cause aliens to navigate across winding gantries without falling off.
+	   
+	   NB YOU CAN ONLY HAVE 100 CONTROL POINTS PER LEVEL SO USE THEM WISELY!
+
+	You can also MOVE control points by clicking on the 'O->' icon, grabbing a control point by
+	moving the cursor over it and pressing 'g', then placing it somewhere else by clicking with the
+	left or right mouse buttons as above.
+	   
+LINKING CONTROL POINTS
+----------------------
+
+	So that the aliens can move around, you must link the control points together. There are two
+	ways they can be linked: PHYSICALLY or VISUALLY. Points linked PHYSICALLY describe a route for
+	walking aliens. Points linked VISUALLY describe extra routes for flying aliens. Hence if you have
+	a chasm with walkways on either side, the control points on each walkway would be linked visually,
+	because flying aliens could get across but walking aliens could not.
+	Control points which are linked PHYSICALLY are assumed to also be linked VISUALLY (but not the other
+	way around).
+	PHYSICAL links may be one-directional or two-directional. ONE directional links may only be
+	walked in one direction but are linked VISUALLY in both directions; TWO directional links may
+	be walked in both directions.
+	
+	NB: If an alien cannot physically reach you (eg an impassable chasm or an unclimbable cliff), but
+	    DOES know where you are, he may attempt to reach a position linked VISUALLY to your position
+	    so he can take pot shots at you. To take a simple example: say the player is on top of a
+	    cliff. Below him is a gorge, across which there is no bridge. There is a staircase leading
+	    up to the OTHER side of the gorge from the bottom, but not up to the side the player is on.
+	    Imagine there are several walking aliens with guns in the bottom of the gorge. The player
+	    doesn't want to jump down with them still there, so he keeps popping out and shooting, then
+	    ducking back out of harms way. The aliens cannot reach him, and nor can they see him properly
+	    from the bottom of the gorge. They will therefore climb the staircase to the other rim of the
+	    gorge where they can see the player and shoot at him!
+	
+	1. Select the 'link control points' icon. This is near to the 'add control point' icon and looks
+	   like a pink dot with three black lines radiating from it.
+	   
+	2. Clicking on a control point (say point A) and then on another (say point B) with the LEFT
+	   mouse button toggles the PHYSICAL LINK from A to B. Clicking on them in the opposite order
+	   toggles the link from B to A. To link them two-directionally, therefore, it is necessary to
+	   click A, then B, then B again, and finally A. One-directional links are indicated by a red
+	   arrow indicating the possible direction of travel; two directional links are indicated by
+	   a blue, unarrowed line.
+	   
+	3. Clicking on a control point (A) and then on another (B) with the RIGHT mouse button toggles
+	   the VISUAL link between the two points. If the two points are already linked visually, the
+	   link will be removed. If they are linked physically in one or two directions, or not linked at
+	   all, the existing link (or lack of it) will be replaced by a purple line indicating a VISUAL
+	   link.
+	
+OTHER TOOLS:
+------------
+
+	Obviously it is unreasonable to expect someone to click-click-click their way through a room
+	containing 20+ control points, so it is only (usually) necessary to define the PHYSICAL links
+	by hand. The VISUAL links can be auto-generated by pressing RSHIFT and V together, with the cursor
+	somewhere in the edit area. Visual links will be automatically created between any points with a
+	line of sight between them which are not already linked physically. This takes a little while,
+	but console yourself with the thought that it's about 250,000 times faster than you could do it
+	by hand.
+
+	NOTE: If you have a tall pillar with a control point on either side, then the autolinker WILL
+	      link the two points, because there is no hole in the map seperating them. The ONLY time
+	      the autolinker will not link points across a zone is if that zone's roof and floor are at the
+	      same height; ie no travel across it is possible at ANY height.
+	      
+	      
+ASSOCIATING CONTROL POINTS WITH ZONES:
+--------------------------------------
+
+	Since you can have up to 256 zones but only 100 control points, it seems fairly obvious that
+	not all zones can have a control point in them. Therefore the question of which control point an
+	alien is nearest when standing in any particulat zone must be decided by you in advance.
+	
+	This can be done in two ways, both of which begin by clicking on the 'associate zone with control
+	point icon (which looks like a small triangle near to a pink dot). Next, you either
+	
+	1. Select a zone with the RIGHT mouse button and click on the control point you want to associate
+	   with it with the LEFT mouse button. Make it a reasonable choice, ie don't pick a point on the
+	   other side of a solid wall.
+	   Repeat this process with each zone until you have covered the whole level.
+	   
+	   UPPERS:	This process is VERY accurate and yields the most bug-free maps.
+	   
+	   DOWNERS:	It takes AGES, and it's easy to forget to do certain bits of the map.
+	   
+	2. Press RSHIFT and A together with the cursor on the edit area. This will auto-associate zones
+	   and control points. Again, this takes a little while but speeds things up a lot.
+	   
+	   UPPERS:	Takes no effort and doesn't miss anything out
+	   
+	   DOWNERS:	It can quite often make mistakes; linking zones to points not in visual sight of
+	                them.
+	                
+	I prefer to initially use method 2, then tidy up with method 1 if I notice any aliens stuck in
+	corners or walking into walls.
+	
+	You must also link any upper parts of zones (eg gantries) with control points, and this must be
+	done manually because of the error-prone nature of the process. Select the 'link upper zone to
+	control point' icon (like the other one but with a double-triangle) and associate as before.
+	
+	It is perfectly OK to link a lower zone to an upper control point or an upper zone to a lower
+	control point. See diagram for an explanation of why you might want to do this.
+	
+	
+	                  |     |
+	                  |     |
+                Zone A -> |  *1 |
+	                  |     |
+	*-----------------*-----*-------------------*
+	|                 #     #                   |
+	|                 #     #                   |
+	|       Zone B -> #     #                   |
+	|                 #     #                   |
+	*-----------------*-----*-------------------*
+	|                 #     #                   |
+	|                 #     #                   |
+	|       Zone C -> #  +2 #                   |
+	|                 #     #                   |
+	*-----------------*-----*-------------------*
+			  |     |
+			  |     |
+		Zone D -> |     |
+			  |     |
+
+
+	In the diagram point 2 (+) is a blue (upper zone control point), and point 1 (*) is a
+	pink, lower zone control point. Zones B and C comprise a gantry above a large room,
+	whilst zones A and D are corridors leading out onto that gantry. As you can see, given
+	the arrangement above, the upper part of zone C and the lower part of zone D should BOTH
+	be linked to point 2, and the lower part of zone A and the upper part of zone B should
+	both be connected to point 1.
+	
+
+
+
+
+
+
+

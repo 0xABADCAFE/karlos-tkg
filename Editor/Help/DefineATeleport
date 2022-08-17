@@ -1,0 +1,42 @@
+HOW TO:
+
+			Add Teleporters to Levels
+			=========================
+			
+	Teleporters are a very useful feature of the game. You can make them obvious, with
+	trademark glowing floors and ceilings or particular graphics, or invisible, so players
+	wandering unwarily down a corridor will find themselves chucked into the middle of a bloodbath!
+	
+	Teleporters are also very easy to implement. Just bear a few things in mind:
+	
+	1. Teleporters move the player to a different part of the level, but retain his height relative
+	   to the ground; ie if he jumps into the teleporter he will appear at the same height above his
+	   landing spot as he was above the teleporter, even if the teleporter is higher or lower than
+	   the arrival spot. Because of this, you must ensure that a teleporter has NO HIGHER A ROOF
+	   relative to the floor than the arrival point, otherwise it might be possible for the player
+	   to materialize in the middle of the roof!
+	   
+	2. Teleporters don't teleport bullets, but they DO teleport aliens, so be careful if you don't want
+	   that to happen. On the other hand, if you DO want it to happen, you can place a control point
+	   in the teleport, and one at the arrival point, and link them in ONE direction only. Aliens will
+	   then happily wander into teleports if they know they can get to you by doing so, but won't
+	   attempt the return journey.
+	   
+	3. Teleporters won't teleport something into the space occupied by another object. This is handy
+	   in some respects, because you can lay traps where if the player collects a gun or medipac
+	   or similar object, aliens can teleport to the location. In other respects it isn't so useful
+	   because if an alien or an object is too near the arrival point, the teleport won't activate when
+	   the player walks into it. Try to stop aliens from wandering around arrival points as it can
+	   be very frustrating for the player when the teleport he needs to proceed further doesn't work!
+	   
+DEFINING A TELEPORT:
+--------------------
+
+	In the level editor, with your level loaded, click on the TELEPORT icon. This looks like a
+	curving red arrow leaving a point and touching down elsewhere, and is located midway along the
+	bottom row.
+	
+	Select the zone you wish to make a teleport with the RIGHT mouse button. Click on the arrival
+	point with the LEFT mouse button. If you click with the left mouse button OUTSIDE the map
+	area, the teleport will be cancelled or deleted.
+	

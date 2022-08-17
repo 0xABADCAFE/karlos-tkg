@@ -1,0 +1,525 @@
+
+Designing a vector object
+=========================
+
+Each vector object in Alien Breed 3D II is made up of
+one or more smaller objects.  These smaller objects
+are each made up of a number of polygons which are
+defined as a set of points.  For example a simple cube
+would require only one of the 'smaller objects'
+consisting of six polygons defined around eight points.
+
+The following is a simple tutorial to show you how to
+define a simple object, in this case the cube mentioned
+above.  These simple objects are designed using the ObjEd
+program, the AnimEditor will be described later.  As both
+of these programs were written using Amos Professional 2.0,
+if you wish to switch back to workbench at any time after
+you have started the program you can do so by pressing
+the 'Left Amiga' and 'A' keys simultaneously.  Switching
+back the program is achieved by the same process.  This is
+true of all the support programs that come with The Killing
+Grounds.
+
+
+Part I - Objed
+--------------
+
+Double click on the ObjEd icon to run the object editor.
+
+The main screen is divided into four sections, three with
+gridded areas, one without.  The three gridded areas are
+orthographic projections, whereas the fourth area is a
+perspective view (if you don't understand these terms,
+don't worry, all will become clear).
+
+The top left window shows the view from above
+The bottom left window shows the view from infront
+The bottom right window shows the view from the left
+The top right window is alterable to show the view from
+any direction.
+
+The first step in designing an object is to put in the
+points.  The program starts off in 'add points' mode, it
+should say this in the bottom left corner of the
+perspective window.  You can change back to the add points
+mode by pressing the 'a' key or by selecting 'add point'
+from the mode menu.  Note that because the right mouse
+button is used to speed up the editing process, holding
+it down will only access the menu if the mouse cursor is at
+the top of the screen.
+
+Now let's add some points.  This is done by clicking the
+left mouse button in any of the three orthographic
+projections.  The coordinates of the point will be those
+shown in the bottom right of the perspective window.  As we
+are desiging a cube, add four points, in a square shape
+in the overhead view (top left window) at roughly the
+coords (-32,0,32) (32,0,32) (32,0,-32) (-32,0,-32).  These
+points will appear in the other three windows aswell.
+
+We want to make a cube, so we need to add another four
+points either above or below the first four.  The easiest
+way to do this is to move all the existing points and then
+add the new points where the old ones were.
+
+Press 'm' or select 'move point' from the 'mode' menu to
+change to 'move point' mode.  In this mode you can select
+one or more points and move them around simultaneously.
+To select a point, click the right mouse button (the
+nearest point will turn red indicating that it has been
+selected), now, holding down the shift key, select the
+remaining points.  As we wanted to select all the points it
+would have been quicker to hold down the right amiga key
+and press 'a' (a shortcut for 'select all' in the 'edit'
+menu).
+
+The selected points can be moved by holding down the left
+mouse button (in any of the orthographic projections) and
+moving the mouse until the points are in the desired
+position.  The coords displayed in the bottom right corner
+of the perspective window are those of the first point
+selected.  Move the points until the y coord is 64.  Now
+change back to 'add point' mode by pressing 'a' or
+selecting 'add point' from the 'mode' menu and click with
+the left button over the top of the four points in the
+overhead view.  You now have the eight corners of your cube
+defined.  Next comes the complicated bit.
+
+In order for TKG to run quickly, a few restrictions had to
+be placed on the design of vector objects, these
+restrictions are detailed below, but for now all you need
+to know about is the polygon definition order (read it
+below).  To change to 'new polygon' mode press 'p' or
+select 'new polygon' from the 'mode' menu. Bearing in mind
+the restrictions given below,  the faces are added to the
+object by clicking on each of the points of the face in
+turn, ending with the one you started with. If you make a
+mistake and click on the wrong point, you can cancel the
+definition so far by clicking the right mouse button or by
+changing mode.  If you accidentaly complete the polygon
+(missing out a point, or putting an incorrect point in) you
+can delete it by changing to the 'select face' mode (press
+'f' or select it from the menu).  Use the left and right
+cursor keys to select the face you wish to delete (it will
+be highlighted in green and drawn solid).  Now press 'd' or
+select 'delete face' from the edit menu.  Return to 'new
+polygon' mode and continue defining the faces as before.
+Note that you can also use the perspective window for the
+purpose of defining polygons.  The perspective view can be
+moved around by holding down the 'alt' key and either of
+the mouse keys while the cursor is over the perspective
+window.  The mouse keys have different effects, the right
+mouse button will show the object as it normally appears
+when editing, the left mouse button, only shows the visible
+polygons (so if you haven't defined any polygons, the view
+will turn black).
+
+Once you have defined your object, you can view
+it in its simplest form by pressing 'v', click a mouse
+button to cancel and return to the editor.
+
+Now that the object has been defined the textures have to
+be added.  Change to 'select face' mode and select the
+first face.  Now press 't' to add a texture.  If you have
+only just  installed the program onto your hard drive, then
+you will have to define the directory containing all the
+textures you wish to use.  These should be in the
+graphics/textures/ draw where you installed the editing
+programs, but you can put them wherever you like.  Once you
+have selected this directory, the editors configuration
+will be saved to a file in your s: directory.
+
+The additional screen that is displayed at the bottom of
+the editing screen is split into three sections.  On the
+left is the texture (if you wish to design your own
+textures, see the limitations below), in the middle is the
+texture after it has been squashed into the shape of the
+polygon, and on the right is a list of shortcut texture
+positions.
+
+The position of the texture on the polygon is defined by
+moving the points on the texture at the left of the screen.
+Pressing 'a' will make the computer attempt an 'auto-fit',
+this tries to squash the polygon shape onto the texture
+(with varying degrees of success).  Each point can be
+individually moved by moving the mouse pointer over it and
+holding down the left mouse button, pressing the right
+mouse button whilst still holding down the left mouse
+button will return the point to its original position.  As
+you drag the point around, you will see the result on the
+polygon to the right. The polygons usually look better if
+you make the shape of the texture map the same or similar
+to that of the polygon, to see how much distortion may
+occur, hold down the 'r' key, this will rotate the polygon,
+if the texture appears to bend and warp, that is probably
+what will will happen in the game.
+
+If you want to use the same texture positions on several
+polygons you can save the texture positions by pressing
+shift and one of the function keys, you will be asked to
+type in a name for this texture definition and the settings
+will be saved to your s: directory.  You can recall these
+settings by pressing the corresponding function key.
+
+There are other settings available for polygons which are
+displayed above the texture map area.  The first is the
+polygon brightness, this is a value from 1-100 indicating
+the brightness of the polygon.  To change this, press 'b'
+and type in the new value.  Next is gourade shading, this
+can be toggled on and off by pressing the 'g' key.  When
+gourade shading is on, attempts are made to shade the
+polygon along with adjoining polygons to make them appear
+smoother.  The next option is glare.  This is special in
+that it has special textures defined for it.  Glare is
+toggled on/off by pressing 'l'.  When a glare polygon is
+drawn, it alters the colour of the pixel already on the
+screen (making it either darker or lighter).  Colour zero
+does nothing to the existing colour (transparent), then the
+colours 1-16 go from very bright to slightly brighter than
+the original colour, and 17-31 go from slightly darker to
+much darker than the original colour.  This enables you to
+do the strange 'light through mist' lighting effects.  The
+final option is transparency, this simply takes any colour
+in the texture that is 'black' (i.e. red=0 green=0 blue=0)
+and doesn't draw a pixel there.  This enables you to do
+grills with holes in, vent fans, etc.  This option is
+toggled on and off using the 't' key.  Once you have
+finished texturing this polygon, press 'esc' to return to
+the main editor.
+
+This has to been done for each polygon on the object.  When
+you have finished you can save the object by pressing 's'
+or selecting save from the 'project' menu.  As a
+suggestion, put the extension '.obj' on the end of the
+filename to help distinguish it from other files.  You need
+not bother making a special directory for you objects as
+the AnimEditor will do it for you later.  If you need any
+additional help, there is an on-line help facility
+available by pressing the 'help' key.
+
+
+Part II - AnimEditor
+--------------------
+
+If you want to see the vector object you designed in part
+one of this tuorial in the game, you first have load it
+into the animation editor and convert it into the correct
+format for the game.  Double click on the AnimEditor icon
+and wait for the program to load.  The main editor screen
+looks and operates in a very similar manner to that of
+the object editor.
+
+To load in your cube, or any other object either press 'l'
+or select 'load object' from the project menu.  Select the
+object you wish to load, and it will be loaded and
+displayed on the screen.  To write this file out in the 
+format that is required by TKG press 'w' or select 'write
+incbin' from the project menu.  The name write incbin
+is left over from the very begining of Alien Breed 3D when
+the vector objects were an included binary file, needless
+to say the files are now loaded in.
+
+When you press 'w' you will be presented with a file
+requester in which you should specify the name of a file
+for this binary file.  You will be asked if you wish 
+repeated and unused points to be removed.  The advantage
+of removing points is speedier rendering times in the game,
+but you can lose sharp edges between objects the have
+adjoining gourade shaded polygons, and the points are only
+checked for collision in the current frame, so if two
+points are in the same place in the current frame of
+animation but not in others, they may be removed, causing
+the object to bend and strech.
+
+If you decide to remove the extra points, the project must
+be saved, so that it can be restored afterwards.  Simply
+enter a name for the project and it will be saved.  Note
+that a project actually consists of a directory of the name
+you specify containing a file 'project' containing
+information about the project itself.  When saving for the
+first time, you will be asked if you wish to move the
+objects in the project into this new directory, this is
+advisable, because your hard-drive will quickly become
+cluttered otherwise.
+
+
+Part III - Animating a Leg
+--------------------------
+
+I have designed three simple components of a leg, saved as:
+
+   UpperLeg.obj
+   LowerLeg.obj
+   Foot.obj
+   
+Load these three objects into the AnimEditor and I'll take
+you through the simple steps involved in animating it.
+
+To start with, the view looks a little cluttered, this is
+because the three objects have been loaded atop one
+another.  Select the lower leg, either by clicking near
+it with the right mouse button, or by using 'n' and 'p'
+(next & previous) to cycle through the objects.  If you're
+not sure which object you have selected, press 'i' for
+additional information.
+
+Using the view in the lower right window (side view) move
+the lower leg up and to the right of the foot, out of the
+way, by holding down the left mouse button over the lower
+right window and moving the mouse.
+
+Now do the same with the upper leg, moving it above and to
+the right.  that has cleared things up considerably.
+
+Rotate the perspective view throught 90 degrees by holding 
+down the left mouse button and moving the mouse so that
+the view is similar to the one directly below it.
+
+Press the '=' key to zoom in a little, and use the cursor
+keys while the mouse pointer is over the bottom right
+window to centre the view again.
+
+Now that we have our three leg parts, we want to attach
+them together at the knee and ankle.  Press 'c' or select
+'connect objects' from the menu to change to that mode.
+When two objects are connected, the childs axis is placed
+at the same coords as a specified point relative to the
+parent.  This point must be a point defined in the object
+editor, although it need not be used in any polygons.
+Such points are removed if the option is requested when
+writing out the file for TKG.
+
+Select the foot object (the child) by clicking the right
+mouse button near it's centre.  The foot wants to be joined
+to the left-most ankle point of the lower leg in the front
+view (lower left window).  This is done by clicking on it
+with the left mouse button.  If you want to use the
+perpsective window, you can, additionally, using the right
+mouse button to rotate the view will reveal all the points
+available for connection.
+
+When you connect the objects together, the child will move
+to it's joined position with it's parent.  If you connect
+the foot to the wrong place, you can disconnect the object
+again by pressing 'd' while it is still selected, then try
+again.  Now select the lower leg and connect it to the
+left-most point at the bottom of the upper leg.  This
+forms the knee and completes the leg.
+
+Change to 'move object' mode by pressing 'm' or selecting
+the option from the mode menu.  Now selet the upper leg by
+clicking the right ouse button near its centre.  If you
+have a faster computer (a bit of fast ram will do) you can
+select the 'Update is Quick' optin from the 'view' menu, it
+should change to 'Update is Informative'.  You can do this
+on a slower A1200 aswell, but the speed the screen updates
+will be reduced.  Move the upper leg by moving the mouse
+whilst holding down the left mouse button until the foot
+stands on the floor (the orange axis), if you are using the
+'Update is Informative' mode, the whole leg will move
+(because the lower leg and foot are children of the upper
+leg), if you are using the 'Update is Quick' mode, only the
+upper leg will move, with the lower leg and foot positions
+being updated when you release the mouse button.  Note that
+you can move the axes around using the cursor keys so that
+you can see the whole leg.
+
+We are now ready to animate the leg.  First we need some
+more animation frames.  Press 'f' or select 'set number of
+frames' from the animation menu.  Type in 21 as the new
+number of frames.  Frames added in this way are always
+added to the end of the animation and are exact copies of
+the previous last frame.  If you type in a number that is
+less than than the current number of frames, the frames
+will be deleted from the end of the current animation.
+
+For a simple walk, all we need is four 'key frames', the
+rest of the frames can be generated by morphing or
+'tweening' between these frames.  We have the first of our
+frames already with the leg straight and the foot directly
+below us on the floor.  We also need a frame with the leg
+stretched out infront, one stretched out behind, and one
+directly underneath us, but with the leg bent and the foot
+off the floor.
+
+Goto frame 5 by either by pressing 'g' or by selecting
+'Goto frame...' from the animation menu, then typing 5 at
+the prompt.  This frame can be the 'leg stretched out
+behind' frame.  To do this, first change to 'rotate object'
+mode by pressing 'r' or selecting 'rotate object' from the
+mode menu.  Select the upper leg by clicking the right
+mouse button near the middle of it, then with the mouse
+over the lower right window, hold down the left mouse
+button to rotate the leg to about 30 degrees behind, select
+the lower leg and bend it slightly aswell so the leg isn't
+quite straight.
+
+Goto frame 10 using the same method as before.  This frame
+is going to be the one with the leg directly beneath the
+body, but bent.  Select the upper leg, and rotate it
+forwards a little, then select the lower leg and rotate it
+backwards.  You should notice at this point that the lower
+leg no longer rotates along with the upper leg, instead it
+stays vertical, this is because the rotation of objects is
+only linked if at the time of connection the axes pointed
+in the same direction, and the child object has not been
+rotated independantly.  Once you have rotated both the
+upper and lower leg objects, rotate the foot so the sole
+points backwards slightly.
+
+Goto frame 15 using the same method as before.  This will
+be the frame with the leg stretched out infont.  Rotate the
+upper leg to about 30 degrees infront, then rotate the
+lower leg so that it appears straight again.  Finally
+rotate the foot so that it is the sole is perpendicular
+to the rest of the leg.  We want the foot to be on the
+floor in both frames 5 and 15.  Select the upper leg and
+change to 'move object' mode (press 'm' or select it from
+the mode menu).  Now move the leg down slightly until the
+foot touches the floor.  Goto frame 5 and do the same.
+
+All that remains is to create the inbetween frames.  We
+have to morph between frames 1 and 5, then frames 5 and 10,
+then frames 10 and 15, then frames 15 and 1.  Note however,
+that it is not possible to morph between frames 15 and 1,
+this is why 21 frames were created instead of 20.  We
+simply morph between frames 15 and 21 (which is the same as
+frame 1) and then delete frame 21.
+
+Morphing is acheived by pressing 't' (for tween) or by
+selecting 'Object Tweening' from the animation menu.  You
+will be asked which objects you wish to tween, all of them
+(press 'a') or just the selected ones (press 's').  We want
+to tween them all, so press 'a'.  Next you will be asked
+for the start and end tweening frames.  Type 1 (then press
+return) then type 5 (and press return).  You can also set
+acceleration and deceleration frames, useful for really
+smooth animations, but not required here, enter zero in
+both these requests.  The first 5 frames have just been
+tweened.  Repeat this process for the other 3 ranges given
+above.
+
+Finally, we want to delete the last frame.  Press 'f' or
+select 'Set number of Frames' from the  animation menu.
+Type in 20 and press return.  As you will be destroying a
+frame, you will be asked to confirm your request by
+pressing 'y' (or cancel by pressing 'n').  The animation
+is complete.  Press 'a' to view the animation.  You have
+successfully completed your first animation.  Okay, so it's
+not very complex, and it looks a bit silly with only one
+leg, but it's a start.
+
+I've covered most of the basic facilities in both editors,
+there are others, all of which are fairly obvious or simple
+to understand, and all of which are documented in the
+on-line help available by pressing the 'help' key.
+
+
+***********************************************************
+
+Restrictions on object design
+=============================
+
+In the Object Editor
+--------------------
+
+i) All objects must be convex.
+   If you imagine yourself to be standing inside
+   the object, you must be able to see all the other
+   places inside the object.  A cube, for instance,
+   is convex, whereas a horse-shoe is not.
+   
+   This restriction arises because each object is
+   simply drawn in the order it was defined, so the
+   polygon ordering would be incorrect in some cases
+   if the object were not convex.  You can, however,
+   use this fact to define the polygons in the order
+   you wish them to be drawn, an L-shaped object can
+   be achieved provided the two 'inner' polygons are
+   defined first.
+   
+ii)   All polygons must be convex.
+   This rule is similar to that above, but there
+   is no way round it,  the fact that lines drawn
+   up are on the left and down are on the right is
+   exploited for speedy polygon rendering, making
+   a polygon none-convex will at best make it be drawn
+   incorrectly, at worst, make the program crash.
+   For this reason there is the aditional restriction
+   that polygons must be flat, three sided polygons
+   are always flat, but polygons with more sides
+   aren't.  None-flat polygons will appear non-convex
+   from some directions.
+   
+iii)  Polygons must be defined in clockwise order.
+   This is a definition rather than a rule, a polygon
+   can only be seen from one side, if you're looking
+   at the polygon from the front, the points making
+   up the polygon must be in clockwise order,
+   otherwise you will be able to see the other side
+   but not this one.
+   
+iv)   Textures.  These must be in 32 colours, you can
+   draw them in any 32 of the 16.7 million colours
+   available with the AGA chipset, although they
+   will only be displayed in the 4096 colours
+   available through Amos Professional, and will be
+   remapped to the 256 colours available in the game.
+   The textures must be saved as 64x64 pixel pictures,
+   this is easily done in Brilliance, but in Deluxe
+   Paint, you will have to save the picture as brush.
+   For other paint packages, play around to see what
+   works.  If for some reason the object editor can't
+   load the picture, the screen area will appear
+   blank.
+   
+In the AnimEditor
+-----------------
+
+i) You can have no more than 21 objects in any one
+   project.  Theoretically, you could have 32, but
+   some of the machine code was hard-wired with the
+   value 21, and some b****** infected my compter
+   with a virus that formatted my hard drive (don't
+   worry, the stupid thing killed itself along with
+   2 weeks work), and I forgot to back up the machine
+   code bits, I could still make it 32 objects, but
+   that would involve rewriting the horrible routines
+   used in the core of the program, sorry.
+   
+***********************************************************
+
+DISCLAIMER
+----------
+Before anybody starts complaining, this is not a fully
+featured rendering package, nor even a partly featured
+object designer package, you're getting it FREE with TKG,
+it may blow up occasionally, it probably has a few unfixed
+bugs, but don't blame me, I won't be held responsible if
+you loose a few hours work, because I did and I don't have
+anyone to complain to.
+
+***********************************************************
+
+CREDITS
+-------
+
+Program design and coding  Charles Blessing
+Object Design        Charles Blessing
+Alien Design         Micheal Green
+Textures       Micheal Green
+Music          Ben Chanter
+Switch Design        Andrew Clitheroe
+
+***********************************************************
+
+ ================================ ======================
+|   __      __  __       __   __ | I wish I could fly,  |
+|  /   /_/ /_/ /_/ /  / /_   /_/ | right up to the sky, |
+| /_  / / / / / | /_ / /_   /_/  | but I can`t.         |
+|                                |   (Orvil & K.Harris) |
+ ================================ ======================
+
+
+
