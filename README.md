@@ -15,3 +15,13 @@ The Editor directory contains the originally distributed editor tools for the ga
 Run the Setup script which will perform the necessary assigns. This assumes that the Editor and Game directories remain together.
 
 Assets are generally in IFF formats suitable for use in DPaint and PPaint. 
+
+### Notes
+The mod is unfinished. The original goals were:
+- Retexture the original game to add more variation.
+- Modify levels by adding new areas, secrets or changing existing areas either to improve the appearance or modify difficulty.
+- Add new enemies, pickups and weapons.
+- Improve sound effects. Music turned out to be a real challenge given the limitations of mod playback in the game.
+
+In addition, it was also planned to make the game episodic. The original levels would become Episode 2, and Episode 1 would recreate the original Alien Breed 3D levels.
+An entirely separate set of 16 deathmatch levels were planned. There are scripts in the Editor/Scripts directory that handle switching the editor and game between these episodes (episode 1 was never started). I haven't retested that these work and in any case running them successfully will make large scale changes to the repository tree.
