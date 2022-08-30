@@ -4,6 +4,4 @@ assign tkg2: ""
 assign sfx:  ""
 assign tkgfx: SoundFX
 assign ab3: ""
-;tkg
-;tkgpatch.exe c2p
 hires
