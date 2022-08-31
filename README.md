@@ -5,9 +5,9 @@ Assets for an old mod made in around 1997/1998 for Alien Breed 3D 2, a game rele
 In order to use this, you'll need to check the repository out into a location that's accessible from a real Amiga (or UAE) if you want to actually run the mod or edit any of it.
 
 ### Play the game
-To run the game, you will need to install an engine. Either use your original tkg binary (in which case, tkgpatch is strongly advised), or use the latest stable build from https://github.com/mheyer32/alienbreed3d2
-
-Drop your engine binary into the Game directory and make sure the KarlosTKG script is updated to invoke it after making the necessary assigns.
+To run the game, go into the Game drawer on your Amiga and double-click the KarlosTKG icon.
+-   The repository contains the latest stable build of the engine from https://github.com/mheyer32/alienbreed3d2
+-   If your have issues or prefer the original, copy your `tkg` executable to the Game directory and edit the KarlosTKG launch script to point at it.
 
 ### Edit the game
 The Editor directory contains the originally distributed editor tools for the game. These were released (along with their sources). However, the editors are generally written in AMOS and are not super friendly. It is recommended to install a copy of LevelEd 303 from http://aminet.net/package/game/edit/AB3Dedit
