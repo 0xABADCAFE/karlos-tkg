@@ -9,6 +9,9 @@ To run the game, go into the Game drawer on your Amiga and double-click the Karl
 -   The repository contains the latest stable build of the engine from https://github.com/mheyer32/alienbreed3d2
 -   If your have issues or prefer the original, copy your `tkg` executable to the Game directory and edit the KarlosTKG launch script to point at it.
 
+### Important
+The current mod changes the in-game music. It is no longer compatible with the original engine. To play the mod in the original engine you must replace the file SoundFX/Tracks/general.mus with the original "packedtest" mod file. This is because the original game only allocated slightly more memory than was needed for the module, resulting in buffer overflow and crashes on load. 
+
 ### Edit the game
 The Editor directory contains the originally distributed editor tools for the game. These were released (along with their sources). However, the editors are generally written in AMOS and are not super friendly. It is recommended to install a copy of LevelEd 303 from http://aminet.net/package/game/edit/AB3Dedit
 
