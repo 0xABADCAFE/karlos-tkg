@@ -4,7 +4,4 @@ assign tkg2: ""
 assign sfx:  ""
 assign tkgfx: SoundFX
 assign ab3: ""
-;hires_lightToVbl_WASD
-;hires
-;hires_pipper
-tkg
+tkg_dev
