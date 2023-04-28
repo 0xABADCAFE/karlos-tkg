@@ -3,5 +3,6 @@ Game/tkg
 Game/tkgpatch.exe
 Editor/LevelEdit/*
 Editor/Storage/XC-data/*
+Editor/ActiveData/Graphics/*/*.info
 *_UAEFSDB.___
 
