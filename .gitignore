@@ -1,7 +1,7 @@
 Game/intro.exe
-Game/tkg
 Game/tkgpatch.exe
 Editor/LevelEdit/*
 Editor/Storage/XC-data/*
-*_UAEFSDB.___
-
+Editor/ActiveData/Graphics/*/*.info
+Editor/**/_UAEFSDB.___
+Game/**/_UAEFSDB.___

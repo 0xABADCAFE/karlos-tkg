@@ -1,7 +1,0 @@
-stack 262144
-assign tkg1: ""
-assign tkg2: ""
-assign sfx:  ""
-assign tkgfx: SoundFX
-assign ab3: ""
-tkg_dev
