@@ -1,10 +1,26 @@
-stack 262144
-assign tkg1: ""
-assign tkg2: ""
-assign sfx:  ""
-assign tkgfx: SoundFX
-assign ab3: ""
-;hires_lightToVbl_WASD
-;hires
-;hires_pipper
-tkg
+Set GameMode `C:RequestChoice TITLE "Alien Breed 3D 2" BODY "Choose Engine:*n1. ASM (AGA only)*n2. ASM Devmode (AGA Only)*n3. ASM/C (AGA/RTG)*n4 ASM/C Devmode (AGA/RTG)" GADGETS "1|2|3|4|Cancel"`
+
+If $GameMode EQ 0
+    Quit
+Endif
+
+Stack 262144
+Assign tkg1: ""
+Assign tkg2: ""
+Assign sfx:  ""
+Assign tkgfx: SoundFX
+Assign ab3: ""
+
+If $GameMode EQ 1
+   bin/tkg_asm
+EndIf
+
+If $GameMode EQ 2
+   bin/tkg_asm_dev
+EndIf
+If $GameMode EQ 3
+   bin/tkg_c
+EndIf
+If $GameMode EQ 4
+   bin/tkg_c_dev
+EndIf
