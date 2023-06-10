@@ -1,8 +1,15 @@
-Set GameMode `C:RequestChoice TITLE "Alien Breed 3D 2" BODY "Choose Engine:*n1. ASM (AGA only)*n2. ASM Devmode (AGA Only)*n3. ASM/C (AGA/RTG)*n4 ASM/C Devmode (AGA/RTG)" GADGETS "1|2|3|4|Cancel"`
+Set TKGEngine `C:RequestChoice TITLE "Alien Breed 3D 2" BODY "Choose Engine:*n*nAGA: Pure assembler version, AGA only.*nAGA Dev: As above, with developer options.*nRTG: RTG and AGA comptabile.*nRTG Dev: As above, with developer options." GADGETS "AGA|AGA Dev|RTG|RTG Dev|Cancel"`
 
-If $GameMode EQ 0
+If $TKGEngine EQ 0
     Quit
 Endif
+
+Set TKGSpec `C:RequestChoice TITLE "Alien Breed 3D 2" BODY "Choose Game Specification:*n*nHigh Spec: Vector pickups*n*nLow Spec: Bitmapped pickups" GADGETS "High Spec|Low Spec|Cancel"`
+
+If $TKGSpec EQ 0
+    Quit
+Endif
+
 
 Stack 262144
 Assign tkg1: ""
@@ -11,16 +18,27 @@ Assign sfx:  ""
 Assign tkgfx: SoundFX
 Assign ab3: ""
 
-If $GameMode EQ 1
+If $TKGSpec EQ 1
+   Assign ab3: HighSpec ADD
+EndIf
+
+If $TKGSpec EQ 2
+   Assign ab3: LowSpec ADD
+EndIf
+
+
+
+
+If $TKGEngine EQ 1
    bin/tkg_asm
 EndIf
 
-If $GameMode EQ 2
+If $TKGEngine EQ 2
    bin/tkg_asm_dev
 EndIf
-If $GameMode EQ 3
+If $TKGEngine EQ 3
    bin/tkg_c
 EndIf
-If $GameMode EQ 4
+If $TKGEngine EQ 4
    bin/tkg_c_dev
 EndIf

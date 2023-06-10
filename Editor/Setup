@@ -1,11 +1,12 @@
 ; set up assigns for game and editing 
 
-assign ab3: /Game
-assign tkg1:  ab3:
-assign tkg2: ab3:
-assign sfx:  ab3:
-assign tkgfx: ab3:SoundFX
-assign ab3edit: ""
-assign ab3: ab3edit:activedata add
-path scripts editors editors/utils add ; paths
-alias togglepack rx ab3edit:scripts/packer.rexx []
+Assign ab3: /Game
+Assign tkg1:  ab3:
+Assign tkg2: ab3:
+Assign sfx:  ab3:
+Assign tkgfx: ab3:SoundFX
+Assign ab3edit: ""
+Assign ab3: ab3edit:activedata ADD
+Assign ab3: /Game/HighSpec ADD
+Path scripts editors editors/utils ADD ; paths
+Alias togglepack rx ab3edit:scripts/packer.rexx []
