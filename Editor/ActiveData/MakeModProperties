@@ -1,0 +1,117 @@
+#!/usr/bin/php
+<?php
+
+declare(strict_types=1);
+
+
+class GameModPropertiesBuilder {
+
+    private const NUM_AMMO_TYPES   = 20;
+    private const DEF_AMMO_LIMIT   = 32767;
+    private const DEF_HEALTH_LIMIT = 32767;
+    private const DEF_FUEL_LIMIT   = 255;
+
+
+    private string $sSourcePath;
+    private string $sTargetPath;
+
+    public function __construct(string $sSource, string $sTarget) {
+        $this->assertSourceReadable($sSource);
+        $this->assertTargetWritable($sTarget);
+        $this->sSourcePath = $sSource;
+        $this->sTargetPath = $sTarget;
+    }
+
+    public function build() {
+        $oData            = $this->loadSource();
+        $sInventoryLimits = $this->buildInventoryLimits($oData);
+        file_put_contents($this->sTargetPath, $sInventoryLimits);
+    }
+   
+
+ 
+    private function buildInventoryLimits(stdClass $oData): string {
+        $aMaxAmmoCounts = array_fill(0, self::NUM_AMMO_TYPES - 1, 0);
+        $aPlayerAmmoTypes = (array)$oData->playerAmmoTypes;
+        foreach ($aPlayerAmmoTypes as $sName => $iIndex) {
+            $aMaxAmmoCounts[$iIndex] = self::DEF_AMMO_LIMIT;
+        }
+        foreach ($oData->inventoryLimits->maxAmmo as $sAmmoKey => $iValue) {
+            $iIndex = $aPlayerAmmoTypes[$sAmmoKey];
+            $aMaxAmmoCounts[$iIndex] = $iValue;
+        }
+    
+        $aInventoryLimits = [
+            $oData->inventoryLimits->maxHealth ?? self::DEF_HEALTH_LIMIT,
+            $oData->inventoryLimits->maxJetpackFuel ?? self::DEF_FUEL_LIMIT,
+        ];
+
+
+        return pack(
+            'n*',
+            $oData->inventoryLimits->maxHealth ?? self::DEF_HEALTH_LIMIT,
+            $oData->inventoryLimits->maxJetpackFuel ?? self::DEF_FUEL_LIMIT,
+            ...$aMaxAmmoCounts
+        );
+    }
+
+
+    private function loadSource(): stdClass {
+        $oData = json_decode(file_get_contents($this->sSourcePath));
+        if (empty($oData)) {
+            throw new RuntimeException('Unable to load source ' . $this->sSourcePath);
+        }
+
+        if (empty($oData->playerAmmoTypes)) {
+            throw new RuntimeException('playerAmmoTypes cannot be empty');
+        }
+
+        if (empty($oData->inventoryLimits)) {
+            throw new RuntimeException('inventoryLimits cannot be empty');
+        }
+
+        if (empty($oData->inventoryLimits->maxAmmo)) {
+            throw new RuntimeException('inventoryLimits > maxAmmo cannot be empty');
+        }
+
+        return $oData;
+    }
+
+    private function assertSourceReadable(string $sSource): void {
+        if (!is_readable($sSource)) {
+            throw new RuntimeException('Source ' . $sSource . ' is not readable');
+        }
+        if (!is_file($sSource)) {
+            throw new RuntimeException('Source ' . $sSource . ' is not a file');
+        }
+    }
+
+    private function assertTargetWritable(string $sTarget): void {
+        if (file_exists($sTarget)) {
+            if (!is_file($sTarget)) {
+                throw new RuntimeException('Target ' . $sTarget . ' is not a file');
+            }
+            if (!is_writable($sTarget)) {
+                throw new RuntimeException('Target ' . $sTarget . ' is not writable');
+            }
+        } else {
+            $sTargetPath = dirname($sTarget);
+            if (!is_writable($sTargetPath)) {
+                throw new RuntimeException('Target directory ' . $sTargetPath . ' is not writable');
+            }
+        }
+    }
+}
+
+$aOpts = getopt('i:o:', []);
+
+$sSource = $aOpts['i'] ?? 'game_properties.json';
+$sTarget = $aOpts['o'] ?? 'game_properties.dat';
+
+$oBuilder = new GameModPropertiesBuilder(
+    $sSource,
+    $sTarget
+);
+
+$oBuilder->build();
+

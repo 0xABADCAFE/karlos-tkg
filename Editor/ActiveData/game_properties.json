@@ -1,0 +1,47 @@
+{
+    "playerAmmoTypes": {
+        "Plasma": 0,
+        "Bullet": 1,
+        "Rocket": 2,
+        "Shot": 7,
+        "Grenade": 8,
+        "Bouncer": 14,
+        "Mine": 15,
+        "Blaster": 16,
+        "ChargedPlasma": 19
+    },
+    "specialAmmoTypes": {
+        "Bandolier": 3,
+        "Backpack": 4
+    },
+    "inventoryLimits": {
+        "maxHealth": 500,
+        "maxJetpackFuel": 250,
+        "maxAmmo": {
+            "Blaster": 80,
+            "Shot": 40,
+            "Grenade": 24,
+            "Bullet": 240,
+            "Plasma": 200,
+            "Rocket": 10,
+            "ChargedPlasma": 10,
+            "Mine": 5,
+            "Bouncer": 30
+        }
+    },
+    "specialAmmoRules": {
+        "Bandolier": {
+            "newMaxAmmo": {
+                "Bullet": 480,
+                "Shot": 80
+            }
+        },
+        "Backpack": {
+            "newMaxAmmo": {
+                "Grenade": 36,
+                "Rocket": 15
+            }
+        }
+    } 
+}
+
