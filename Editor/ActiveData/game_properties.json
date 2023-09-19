@@ -18,10 +18,10 @@
         "maxHealth": 500,
         "maxJetpackFuel": 250,
         "maxAmmo": {
-            "Blaster": 80,
-            "Shot": 40,
+            "Blaster": 100,
+            "Shot": 60,
             "Grenade": 24,
-            "Bullet": 240,
+            "Bullet": 320,
             "Plasma": 200,
             "Rocket": 10,
             "ChargedPlasma": 10,
