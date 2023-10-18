@@ -1,0 +1,99 @@
+#!/usr/bin/php
+<?php
+
+declare(strict_types=1);
+
+
+class LevelPropertiesBuilder {
+
+    private string $sSourcePath;
+    private string $sTargetPath;
+
+    public function __construct(string $sSource, string $sTarget) {
+        $this->assertSourceReadable($sSource);
+        $this->assertTargetWritable($sTarget);
+        $this->sSourcePath = $sSource;
+        $this->sTargetPath = $sTarget;
+    }
+
+    public function build() {
+        $oData       = $this->loadSource();
+        $sZoneErrata = $this->buildZoneErrata($oData);
+        file_put_contents($this->sTargetPath, $sZoneErrata);
+    }
+   
+
+ 
+    private function buildZoneErrata(stdClass $oData): string {
+
+        $oZoneErrata           = (array)$oData->ZoneErrata;        
+        $iZoneErrataListLength = count($oZoneErrata);
+
+        echo "iZoneErrataListLength:", $iZoneErrataListLength, "\n";
+
+        $sZoneErrataHeader = pack('n', $iZoneErrataListLength);
+        $sZoneErrataBlob   = "";
+        $aOffsets          = [];
+
+        foreach ($oZoneErrata as $aExcludedZoneIDs) {
+            $aOffsets[] = strlen($sZoneErrataBlob);
+            $sZoneErrataBlob .= pack(
+                'C*',
+                count($aExcludedZoneIDs),
+                ...$aExcludedZoneIDs
+            );
+        }
+
+        $sZoneErrataHeader .= pack('n*', ...$aOffsets);
+
+        return $sZoneErrataHeader . $sZoneErrataBlob;
+    }
+
+
+    private function loadSource(): stdClass {
+        $oData = json_decode(file_get_contents($this->sSourcePath));
+        if (empty($oData)) {
+            throw new RuntimeException('Unable to load source ' . $this->sSourcePath);
+        }
+
+        return $oData;
+    }
+
+    private function assertSourceReadable(string $sSource): void {
+        if (!is_readable($sSource)) {
+            throw new RuntimeException('Source ' . $sSource . ' is not readable');
+        }
+        if (!is_file($sSource)) {
+            throw new RuntimeException('Source ' . $sSource . ' is not a file');
+        }
+    }
+
+    private function assertTargetWritable(string $sTarget): void {
+        if (file_exists($sTarget)) {
+            if (!is_file($sTarget)) {
+                throw new RuntimeException('Target ' . $sTarget . ' is not a file');
+            }
+            if (!is_writable($sTarget)) {
+                throw new RuntimeException('Target ' . $sTarget . ' is not writable');
+            }
+        } else {
+            $sTargetPath = dirname($sTarget);
+            if (!is_writable($sTargetPath)) {
+                throw new RuntimeException('Target directory ' . $sTargetPath . ' is not writable');
+            }
+        }
+    }
+}
+
+$aOpts = getopt('i:o:', []);
+
+$sSource = $aOpts['i'] ?? 'level_properties.json';
+$sTarget = $aOpts['o'] ?? 'level_properties.dat';
+
+$oBuilder = new LevelPropertiesBuilder(
+    $sSource,
+    $sTarget
+);
+
+$oBuilder->build();
+
