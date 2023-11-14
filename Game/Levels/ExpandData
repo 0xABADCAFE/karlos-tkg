@@ -1,0 +1,44 @@
+.key LEV/A
+.bra {
+.ket }
+
+; Generates hex dumps of unexpanded level data for comparison
+
+Assign ABL: AB3:Levels/LEVEL_{LEV}
+Assign ABC: AB3Edit:Editors/Utils
+
+; SBUnpack has some pretty odd return codes
+FailAt 150000
+
+MakeDir ABL:HexDump
+
+Echo "Processing Level {LEV} twolev.dat"
+Type HEX ABL:twolev.dat HEX > ABL:HexDump/twolev.dat.txt
+
+Echo "Processing Level {LEV} twolev.obj"
+Type HEX ABL:twolev.obj HEX > ABL:HexDump/twolev.obj.txt
+
+Echo "Processing Level {LEV} twolev.map"
+Type HEX ABL:twolev.map HEX > ABL:HexDump/twolev.map.txt
+
+Echo "Processing Level {LEV} twolev.flymap"
+Type HEX ABL:twolev.flymap HEX > ABL:HexDump/twolev.flymap.txt
+
+Echo "Processing Level {LEV} twolev.bin"
+ABC:SBUnpack > NIL: ABL:twolev.bin T:twolev.bin.raw
+Type HEX T:twolev.bin.raw HEX > ABL:HexDump/twolev.bin.txt
+Delete QUIET T:twolev.bin.raw
+
+Echo "Processing Level {LEV} twolev.graph.bin"
+ABC:SBUnpack > NIL: ABL:twolev.graph.bin T:twolev.graph.bin.raw
+Type HEX T:twolev.graph.bin.raw HEX > ABL:HexDump/twolev.graph.bin.txt
+Delete QUIET T:twolev.graph.bin.raw
+
+Echo "Processing Level {LEV} twolev.clips"
+ABC:SBUnpack > NIL: ABL:twolev.clips T:twolev.clips.raw
+Type HEX T:twolev.clips.raw HEX > ABL:HexDump/twolev.clips.txt
+Delete QUIET T:twolev.clips.raw
+
+FailAt 10
+
+List ABL:HexDump
