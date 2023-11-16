@@ -15,6 +15,7 @@ The current version of the mod is a work-in-progress and attempts to address the
 - Per level texture overrides to help set the theme.
 - Improved lighting variation including faux coloured lighting.
 - New enemies.
+- New sounds.
 - Vector pickups (weapons, ammo, health)
 - New weapons.
 - Inventory limits.
