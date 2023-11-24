@@ -10,7 +10,6 @@ If $TKGSpec EQ 0
     Quit
 Endif
 
-
 Stack 262144
 Assign tkg1: ""
 Assign tkg2: ""
@@ -26,9 +25,6 @@ If $TKGSpec EQ 2
    Assign ab3: LowSpec ADD
 EndIf
 
-
-
-
 If $TKGEngine EQ 1
    bin/tkg_asm
 EndIf
@@ -40,5 +36,6 @@ If $TKGEngine EQ 3
    bin/tkg_c
 EndIf
 If $TKGEngine EQ 4
-   bin/tkg_c_dev
+   bin/tkg_c_dev > T:tkg_debuglog.txt
+   multiview T:tkg_debuglog.txt
 EndIf
