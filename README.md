@@ -43,3 +43,6 @@ On opening the KarlosTKG icon, the startup script will ask you to select an engi
 ## Editing
 The mod ships with the original editing tools and all assets in iff/png format. Sound assets are either raw or 8svx.
 
+# Plot Reboot
+Coming soon....
+
