@@ -118,6 +118,14 @@
                 "addMaxHealth": 200,
                 "addHealth": 200
             }
+        },
+        {
+            "name": "Achievement: Nice desk, Picard.",
+            "rule": "ZoneFound",
+            "params": {
+                "level": 0,
+                "zone": 173
+            }
         }
     ] 	
 }

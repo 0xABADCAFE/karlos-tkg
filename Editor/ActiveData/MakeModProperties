@@ -64,11 +64,13 @@ class Achievement {
     private const ACH_RULE_MAP = [
         'KillCount'      => 0,
         'GroupKillCount' => 1,
+        'ZoneFound'      => 2,
     ];
 
     private const ACH_PARAM_FN = [
         'parseKillCountParams',
         'parseGroupKillCountParams',
+        'parseZoneFoundParams',
     ];
 
     /**
@@ -230,7 +232,7 @@ class Achievement {
             !is_string($oParams->alien) ||
             !isset($oAlienTypes->{$oParams->alien})
         ) {
-            throw new RuntimeError('Missing/invalid alien type for KillCount rule');
+            throw new RuntimeException('Missing/invalid alien type for KillCount rule');
         }
         $iAlien = $oAlienTypes->{$oParams->alien};
         if (
@@ -239,18 +241,43 @@ class Achievement {
             $oParams->count < 1 ||
             $oParams->count > 65535
         ) {
-            throw new RuntimeError('Missing/invalid count for KillCount rule');
+            throw new RuntimeException('Missing/invalid count for KillCount rule');
         }
 
         $this->sEncParams = pack('nnnn', $iAlien, $oParams->count, 0, 0);
     }
+
+
+    private function parseZoneFoundParams(stdClass $oParams, stdClass $oAlienTypes) {
+        if (
+            !isset($oParams->level) ||
+            !is_int($oParams->level) ||
+            $oParams->level < 0 ||
+            $oParams->level > 15
+        ) {
+            throw new RuntimeException('Missing/invalid level for rule');
+        }
+        if (
+            !isset($oParams->zone) ||
+            !is_int($oParams->zone) ||
+            $oParams->zone < 0 ||
+            $oParams->zone > 512
+        ) {
+            throw new RuntimeException('Missing/invalid zone id for rule');
+        }
+
+        $iValue = ($oParams->level << 16) | $oParams->zone;
+
+        $this->sEncParams = pack('Nnn', $iValue, 0, 0);
+    }
+
 
     private function parseGroupKillCountParams(stdClass $oParams, stdClass $oAlienTypes) {
         if (
             !isset($oParams->aliens) ||
             !is_array($oParams->aliens)
         ) {
-            throw new RuntimeError('Missing/invalid aliens type for GroupKillCount rule');
+            throw new RuntimeException('Missing/invalid aliens type for GroupKillCount rule');
         }
         $iMask = 0;
         foreach ($oParams->aliens as $sAlien) {
@@ -258,7 +285,7 @@ class Achievement {
                 !is_string($sAlien) ||
                 !isset($oAlienTypes->{$sAlien})
             ) {
-                throw new RuntimeError('Invalid alien type found in GroupKillCount rule');
+                throw new RuntimeException('Invalid alien type found in GroupKillCount rule');
             }
             $iMask |= 1 << $oAlienTypes->{$sAlien};
         }
@@ -268,7 +295,7 @@ class Achievement {
             $oParams->count < 1 ||
             $oParams->count > 65535
         ) {
-            throw new RuntimeError('Missing/invalid count for KillCount rule');
+            throw new RuntimeException('Missing/invalid count for KillCount rule');
         }
         $iCount = $oParams->count;
         $this->sEncParams = pack('Nnn', $iMask, $oParams->count, 0);
