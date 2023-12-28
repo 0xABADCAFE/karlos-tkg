@@ -1,0 +1,167 @@
+{	
+    "alienTypes": {
+        "Beast": 0,
+        "ShotgunGuard": 1,
+        "BasicGuard": 2,
+        "Marine": 3,
+        "GreenDemon": 4,
+        "PlasmaGuard": 5,
+        "Denfeder": 6,
+        "RedDemon": 7,
+        "Worm": 8,
+        "Insectoid": 10,
+        "Priest": 11,
+        "BigInsect": 12,
+        "Drone": 14,
+        "Wasp": 15,
+        "Mantis": 16,
+        "Insect Boss": 17,
+        "Crab": 18,
+        "Old": 19
+    },
+    "playerAmmoTypes": {	
+        "Plasma": 0,	
+        "Bullet": 1,	
+        "Rocket": 2,	
+        "Shot": 7,	
+        "Grenade": 8,	
+        "Bouncer": 14,	
+        "Mine": 15,	
+        "Blaster": 16,	
+        "ChargedPlasma": 19	
+    },	
+    "specialAmmoTypes": {	
+        "Bandolier": 3,	
+        "Backpack": 4	
+    },	
+    "inventoryLimits": {	
+        "maxHealth": 500,	
+        "maxJetpackFuel": 250,	
+        "maxAmmo": {	
+            "Blaster": 100,	
+            "Shot": 60,	
+            "Grenade": 24,	
+            "Bullet": 320,	
+            "Plasma": 200,	
+            "Rocket": 10,	
+            "ChargedPlasma": 10,	
+            "Mine": 5,	
+            "Bouncer": 30	
+        }	
+    },	
+    "specialAmmoRules": {	
+        "Bandolier": {	
+            "newMaxAmmo": {	
+                "Bullet": 480,	
+                "Shot": 80	
+            }	
+        },	
+        "Backpack": {	
+            "newMaxAmmo": {	
+                "Grenade": 36,	
+                "Rocket": 15	
+            }	
+        }	
+    },
+    "achievements": [
+        {
+            "name": "Achievement: First Blood!",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": [
+                    "Beast",
+                    "BasicGuard"
+                ],
+                "count": 1
+            }
+        },
+        {
+            "name": "Achievement: Beast Bashin' (Pest control 10/200)",
+            "rule": "KillCount",
+            "params": {
+                "alien": "Beast",
+                "count": 10
+            }
+        },
+        {
+            "name": "Achievement: Alien Bleed (Pest control 50/200)",
+            "rule": "KillCount",
+            "params": {
+                "alien": "Beast",
+                "count": 50
+            }
+        },
+        {
+            "name": "Achievement: Endangered Species (Pest control 100/200)",
+            "rule": "KillCount",
+            "params": {
+                "alien": "Beast",
+                "count": 100
+            },
+            "reward": {
+                "desc": "Shells +40",
+                "ammoType": "Shot",
+                "addAmmo": 40,
+                "addMaxAmmo": 0
+            }
+        },
+        {
+            "name": "Achievement: Xenocide! (Pest control 200/200)",
+            "rule": "KillCount",
+            "params": {
+                "alien": "Beast",
+                "count": 200
+            },
+            "reward": {
+                "desc": "Health Cap +200, HP: +200",
+                "ammoType": "Shot",
+                "addMaxHealth": 200,
+                "addHealth": 200
+            }
+        },
+        {
+            "name": "Found: Hey, nice desk, Picard.",
+            "rule": "ZoneFound",
+            "params": {
+                "level": 0,
+                "zone": 135
+            }
+        },
+        {
+            "name": "Found: The Clithercube (Locator: 1/?)",
+            "rule": "ZoneFound",
+            "params": {
+                "level": 1,
+                "zone": 210
+            }
+        },
+        {
+            "name": "Achievement: Action Replay (Beat any previous level time)",
+            "rule": "TimeImproved",
+            "params": {
+                "levelMask": 65535,
+                "count": 1,
+                "total": false
+            }
+        },
+        {
+            "name": "Achievement: Optimiser (Improve a previous level time 5 times)",
+            "rule": "TimeImproved",
+            "params": { 
+                "levelMask": 65535,
+                "count": 5,
+                "total": true
+            }
+        },
+        {
+            "name": "Achievement: Perfectionist (Improve any single previous level time 5 times)",
+            "rule": "TimeImproved",
+            "params": { 
+                "levelMask": 65535,
+                "count": 5,
+                "total": false
+            }
+        }
+
+    ] 	
+}
