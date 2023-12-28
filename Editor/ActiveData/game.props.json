@@ -120,12 +120,48 @@
             }
         },
         {
-            "name": "Achievement: Nice desk, Picard.",
+            "name": "Found: Hey, nice desk, Picard.",
             "rule": "ZoneFound",
             "params": {
                 "level": 0,
                 "zone": 173
             }
+        },
+        {
+            "name": "Found: The Clithercube (Locator: 1/?)",
+            "rule": "ZoneFound",
+            "params": {
+                "level": 1,
+                "zone": 210
+            }
+        },
+        {
+            "name": "Achievement: Action Replay (Beat any previous level time)",
+            "rule": "TimeImproved",
+            "params": {
+                "levelMask": 65535,
+                "count": 1,
+                "total": false
+            }
+        },
+        {
+            "name": "Achievement: Optimiser (Improve a previous level time 5 times)",
+            "rule": "TimeImproved",
+            "params": { 
+                "levelMask": 65535,
+                "count": 5,
+                "total": true
+            }
+        },
+        {
+            "name": "Achievement: Perfectionist (Improve any single previous level time 5 times)",
+            "rule": "TimeImproved",
+            "params": { 
+                "levelMask": 65535,
+                "count": 5,
+                "total": false
+            }
         }
+
     ] 	
 }

@@ -65,12 +65,14 @@ class Achievement {
         'KillCount'      => 0,
         'GroupKillCount' => 1,
         'ZoneFound'      => 2,
+        'TimeImproved'   => 3,
     ];
 
     private const ACH_PARAM_FN = [
         'parseKillCountParams',
         'parseGroupKillCountParams',
         'parseZoneFoundParams',
+        'parseTimeImprovedParams'
     ];
 
     /**
@@ -271,6 +273,32 @@ class Achievement {
         $this->sEncParams = pack('Nnn', $iValue, 0, 0);
     }
 
+    private function parseTimeImprovedParams(stdClass $oParams, stdClass $oAlienTypes) {
+        if (
+            !isset($oParams->levelMask) ||
+            !is_int($oParams->levelMask)
+        ) {
+            throw new RuntimeException('Missing/invalid level mask for rule');
+        }
+        if (
+            !isset($oParams->count) ||
+            !is_int($oParams->count) ||
+            $oParams->count < 1
+        ) {
+            throw new RuntimeException('Missing/invalid count for rule');
+        }
+
+        $bTotal = false;
+
+        if (isset($oParams->total)) {
+            if (!is_bool($oParams->total)) {
+                throw new RuntimeException('Total must be a boolean');
+            }
+            $bTotal = $oParams->total ? 1 : 0;
+        }
+        $this->sEncParams = pack('Nnn', $oParams->levelMask, $oParams->count, $bTotal);
+    }
+
 
     private function parseGroupKillCountParams(stdClass $oParams, stdClass $oAlienTypes) {
         if (
@@ -432,7 +460,7 @@ class GameModPropertiesBuilder {
 
 $aOpts = getopt('i:o:', []);
 
-$sSource = $aOpts['i'] ?? 'game_properties.json';
+$sSource = $aOpts['i'] ?? 'game.props.json';
 $sTarget = $aOpts['o'] ?? 'game.props';
 
 $oBuilder = new GameModPropertiesBuilder(
