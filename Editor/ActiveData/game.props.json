@@ -141,7 +141,7 @@
             "params": {
                 "levelMask": 65535,
                 "count": 1,
-                "total": false
+                "overall": true
             }
         },
         {
@@ -150,7 +150,7 @@
             "params": { 
                 "levelMask": 65535,
                 "count": 5,
-                "total": true
+                "overall": true
             }
         },
         {
@@ -159,7 +159,43 @@
             "params": { 
                 "levelMask": 65535,
                 "count": 5,
-                "total": false
+                "overall": false
+            }
+        },
+        {
+            "name": "Achievement: 'Tis but a scratch!",
+            "rule": "PlayerDied",
+            "params": { 
+                "levelMask": 65535,
+                "count": 1,
+                "overall": false
+            }
+        },
+        {
+            "name": "Achievement: I've had worse!",
+            "rule": "PlayerDied",
+            "params": { 
+                "levelMask": 65535,
+                "count": 2,
+                "overall": true
+            }
+        },
+        {
+            "name": "Achievement: It's just a flesh wound!",
+            "rule": "PlayerDied",
+            "params": { 
+                "levelMask": 65535,
+                "count": 3,
+                "overall": true
+            }
+        },
+        {
+            "name": "Achievement: Right! I'll do you for that!",
+            "rule": "PlayerDied",
+            "params": { 
+                "levelMask": 65535,
+                "count": 4,
+                "overall": true
             }
         }
 

@@ -66,13 +66,16 @@ class Achievement {
         'GroupKillCount' => 1,
         'ZoneFound'      => 2,
         'TimeImproved'   => 3,
+        'PlayerDied'     => 4,
     ];
 
     private const ACH_PARAM_FN = [
         'parseKillCountParams',
         'parseGroupKillCountParams',
         'parseZoneFoundParams',
-        'parseTimeImprovedParams'
+        'parseMaskedLevelCountParams',
+        'parseMaskedLevelCountParams',
+
     ];
 
     /**
@@ -95,6 +98,7 @@ class Achievement {
                 $oAlienTypes,
                 $oPlayerAmmoTypes
             );
+            printf("\tProcessed %s\n", $oAchievementData->name);
             $sEncoded .= $oAchievement->export();
         }
 
@@ -273,7 +277,7 @@ class Achievement {
         $this->sEncParams = pack('Nnn', $iValue, 0, 0);
     }
 
-    private function parseTimeImprovedParams(stdClass $oParams, stdClass $oAlienTypes) {
+    private function parseMaskedLevelCountParams(stdClass $oParams, stdClass $oAlienTypes) {
         if (
             !isset($oParams->levelMask) ||
             !is_int($oParams->levelMask)
@@ -288,15 +292,15 @@ class Achievement {
             throw new RuntimeException('Missing/invalid count for rule');
         }
 
-        $bTotal = false;
+        $bOverall = false;
 
-        if (isset($oParams->total)) {
-            if (!is_bool($oParams->total)) {
-                throw new RuntimeException('Total must be a boolean');
+        if (isset($oParams->overall)) {
+            if (!is_bool($oParams->overall)) {
+                throw new RuntimeException('overall must be a boolean');
             }
-            $bTotal = $oParams->total ? 1 : 0;
+            $bOverall = $oParams->overall ? 1 : 0;
         }
-        $this->sEncParams = pack('Nnn', $oParams->levelMask, $oParams->count, $bTotal);
+        $this->sEncParams = pack('Nnn', $oParams->levelMask, $oParams->count, $bOverall);
     }
 
 
@@ -462,6 +466,8 @@ $aOpts = getopt('i:o:', []);
 
 $sSource = $aOpts['i'] ?? 'game.props.json';
 $sTarget = $aOpts['o'] ?? 'game.props';
+
+printf("Processing %s, writing to %s\n", $sSource, $sTarget);
 
 $oBuilder = new GameModPropertiesBuilder(
     $sSource,
