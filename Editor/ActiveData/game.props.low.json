@@ -6,7 +6,7 @@
         "Marine": 3,
         "GreenDemon": 4,
         "PlasmaGuard": 5,
-        "Denfeder": 6,
+        "Defender": 6,
         "RedDemon": 7,
         "Worm": 8,
         "Insectoid": 10,
@@ -15,7 +15,7 @@
         "Drone": 14,
         "Wasp": 15,
         "Mantis": 16,
-        "Insect Boss": 17,
+        "InsectBoss": 17,
         "Crab": 18,
         "Old": 19
     },
@@ -65,7 +65,7 @@
     },
     "achievements": [
         {
-            "name": "Achievement: First Blood!",
+            "name": "Kills: First Blood!",
             "rule": "GroupKillCount",
             "params": {
                 "aliens": [
@@ -76,7 +76,7 @@
             }
         },
         {
-            "name": "Achievement: Beast Bashin' (Pest control 10/200)",
+            "name": "Kills: Beast Bashin' (Pest control 10/200)",
             "rule": "KillCount",
             "params": {
                 "alien": "Beast",
@@ -84,7 +84,7 @@
             }
         },
         {
-            "name": "Achievement: Alien Bleed (Pest control 50/200)",
+            "name": "Kills: Alien Bleed (Pest control 50/200)",
             "rule": "KillCount",
             "params": {
                 "alien": "Beast",
@@ -92,7 +92,7 @@
             }
         },
         {
-            "name": "Achievement: Endangered Species (Pest control 100/200)",
+            "name": "Kills: Endangered Species (Pest control 100/200)",
             "rule": "KillCount",
             "params": {
                 "alien": "Beast",
@@ -106,7 +106,7 @@
             }
         },
         {
-            "name": "Achievement: Xenocide! (Pest control 200/200)",
+            "name": "Kills: Xenocide! (Pest control 200/200)",
             "rule": "KillCount",
             "params": {
                 "alien": "Beast",
@@ -136,7 +136,7 @@
             }
         },
         {
-            "name": "Achievement: Action Replay (Beat any previous level time)",
+            "name": "Again: Action Replay (Beat any previous level time)",
             "rule": "TimeImproved",
             "params": {
                 "levelMask": 65535,
@@ -145,7 +145,7 @@
             }
         },
         {
-            "name": "Achievement: Optimiser (Improve a previous level time 5 times)",
+            "name": "Again: Optimiser (Improve a previous level time 5 times)",
             "rule": "TimeImproved",
             "params": { 
                 "levelMask": 65535,
@@ -154,7 +154,7 @@
             }
         },
         {
-            "name": "Achievement: Perfectionist (Improve any single previous level time 5 times)",
+            "name": "Again: Perfectionist (Improve any single previous level time 5 times)",
             "rule": "TimeImproved",
             "params": { 
                 "levelMask": 65535,
@@ -163,7 +163,7 @@
             }
         },
         {
-            "name": "Achievement: 'Tis but a scratch!",
+            "name": "Died: 'Tis but a scratch!",
             "rule": "PlayerDied",
             "params": { 
                 "levelMask": 65535,
@@ -172,7 +172,7 @@
             }
         },
         {
-            "name": "Achievement: I've had worse!",
+            "name": "Died: I've had worse!",
             "rule": "PlayerDied",
             "params": { 
                 "levelMask": 65535,
@@ -181,7 +181,7 @@
             }
         },
         {
-            "name": "Achievement: It's just a flesh wound!",
+            "name": "Died: It's just a flesh wound!",
             "rule": "PlayerDied",
             "params": { 
                 "levelMask": 65535,
@@ -190,14 +190,144 @@
             }
         },
         {
-            "name": "Achievement: Right! I'll do you for that!",
+            "name": "Died: Right! I'll do you for that!",
             "rule": "PlayerDied",
             "params": { 
                 "levelMask": 65535,
                 "count": 4,
                 "overall": true
             }
+        },
+        {
+            "name": "Died: Die Hard",
+            "rule": "PlayerDied",
+            "params": { 
+                "levelMask": 65535,
+                "count": 10,
+                "overall": true
+            }
+        },
+        {
+            "name": "Kills: Red Menace (Other red things 10/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": [
+                    "ShotgunGuard",
+                    "RedDemon",
+                    "InsectBoss"
+                ],
+                "count": 10
+            }
+        },
+        {
+            "name": "Kills: Red's Dead, Baby (Other red things, 25/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": [
+                    "ShotgunGuard",
+                    "RedDemon",
+                    "InsectBoss"
+                ],
+                "count": 25
+            }
+        },
+        {
+            "name": "Kills: Dead Red Redemption (Other red things 50/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": [
+                    "ShotgunGuard",
+                    "RedDemon",
+                    "InsectBoss"
+                ],
+                "count": 50
+            }
+        },
+        {
+            "name": "Kills: Warranty Voided (Robots 10/100)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": [
+                    "BasicGuard",
+                    "PlasmaGuard",
+                    "ShotgunGuard",
+                    "Defender",
+                    "Drone"
+                ],
+                "count": 10
+            }
+        },
+        {
+            "name": "Kills: Raze Of The Robots (Robots 50/100)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": [
+                    "BasicGuard",
+                    "PlasmaGuard",
+                    "ShotgunGuard",
+                    "Defender",
+                    "Drone"
+                ],
+                "count": 50
+            }
+        },
+        {
+            "name": "Kills: Demise Of The Machines (Robots 100/100)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": [
+                    "BasicGuard",
+                    "PlasmaGuard",
+                    "ShotgunGuard",
+                    "Defender",
+                    "Drone"
+                ],
+                "count": 100
+            }
+        },
+        {
+            "name": "Kills: Clear Skies (Flying things 10/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": [
+                    "GreenDemon",
+                    "RedDemon",
+                    "Drone",
+                    "Wasp",
+                    "Old"
+                ],
+                "count": 10
+            }
+        },
+        {
+            "name": "Kills: No Fly Zone (Flying things 25/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": [
+                    "GreenDemon",
+                    "RedDemon",
+                    "Drone",
+                    "Wasp",
+                    "Old"
+                ],
+                "count": 25
+            }
+        },
+        {
+            "name": "Kills: Death From Below (Flying things 50/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": [
+                    "GreenDemon",
+                    "RedDemon",
+                    "Drone",
+                    "Wasp",
+                    "Old"
+                ],
+                "count": 50
+            }
         }
+
 
     ] 	
 }

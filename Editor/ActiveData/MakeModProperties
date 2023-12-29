@@ -317,7 +317,7 @@ class Achievement {
                 !is_string($sAlien) ||
                 !isset($oAlienTypes->{$sAlien})
             ) {
-                throw new RuntimeException('Invalid alien type found in GroupKillCount rule');
+                throw new RuntimeException('Invalid alien type ' . $sAlien . ' found in GroupKillCount rule');
             }
             $iMask |= 1 << $oAlienTypes->{$sAlien};
         }
