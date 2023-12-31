@@ -19,7 +19,7 @@
         "Crab": 18,
         "Old": 19
     },
-    "playerAmmoTypes": {	
+    "playerAmmoTypes": {
         "Plasma": 0,	
         "Bullet": 1,	
         "Rocket": 2,	
@@ -30,26 +30,26 @@
         "Blaster": 16,	
         "ChargedPlasma": 19	
     },	
-    "specialAmmoTypes": {	
+    "specialAmmoTypes": {
         "Bandolier": 3,	
         "Backpack": 4	
     },	
-    "inventoryLimits": {	
-        "maxHealth": 500,	
+    "inventoryLimits": {
+        "maxHealth": 300,	
         "maxJetpackFuel": 250,	
         "maxAmmo": {	
-            "Blaster": 100,	
-            "Shot": 60,	
-            "Grenade": 24,	
-            "Bullet": 320,	
-            "Plasma": 200,	
-            "Rocket": 10,	
+            "Blaster": 60,	
+            "Shot": 40,	
+            "Grenade": 12,	
+            "Bullet": 240,	
+            "Plasma": 100,	
+            "Rocket": 6,	
             "ChargedPlasma": 10,	
             "Mine": 5,	
             "Bouncer": 30	
         }	
     },	
-    "specialAmmoRules": {	
+    "specialAmmoRules": {
         "Bandolier": {	
             "newMaxAmmo": {	
                 "Bullet": 480,	
@@ -68,10 +68,7 @@
             "name": "Kills: First Blood!",
             "rule": "GroupKillCount",
             "params": {
-                "aliens": [
-                    "Beast",
-                    "BasicGuard"
-                ],
+                "aliens": ["Beast", "BasicGuard"],
                 "count": 1
             }
         },
@@ -211,11 +208,7 @@
             "name": "Kills: Red Menace (Other red things 10/50)",
             "rule": "GroupKillCount",
             "params": {
-                "aliens": [
-                    "ShotgunGuard",
-                    "RedDemon",
-                    "InsectBoss"
-                ],
+                "aliens": ["ShotgunGuard", "RedDemon", "InsectBoss"],
                 "count": 10
             }
         },
@@ -223,11 +216,7 @@
             "name": "Kills: Red's Dead, Baby (Other red things, 25/50)",
             "rule": "GroupKillCount",
             "params": {
-                "aliens": [
-                    "ShotgunGuard",
-                    "RedDemon",
-                    "InsectBoss"
-                ],
+                "aliens": ["ShotgunGuard", "RedDemon", "InsectBoss"],
                 "count": 25
             }
         },
@@ -235,11 +224,7 @@
             "name": "Kills: Dead Red Redemption (Other red things 50/50)",
             "rule": "GroupKillCount",
             "params": {
-                "aliens": [
-                    "ShotgunGuard",
-                    "RedDemon",
-                    "InsectBoss"
-                ],
+                "aliens": ["ShotgunGuard", "RedDemon", "InsectBoss"],
                 "count": 50
             }
         },
@@ -247,13 +232,7 @@
             "name": "Kills: Warranty Voided (Robots 10/100)",
             "rule": "GroupKillCount",
             "params": {
-                "aliens": [
-                    "BasicGuard",
-                    "PlasmaGuard",
-                    "ShotgunGuard",
-                    "Defender",
-                    "Drone"
-                ],
+                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
                 "count": 10
             }
         },
@@ -261,13 +240,7 @@
             "name": "Kills: Raze Of The Robots (Robots 50/100)",
             "rule": "GroupKillCount",
             "params": {
-                "aliens": [
-                    "BasicGuard",
-                    "PlasmaGuard",
-                    "ShotgunGuard",
-                    "Defender",
-                    "Drone"
-                ],
+                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
                 "count": 50
             }
         },
@@ -275,27 +248,21 @@
             "name": "Kills: Demise Of The Machines (Robots 100/100)",
             "rule": "GroupKillCount",
             "params": {
-                "aliens": [
-                    "BasicGuard",
-                    "PlasmaGuard",
-                    "ShotgunGuard",
-                    "Defender",
-                    "Drone"
-                ],
+                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
                 "count": 100
+            },
+            "reward": {
+                "desc": "Plasma carry +20",
+                "ammoType": "Plasma",
+                "addAmmo": 20,
+                "addMaxAmmo": 20
             }
         },
         {
             "name": "Kills: Clear Skies (Flying things 10/50)",
             "rule": "GroupKillCount",
             "params": {
-                "aliens": [
-                    "GreenDemon",
-                    "RedDemon",
-                    "Drone",
-                    "Wasp",
-                    "Old"
-                ],
+                "aliens": ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
                 "count": 10
             }
         },
@@ -303,13 +270,7 @@
             "name": "Kills: No Fly Zone (Flying things 25/50)",
             "rule": "GroupKillCount",
             "params": {
-                "aliens": [
-                    "GreenDemon",
-                    "RedDemon",
-                    "Drone",
-                    "Wasp",
-                    "Old"
-                ],
+                "aliens": ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
                 "count": 25
             }
         },
@@ -317,17 +278,66 @@
             "name": "Kills: Death From Below (Flying things 50/50)",
             "rule": "GroupKillCount",
             "params": {
-                "aliens": [
-                    "GreenDemon",
-                    "RedDemon",
-                    "Drone",
-                    "Wasp",
-                    "Old"
-                ],
-                "count": 50
+                "aliens": ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
+                "count": 50 
+            }
+        },
+        {
+            "name": "Items: Shell Collector",
+            "rule": "StuffCollected",
+            "params": {
+                "stuff": "Shot",
+                "count": 800
+            },
+            "reward": {
+                "desc": "Shot carry +40",
+                "ammoType": "Shot",
+                "addAmmo": 20,
+                "addMaxAmmo": 40
+            }
+        },
+        {
+            "name": "Items: Full Metal Jacket (400/800)",
+            "rule": "StuffCollected",
+            "params": {
+                "stuff": "Bullet",
+                "count": 400
+            }
+        },
+        {
+            "name": "Items: Top Brass (800/800)",
+            "rule": "StuffCollected",
+            "params": {
+                "stuff": "Bullet",
+                "count": 800
+            },
+            "reward": {
+                "desc": "Bullet carry +40",
+                "ammoType": "Bullet",
+                "addAmmo": 40,
+                "addMaxAmmo": 40
+            }
+        },
+
+        {
+            "name": "Items: Air Miles Collector",
+            "rule": "StuffCollected",
+            "params": {
+                "stuff": "Fuel",
+                "count": 1000
+            }
+        },
+        {
+            "name": "Items: Frequent Flier",
+            "rule": "StuffCollected",
+            "params": {
+                "stuff": "Fuel",
+                "count": 2000
+            },
+            "reward": {
+                "desc": "Fuel carry +250",
+                "addMaxFuel": 250
             }
         }
-
-
     ] 	
 }

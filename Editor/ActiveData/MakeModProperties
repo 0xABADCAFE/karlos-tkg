@@ -67,6 +67,7 @@ class Achievement {
         'ZoneFound'      => 2,
         'TimeImproved'   => 3,
         'PlayerDied'     => 4,
+        'StuffCollected' => 5,
     ];
 
     private const ACH_PARAM_FN = [
@@ -75,7 +76,7 @@ class Achievement {
         'parseZoneFoundParams',
         'parseMaskedLevelCountParams',
         'parseMaskedLevelCountParams',
-
+        'parseStuffCollectedParams',
     ];
 
     /**
@@ -84,7 +85,7 @@ class Achievement {
     public static function buildAchievements(
         array $aAchievements,
         stdClass $oAlienTypes,
-        $oPlayerAmmoTypes
+        stdClass $oPlayerAmmoTypes
     ): string {
 
         $oStringHeap = new StringHeap;
@@ -158,7 +159,7 @@ class Achievement {
             throw new RuntimeException('Achievement parameters missing / invalid');
         }
 
-        $this->parseParams($oAchievement->params, $oAlienTypes);
+        $this->parseParams($oAchievement->params, $oAlienTypes, $oPlayerAmmoTypes);
 
         // Reward is optional
         if (!empty($oAchievement->reward)) {
@@ -227,12 +228,12 @@ class Achievement {
         }
     }
 
-    private function parseParams(stdClass $oParams, stdClass $oAlienTypes): void {
+    private function parseParams(stdClass $oParams, stdClass $oAlienTypes, stdClass $oPlayerAmmoTypes): void {
         $cCall = [$this, self::ACH_PARAM_FN[$this->iRule]];
-        $cCall($oParams, $oAlienTypes);
+        $cCall($oParams, $oAlienTypes, $oPlayerAmmoTypes);
     }
 
-    private function parseKillCountParams(stdClass $oParams, stdClass $oAlienTypes) {
+    private function parseKillCountParams(stdClass $oParams, stdClass $oAlienTypes, stdClass $oPlayerAmmoTypes) {
         if (
             !isset($oParams->alien) ||
             !is_string($oParams->alien) ||
@@ -254,7 +255,7 @@ class Achievement {
     }
 
 
-    private function parseZoneFoundParams(stdClass $oParams, stdClass $oAlienTypes) {
+    private function parseZoneFoundParams(stdClass $oParams, stdClass $oAlienTypes, stdClass $oPlayerAmmoTypes) {
         if (
             !isset($oParams->level) ||
             !is_int($oParams->level) ||
@@ -277,7 +278,7 @@ class Achievement {
         $this->sEncParams = pack('Nnn', $iValue, 0, 0);
     }
 
-    private function parseMaskedLevelCountParams(stdClass $oParams, stdClass $oAlienTypes) {
+    private function parseMaskedLevelCountParams(stdClass $oParams, stdClass $oAlienTypes, stdClass $oPlayerAmmoTypes) {
         if (
             !isset($oParams->levelMask) ||
             !is_int($oParams->levelMask)
@@ -304,7 +305,7 @@ class Achievement {
     }
 
 
-    private function parseGroupKillCountParams(stdClass $oParams, stdClass $oAlienTypes) {
+    private function parseGroupKillCountParams(stdClass $oParams, stdClass $oAlienTypes, stdClass $oPlayerAmmoTypes) {
         if (
             !isset($oParams->aliens) ||
             !is_array($oParams->aliens)
@@ -332,6 +333,35 @@ class Achievement {
         $iCount = $oParams->count;
         $this->sEncParams = pack('Nnn', $iMask, $oParams->count, 0);
 
+    }
+
+    private function parseStuffCollectedParams(stdClass $oParams, stdClass $oAlienTypes, stdClass $oPlayerAmmoTypes) {
+        if (
+            !isset($oParams->count) ||
+            !is_int($oParams->count) ||
+            $oParams->count < 1
+        ) {
+            throw new RuntimeException('Missing/invalid count for rule');
+        }
+
+        if (
+            !isset($oParams->stuff) ||
+            !is_string($oParams->stuff)
+        ) {
+            throw new RuntimeException('Missing/invalid stuff identifier for rule');
+        }
+
+        if ($oParams->stuff === "Health") {
+            $iStuffID = 0;
+        } else if ($oParams->stuff === "Fuel") {
+            $iStuffID = 1;
+        } else if (isset($oPlayerAmmoTypes->{$oParams->stuff})) {
+            $iStuffID = 2 + $oPlayerAmmoTypes->{$oParams->stuff};
+        } else {
+            throw new RuntimeExcpetion('Invalid stuff for rule');
+        }
+
+        $this->sEncParams = pack('Nnn', $oParams->count, $iStuffID, 0);
     }
 
 }
@@ -364,7 +394,6 @@ class GameModPropertiesBuilder {
         $oData            = $this->loadSource();
         $sInventoryLimits = $this->buildInventoryLimits($oData);
         $sAchievements    = $this->buildAchievements($oData);
-
         file_put_contents($this->sTargetPath, $sInventoryLimits . $sAchievements);
     }
 
@@ -383,7 +412,6 @@ class GameModPropertiesBuilder {
             $oData->inventoryLimits->maxHealth ?? self::DEF_HEALTH_LIMIT,
             $oData->inventoryLimits->maxJetpackFuel ?? self::DEF_FUEL_LIMIT,
         ];
-
 
         return pack(
             'n*',
