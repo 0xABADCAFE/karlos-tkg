@@ -96,10 +96,10 @@
                 "count": 100
             },
             "reward": {
-                "desc": "Shells +40",
-                "ammoType": "Shot",
+                "desc": "Blaster +40, Carry +40",
+                "ammoType": "Blaster",
                 "addAmmo": 40,
-                "addMaxAmmo": 0
+                "addMaxAmmo": 40
             }
         },
         {
@@ -116,6 +116,88 @@
                 "addHealth": 200
             }
         },
+        {
+            "name": "Kills: Warranty Voided (Robots 10/100)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
+                "count": 10
+            }
+        },
+        {
+            "name": "Kills: Raze Of The Robots (Robots 50/100)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
+                "count": 50
+            }
+        },
+        {
+            "name": "Kills: Demise Of The Machines (Robots 100/100)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
+                "count": 100
+            },
+            "reward": {
+                "desc": "Plasma +40, Max Carry +40",
+                "ammoType": "Plasma",
+                "addAmmo": 40,
+                "addMaxAmmo": 40
+            }
+        },
+
+
+        {
+            "name": "Kills: Red Menace (Other red things 10/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["ShotgunGuard", "RedDemon", "InsectBoss"],
+                "count": 10
+            }
+        },
+        {
+            "name": "Kills: Red's Dead, Baby (Other red things, 25/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["ShotgunGuard", "RedDemon", "InsectBoss"],
+                "count": 25
+            }
+        },
+        {
+            "name": "Kills: Dead Red Redemption (Other red things 50/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["ShotgunGuard", "RedDemon", "InsectBoss"],
+                "count": 50
+            }
+        },
+        {
+            "name": "Kills: Clear Skies (Flying things 10/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
+                "count": 10
+            }
+        },
+        {
+            "name": "Kills: No Fly Zone (Flying things 25/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
+                "count": 25
+            }
+        },
+        {
+            "name": "Kills: Death From Below (Flying things 50/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
+                "count": 50 
+            }
+        },
+
+
         {
             "name": "Found: Hey, nice desk, Picard.",
             "rule": "ZoneFound",
@@ -202,84 +284,6 @@
                 "levelMask": 65535,
                 "count": 10,
                 "overall": true
-            }
-        },
-        {
-            "name": "Kills: Red Menace (Other red things 10/50)",
-            "rule": "GroupKillCount",
-            "params": {
-                "aliens": ["ShotgunGuard", "RedDemon", "InsectBoss"],
-                "count": 10
-            }
-        },
-        {
-            "name": "Kills: Red's Dead, Baby (Other red things, 25/50)",
-            "rule": "GroupKillCount",
-            "params": {
-                "aliens": ["ShotgunGuard", "RedDemon", "InsectBoss"],
-                "count": 25
-            }
-        },
-        {
-            "name": "Kills: Dead Red Redemption (Other red things 50/50)",
-            "rule": "GroupKillCount",
-            "params": {
-                "aliens": ["ShotgunGuard", "RedDemon", "InsectBoss"],
-                "count": 50
-            }
-        },
-        {
-            "name": "Kills: Warranty Voided (Robots 10/100)",
-            "rule": "GroupKillCount",
-            "params": {
-                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
-                "count": 10
-            }
-        },
-        {
-            "name": "Kills: Raze Of The Robots (Robots 50/100)",
-            "rule": "GroupKillCount",
-            "params": {
-                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
-                "count": 50
-            }
-        },
-        {
-            "name": "Kills: Demise Of The Machines (Robots 100/100)",
-            "rule": "GroupKillCount",
-            "params": {
-                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
-                "count": 100
-            },
-            "reward": {
-                "desc": "Plasma carry +20",
-                "ammoType": "Plasma",
-                "addAmmo": 20,
-                "addMaxAmmo": 20
-            }
-        },
-        {
-            "name": "Kills: Clear Skies (Flying things 10/50)",
-            "rule": "GroupKillCount",
-            "params": {
-                "aliens": ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
-                "count": 10
-            }
-        },
-        {
-            "name": "Kills: No Fly Zone (Flying things 25/50)",
-            "rule": "GroupKillCount",
-            "params": {
-                "aliens": ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
-                "count": 25
-            }
-        },
-        {
-            "name": "Kills: Death From Below (Flying things 50/50)",
-            "rule": "GroupKillCount",
-            "params": {
-                "aliens": ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
-                "count": 50 
             }
         },
         {
