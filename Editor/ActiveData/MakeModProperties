@@ -3,7 +3,372 @@
 
 declare(strict_types=1);
 
+/**
+ * StringHeap
+ */
+class StringHeap {
 
+    private array  $aStrings = [];
+    private string $sHeap    = '';
+    private int    $iOffset  = 4;
+
+    /**
+     * Adds a string, returning the offset to the start within the heap.
+     * Empty strings are not stored and will always return a zero offset.
+     *
+     */
+    public function add(string $sString): int {
+        if (empty($sString)) {
+            return 0;
+        } else if (isset($this->aStrings[$sString])) {
+            return $this->aStrings[$sString];
+        }
+        $this->sHeap .= $sString . "\0";
+        $iOffset = $this->iOffset;
+        $this->aStrings[$sString] = $iOffset;
+        $this->iOffset += strlen($sString) + 1;
+        return $iOffset;
+    }
+
+    /**
+     * Export the actual string heap. This begins with a 4 byte size field (big endian), followed by the set of
+     * strings.
+     */
+    public function export(): string {
+        $sData = pack('N', $this->iOffset) . $this->sHeap;
+        return str_pad($sData, ((strlen($sData) + 3) & ~3), "\0");
+    }
+
+}
+
+/**
+ * Achievement
+ */
+class Achievement {
+
+    private int    $iNameOfs; // Pointer to string (offset uin heap)
+    private int    $iRule;
+    private string $sEncParams   = '';
+
+    private int $iRewardDescOfs  = 0; // Pointer to string (offset in heap)
+    private int $iHealthCapBonus = 0;
+    private int $iHealthBonus    = 0;
+    private int $iFuelCapBonus   = 0;
+    private int $iAmmoType       = -1;
+    private int $iAmmoCapBonus   = 0;
+    private int $iAmmoBonus      = 0;
+
+    /**
+     *
+     */
+    private const ACH_RULE_MAP = [
+        'KillCount'      => 0,
+        'GroupKillCount' => 1,
+        'ZoneFound'      => 2,
+        'TimeImproved'   => 3,
+        'PlayerDied'     => 4,
+        'StuffCollected' => 5,
+    ];
+
+    private const ACH_PARAM_FN = [
+        'parseKillCountParams',
+        'parseGroupKillCountParams',
+        'parseZoneFoundParams',
+        'parseMaskedLevelCountParams',
+        'parseMaskedLevelCountParams',
+        'parseStuffCollectedParams',
+    ];
+
+    /**
+     * Constructs the raw
+     */
+    public static function buildAchievements(
+        array $aAchievements,
+        stdClass $oAlienTypes,
+        stdClass $oPlayerAmmoTypes
+    ): string {
+
+        $oStringHeap = new StringHeap;
+
+        $sEncoded = '';
+
+        foreach ($aAchievements as $oAchievementData) {
+            $oAchievement = new self(
+                $oStringHeap,
+                $oAchievementData,
+                $oAlienTypes,
+                $oPlayerAmmoTypes
+            );
+            printf("\tProcessed %s\n", $oAchievementData->name);
+            $sEncoded .= $oAchievement->export();
+        }
+
+        $sEncoded .= $oStringHeap->export();
+
+        return pack('nn', count($aAchievements), strlen($sEncoded)) . $sEncoded;
+    }
+
+    public function export(): string {
+        return pack(
+            'NNN',
+            $this->iNameOfs,        // 4 - replaced with pointer on load
+            $this->iRewardDescOfs,  // 4 - replaced with pointer on load
+            $this->iRule            // 4 - replaced with pointer on load
+        ) . $this->sEncParams .     // 8
+        pack(
+            'nnnnnn',
+            $this->iHealthCapBonus,
+            $this->iHealthBonus,
+            $this->iFuelCapBonus,
+            $this->iAmmoType & 0xFFFF,
+            $this->iAmmoCapBonus,
+            $this->iAmmoBonus
+        );
+
+    }
+
+    protected function __construct(
+        StringHeap $oStringHeap,
+        stdClass $oAchievement,
+        stdClass $oAlienTypes,
+        stdClass $oPlayerAmmoTypes
+    ) {
+        if (
+            empty($oAchievement->name) ||
+            !is_string($oAchievement->name)
+        ) {
+            throw new RuntimeException('Achievement name missing / invalid');
+        }
+
+        $this->iNameOfs = $oStringHeap->add($oAchievement->name);
+
+        if (
+            empty($oAchievement->rule) ||
+            !is_string($oAchievement->rule) ||
+            !isset(self::ACH_RULE_MAP[$oAchievement->rule])
+        ) {
+            throw new RuntimeException('Achievement rule missing / invalid');
+        }
+
+        $this->iRule = self::ACH_RULE_MAP[$oAchievement->rule];
+
+        if (
+            empty($oAchievement->params) ||
+            !is_object($oAchievement->params)
+        ) {
+            throw new RuntimeException('Achievement parameters missing / invalid');
+        }
+
+        $this->parseParams($oAchievement->params, $oAlienTypes, $oPlayerAmmoTypes);
+
+        // Reward is optional
+        if (!empty($oAchievement->reward)) {
+            if (!is_object($oAchievement->reward)) {
+                throw new RuntimeException('Achievement reward must be a structure');
+            }
+            $this->parseReward($oStringHeap, $oAchievement->reward, $oPlayerAmmoTypes);
+        }
+    }
+
+    private function parseReward(StringHeap $oStringHeap, stdClass $oReward, stdClass $oPlayerAmmoTypes): void {
+        if (
+            !isset($oReward->desc) ||
+            !is_string($oReward->desc)
+        ) {
+            throw new RuntimeException('Achievement reward description missing/invalid');
+        }
+        $this->iRewardDescOfs = $oStringHeap->add($oReward->desc);
+
+        if (isset($oReward->addMaxHealth)) {
+            if (!is_int($oReward->addMaxHealth)) {
+                throw new RuntimeException('Achievement reward max health bonus not an integer');
+            }
+            $this->iHealthCapBonus = $oReward->addMaxHealth;
+        }
+
+        if (isset($oReward->addHealth)) {
+            if (!is_int($oReward->addHealth)) {
+                throw new RuntimeException('Achievement reward health bonus not an integer');
+            }
+            $this->iHealthBonus = $oReward->addHealth;
+        }
+
+        if (isset($oReward->addMaxFuel)) {
+            if (!is_int($oReward->addMaxFuel)) {
+                throw new RuntimeException('Achievement reward max fuel bonus not an integer');
+            }
+            $this->iFuelCapBonus = $oReward->addMaxFuel;
+        }
+        if (isset($oReward->ammoType)) {
+            if (
+                !is_string($oReward->ammoType) ||
+                !isset($oPlayerAmmoTypes->{$oReward->ammoType})
+            ) {
+                throw new RuntimeException('Achievement reward unrecognised ammo type');
+            }
+
+            $this->iAmmoType = $oPlayerAmmoTypes->{$oReward->ammoType};
+
+            if (isset($oReward->addMaxAmmo)) {
+                if (!is_int($oReward->addMaxAmmo)) {
+                    throw new RuntimeException('Achievement reward max ammo bonus is not an integer');
+                }
+
+                $this->iAmmoCapBonus = $oReward->addMaxAmmo;
+            }
+
+            if (isset($oReward->addAmmo)) {
+                if (!is_int($oReward->addAmmo)) {
+                    throw new RuntimeException('Achievement reward ammo bonus is not an integer');
+                }
+
+                $this->iAmmoCapBonus = $oReward->addMaxAmmo;
+            }
+
+        }
+    }
+
+    private function parseParams(stdClass $oParams, stdClass $oAlienTypes, stdClass $oPlayerAmmoTypes): void {
+        $cCall = [$this, self::ACH_PARAM_FN[$this->iRule]];
+        $cCall($oParams, $oAlienTypes, $oPlayerAmmoTypes);
+    }
+
+    private function parseKillCountParams(stdClass $oParams, stdClass $oAlienTypes, stdClass $oPlayerAmmoTypes) {
+        if (
+            !isset($oParams->alien) ||
+            !is_string($oParams->alien) ||
+            !isset($oAlienTypes->{$oParams->alien})
+        ) {
+            throw new RuntimeException('Missing/invalid alien type for KillCount rule');
+        }
+        $iAlien = $oAlienTypes->{$oParams->alien};
+        if (
+            !isset($oParams->count) ||
+            !is_int($oParams->count) ||
+            $oParams->count < 1 ||
+            $oParams->count > 65535
+        ) {
+            throw new RuntimeException('Missing/invalid count for KillCount rule');
+        }
+
+        $this->sEncParams = pack('nnnn', $iAlien, $oParams->count, 0, 0);
+    }
+
+
+    private function parseZoneFoundParams(stdClass $oParams, stdClass $oAlienTypes, stdClass $oPlayerAmmoTypes) {
+        if (
+            !isset($oParams->level) ||
+            !is_int($oParams->level) ||
+            $oParams->level < 0 ||
+            $oParams->level > 15
+        ) {
+            throw new RuntimeException('Missing/invalid level for rule');
+        }
+        if (
+            !isset($oParams->zone) ||
+            !is_int($oParams->zone) ||
+            $oParams->zone < 0 ||
+            $oParams->zone > 512
+        ) {
+            throw new RuntimeException('Missing/invalid zone id for rule');
+        }
+
+        $iValue = ($oParams->level << 16) | $oParams->zone;
+
+        $this->sEncParams = pack('Nnn', $iValue, 0, 0);
+    }
+
+    private function parseMaskedLevelCountParams(stdClass $oParams, stdClass $oAlienTypes, stdClass $oPlayerAmmoTypes) {
+        if (
+            !isset($oParams->levelMask) ||
+            !is_int($oParams->levelMask)
+        ) {
+            throw new RuntimeException('Missing/invalid level mask for rule');
+        }
+        if (
+            !isset($oParams->count) ||
+            !is_int($oParams->count) ||
+            $oParams->count < 1
+        ) {
+            throw new RuntimeException('Missing/invalid count for rule');
+        }
+
+        $bOverall = false;
+
+        if (isset($oParams->overall)) {
+            if (!is_bool($oParams->overall)) {
+                throw new RuntimeException('overall must be a boolean');
+            }
+            $bOverall = $oParams->overall ? 1 : 0;
+        }
+        $this->sEncParams = pack('Nnn', $oParams->levelMask, $oParams->count, $bOverall);
+    }
+
+
+    private function parseGroupKillCountParams(stdClass $oParams, stdClass $oAlienTypes, stdClass $oPlayerAmmoTypes) {
+        if (
+            !isset($oParams->aliens) ||
+            !is_array($oParams->aliens)
+        ) {
+            throw new RuntimeException('Missing/invalid aliens type for GroupKillCount rule');
+        }
+        $iMask = 0;
+        foreach ($oParams->aliens as $sAlien) {
+            if (
+                !is_string($sAlien) ||
+                !isset($oAlienTypes->{$sAlien})
+            ) {
+                throw new RuntimeException('Invalid alien type ' . $sAlien . ' found in GroupKillCount rule');
+            }
+            $iMask |= 1 << $oAlienTypes->{$sAlien};
+        }
+        if (
+            !isset($oParams->count) ||
+            !is_int($oParams->count) ||
+            $oParams->count < 1 ||
+            $oParams->count > 65535
+        ) {
+            throw new RuntimeException('Missing/invalid count for KillCount rule');
+        }
+        $iCount = $oParams->count;
+        $this->sEncParams = pack('Nnn', $iMask, $oParams->count, 0);
+
+    }
+
+    private function parseStuffCollectedParams(stdClass $oParams, stdClass $oAlienTypes, stdClass $oPlayerAmmoTypes) {
+        if (
+            !isset($oParams->count) ||
+            !is_int($oParams->count) ||
+            $oParams->count < 1
+        ) {
+            throw new RuntimeException('Missing/invalid count for rule');
+        }
+
+        if (
+            !isset($oParams->stuff) ||
+            !is_string($oParams->stuff)
+        ) {
+            throw new RuntimeException('Missing/invalid stuff identifier for rule');
+        }
+
+        if ($oParams->stuff === "Health") {
+            $iStuffID = 0;
+        } else if ($oParams->stuff === "Fuel") {
+            $iStuffID = 1;
+        } else if (isset($oPlayerAmmoTypes->{$oParams->stuff})) {
+            $iStuffID = 2 + $oPlayerAmmoTypes->{$oParams->stuff};
+        } else {
+            throw new RuntimeExcpetion('Invalid stuff for rule');
+        }
+
+        $this->sEncParams = pack('Nnn', $oParams->count, $iStuffID, 0);
+    }
+
+}
+
+/**
+ * Generate the mod properties file from the JSON spec
+ */
 class GameModPropertiesBuilder {
 
     private const NUM_AMMO_TYPES   = 20;
@@ -11,6 +376,9 @@ class GameModPropertiesBuilder {
     private const DEF_HEALTH_LIMIT = 32767;
     private const DEF_FUEL_LIMIT   = 255;
 
+    private const ZERO_BYTE = "\0";
+    private const ZERO_WORD = "\0\0";
+    private const ZERO_LONG = "\0\0\0\0";
 
     private string $sSourcePath;
     private string $sTargetPath;
@@ -25,11 +393,10 @@ class GameModPropertiesBuilder {
     public function build() {
         $oData            = $this->loadSource();
         $sInventoryLimits = $this->buildInventoryLimits($oData);
-        file_put_contents($this->sTargetPath, $sInventoryLimits);
+        $sAchievements    = $this->buildAchievements($oData);
+        file_put_contents($this->sTargetPath, $sInventoryLimits . $sAchievements);
     }
-   
 
- 
     private function buildInventoryLimits(stdClass $oData): string {
         $aMaxAmmoCounts = array_fill(0, self::NUM_AMMO_TYPES - 1, 0);
         $aPlayerAmmoTypes = (array)$oData->playerAmmoTypes;
@@ -40,12 +407,11 @@ class GameModPropertiesBuilder {
             $iIndex = $aPlayerAmmoTypes[$sAmmoKey];
             $aMaxAmmoCounts[$iIndex] = $iValue;
         }
-    
+
         $aInventoryLimits = [
             $oData->inventoryLimits->maxHealth ?? self::DEF_HEALTH_LIMIT,
             $oData->inventoryLimits->maxJetpackFuel ?? self::DEF_FUEL_LIMIT,
         ];
-
 
         return pack(
             'n*',
@@ -55,11 +421,32 @@ class GameModPropertiesBuilder {
         );
     }
 
+    private function buildAchievements(stdClass $oData): string {
+
+        if (empty($oData->achievements)) {
+            return self::ZERO_WORD;
+        }
+
+        if (!is_array($oData->achievements)) {
+            throw new RuntimeException('achivements must be an array');
+        }
+
+        return Achievement::buildAchievements(
+            $oData->achievements,
+            $oData->alienTypes,
+            $oData->playerAmmoTypes
+        );
+    }
+
 
     private function loadSource(): stdClass {
         $oData = json_decode(file_get_contents($this->sSourcePath));
         if (empty($oData)) {
             throw new RuntimeException('Unable to load source ' . $this->sSourcePath);
+        }
+
+        if (empty($oData->alienTypes)) {
+            throw new RuntimeException('alienTypes cannot be empty');
         }
 
         if (empty($oData->playerAmmoTypes)) {
@@ -105,8 +492,10 @@ class GameModPropertiesBuilder {
 
 $aOpts = getopt('i:o:', []);
 
-$sSource = $aOpts['i'] ?? 'game_properties.json';
-$sTarget = $aOpts['o'] ?? 'game_properties.dat';
+$sSource = $aOpts['i'] ?? 'game.props.json';
+$sTarget = $aOpts['o'] ?? 'game.props';
+
+printf("Processing %s, writing to %s\n", $sSource, $sTarget);
 
 $oBuilder = new GameModPropertiesBuilder(
     $sSource,

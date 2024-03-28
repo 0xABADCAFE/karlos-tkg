@@ -5,3 +5,5 @@ Editor/Storage/XC-data/*
 Editor/ActiveData/Graphics/*/*.info
 Editor/**/_UAEFSDB.___
 Game/**/_UAEFSDB.___
+Game/game.stats
+Game/game.prefs
