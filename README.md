@@ -30,9 +30,9 @@ To run the game, go into the Game drawer on your Amiga and double-click the Karl
 ### Engine Selection
 On opening the KarlosTKG icon, the startup script will ask you to select an engine to use:
 
-- AGA: This version is implememented in 100% assembler and has no support graphics cards. 
-- AGA Dev: As above, but includes devmode features used in level editing and engine debugging.
-- RTG: This version is implemented in assembler and C and has support for graphics cards. Note however, that AGA is still required.
+- ASM: This version is implememented in 100% assembler and has no support graphics cards. 
+- ASM Dev: As above, but includes devmode features used in level editing and engine debugging.
+- RTG: This version is implemented in assembler with some C and has support for graphics cards. In RTG mode, OCS and ECS machines are supported.
 - RTG Dev: As above, but includes devmode features used in level editing and engine debugging.
 
 ### Quality Selection
