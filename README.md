@@ -43,6 +43,35 @@ On opening the KarlosTKG icon, the startup script will ask you to select an engi
 ## Editing
 The mod ships with the original editing tools and all assets in iff/png format. Sound assets are either raw or 8svx.
 
+## Comparative Screenshots
+
+Shown below are some comparative screenshots.
+
+### Medical bay and quarantine
+
+This is where you start. In the original Team17 release, you have the shotgun. In this version, you begin with the blaster and have to locate the shotgun.
+
+![Medical Bay](pics/medical_bay_00_before.png)![Medical Bay](pics/medical_bay_00_after.png)
+
+![Quarantine](pics/medical_bay_01_before.png)![Quarantine](pics/medical_bay_01_after.png)
+
+### Bridge and Ready Room
+
+In the original release, locating the Bridge is pretty straightfowards. In this version, the whole ship is in lockdown, with intersection doors closed. You'll have to find a different route there.
+
+![Bridge](pics/bridge_00_before.png)![Bridge](pics/bridge_00_after.png)
+
+![Ready Room](pics/ready_room_00_before.png)![Ready Room](pics/ready_room_00_after.png)
+
+### Docking Ring
+
+In the original release, it's not made exactly clear what the Indomitable is docked with, other than the suggestion it's part of the alien titan. In this release, the ship is docked with a human built orbital facility. You aren't the only thing docked, however...
+
+![Docking Ring](pics/docking_ring_00_before.png)![Docking Ring](pics/docking_ring_00_after.png)
+
+![Docking Ring](pics/docking_ring_01_before.png)![Docking Ring](pics/docking_ring_01_after.png)
+
+![Docking Ring](pics/docking_ring_02_before.png)![Docking Ring](pics/docking_ring_02_after.png)
+
 # Plot Reboot
 Coming soon....
-
