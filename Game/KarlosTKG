@@ -1,20 +1,27 @@
-Set TKGEngine `C:RequestChoice TITLE "Alien Breed 3D 2" BODY "Choose Engine:*n*nAGA: Pure assembler version, AGA only.*nAGA Dev: As above, with developer options.*nRTG: RTG and AGA comptabile.*nRTG Dev: As above, with developer options." GADGETS "AGA|AGA Dev|RTG|RTG Dev|Cancel"`
+; This is the launch script for the KarlosTKG mod.
+;
+; The included game engine only cares about the AB3: assign and the gamelink and the
+; game link file has been updated to only use AB3: derived paths.
+;
+; In order to support low and high spec versions, we build up the AB3: assign using
+; the ability to add paths to an assign.
+
+
+; Select the engine version to use
+Set TKGEngine `C:RequestChoice TITLE "AB3D2 Redux" BODY "Choose Engine:*n*nASM: Assembler version, AGA only.*nASM Dev: As above, with developer options.*nRTG: RTG/AGA comptabile.*nRTG Dev: As above, with developer options.*n*nNote:*nASM builds lag behind the RTG builds featurewise*nbut may be slightly faster on lower end systems.*n*nRTG builds do not require RTG, AGA is supported.*nOCS/ECS systems are also supported in RTG mode." GADGETS "ASM|ASM Dev|RTG|RTG Dev|Cancel"`
 
 If $TKGEngine EQ 0
     Quit
 Endif
 
-Set TKGSpec `C:RequestChoice TITLE "Alien Breed 3D 2" BODY "Choose Game Specification:*n*nHigh Spec: Vector pickups*n*nLow Spec: Bitmapped pickups" GADGETS "High Spec|Low Spec|Cancel"`
+; Select the system spec to use
+Set TKGSpec `C:RequestChoice TITLE "AB3D 2 Redux" BODY "Choose Game Specification:*n*nHigh Spec: UAE, PiStorm, 68080, 68060*nLow Spec: 68030+*n*nBy default, the engine will use fullscreen mode if*na 68040 or higher is detected.*nHigh spec mode uses more vector objects and*nincreased level geometry/detailing.*nFor 68030, 2/3 screen size and/or 1x2 pixelmode*nis recommended." GADGETS "High Spec|Low Spec|Cancel"`
 
 If $TKGSpec EQ 0
     Quit
 Endif
 
 Stack 262144
-Assign tkg1: ""
-Assign tkg2: ""
-Assign sfx:  ""
-Assign tkgfx: SoundFX
 Assign ab3: ""
 
 If $TKGSpec EQ 1
@@ -30,7 +37,8 @@ If $TKGEngine EQ 1
 EndIf
 
 If $TKGEngine EQ 2
-   bin/tkg_asm_dev
+   bin/tkg_asm_dev > T:tkg_debuglog_asm.txt
+   multiview T:tkg_debuglog_asm.txt
 EndIf
 If $TKGEngine EQ 3
    bin/tkg_c
@@ -39,3 +47,8 @@ If $TKGEngine EQ 4
    bin/tkg_c_dev > T:tkg_debuglog.txt
    multiview T:tkg_debuglog.txt
 EndIf
+
+; Clean Up
+Assign REMOVE ab3:
+
+
