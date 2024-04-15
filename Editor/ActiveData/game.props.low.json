@@ -1,0 +1,343 @@
+{	
+    "alienTypes": {
+        "Beast": 0,
+        "ShotgunGuard": 1,
+        "BasicGuard": 2,
+        "Marine": 3,
+        "GreenDemon": 4,
+        "PlasmaGuard": 5,
+        "Defender": 6,
+        "RedDemon": 7,
+        "Worm": 8,
+        "Insectoid": 10,
+        "Priest": 11,
+        "BigInsect": 12,
+        "Drone": 14,
+        "Wasp": 15,
+        "Mantis": 16,
+        "InsectBoss": 17,
+        "Crab": 18,
+        "Old": 19
+    },
+    "playerAmmoTypes": {
+        "Plasma": 0,	
+        "Bullet": 1,	
+        "Rocket": 2,	
+        "Shot": 7,	
+        "Grenade": 8,	
+        "Bouncer": 14,	
+        "Mine": 15,	
+        "Blaster": 16,	
+        "ChargedPlasma": 19	
+    },	
+    "specialAmmoTypes": {
+        "Bandolier": 3,	
+        "Backpack": 4	
+    },	
+    "inventoryLimits": {
+        "maxHealth": 300,	
+        "maxJetpackFuel": 250,	
+        "maxAmmo": {	
+            "Blaster": 60,	
+            "Shot": 40,	
+            "Grenade": 12,	
+            "Bullet": 240,	
+            "Plasma": 100,	
+            "Rocket": 6,	
+            "ChargedPlasma": 10,	
+            "Mine": 5,	
+            "Bouncer": 30	
+        }	
+    },	
+    "specialAmmoRules": {
+        "Bandolier": {	
+            "newMaxAmmo": {	
+                "Bullet": 480,	
+                "Shot": 80	
+            }	
+        },	
+        "Backpack": {	
+            "newMaxAmmo": {	
+                "Grenade": 36,	
+                "Rocket": 15	
+            }	
+        }	
+    },
+    "achievements": [
+        {
+            "name": "Kills: First Blood!",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["Beast", "BasicGuard"],
+                "count": 1
+            }
+        },
+        {
+            "name": "Kills: Beast Bashin' (Pest control 10/200)",
+            "rule": "KillCount",
+            "params": {
+                "alien": "Beast",
+                "count": 10
+            }
+        },
+        {
+            "name": "Kills: Alien Bleed (Pest control 50/200)",
+            "rule": "KillCount",
+            "params": {
+                "alien": "Beast",
+                "count": 50
+            }
+        },
+        {
+            "name": "Kills: Endangered Species (Pest control 100/200)",
+            "rule": "KillCount",
+            "params": {
+                "alien": "Beast",
+                "count": 100
+            },
+            "reward": {
+                "desc": "Shells +40",
+                "ammoType": "Shot",
+                "addAmmo": 40,
+                "addMaxAmmo": 0
+            }
+        },
+        {
+            "name": "Kills: Xenocide! (Pest control 200/200)",
+            "rule": "KillCount",
+            "params": {
+                "alien": "Beast",
+                "count": 200
+            },
+            "reward": {
+                "desc": "Health Cap +200, HP: +200",
+                "ammoType": "Shot",
+                "addMaxHealth": 200,
+                "addHealth": 200
+            }
+        },
+        {
+            "name": "Found: Hey, nice desk, Picard.",
+            "rule": "ZoneFound",
+            "params": {
+                "level": 0,
+                "zone": 135
+            }
+        },
+        {
+            "name": "Found: The Clithercube (Locator: 1/?)",
+            "rule": "ZoneFound",
+            "params": {
+                "level": 1,
+                "zone": 210
+            }
+        },
+        {
+            "name": "Again: Action Replay (Beat any previous level time)",
+            "rule": "TimeImproved",
+            "params": {
+                "levelMask": 65535,
+                "count": 1,
+                "overall": true
+            }
+        },
+        {
+            "name": "Again: Optimiser (Improve a previous level time 5 times)",
+            "rule": "TimeImproved",
+            "params": { 
+                "levelMask": 65535,
+                "count": 5,
+                "overall": true
+            }
+        },
+        {
+            "name": "Again: Perfectionist (Improve any single previous level time 5 times)",
+            "rule": "TimeImproved",
+            "params": { 
+                "levelMask": 65535,
+                "count": 5,
+                "overall": false
+            }
+        },
+        {
+            "name": "Died: 'Tis but a scratch!",
+            "rule": "PlayerDied",
+            "params": { 
+                "levelMask": 65535,
+                "count": 1,
+                "overall": false
+            }
+        },
+        {
+            "name": "Died: I've had worse!",
+            "rule": "PlayerDied",
+            "params": { 
+                "levelMask": 65535,
+                "count": 2,
+                "overall": true
+            }
+        },
+        {
+            "name": "Died: It's just a flesh wound!",
+            "rule": "PlayerDied",
+            "params": { 
+                "levelMask": 65535,
+                "count": 3,
+                "overall": true
+            }
+        },
+        {
+            "name": "Died: Right! I'll do you for that!",
+            "rule": "PlayerDied",
+            "params": { 
+                "levelMask": 65535,
+                "count": 4,
+                "overall": true
+            }
+        },
+        {
+            "name": "Died: Die Hard",
+            "rule": "PlayerDied",
+            "params": { 
+                "levelMask": 65535,
+                "count": 10,
+                "overall": true
+            }
+        },
+        {
+            "name": "Kills: Red Menace (Other red things 10/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["ShotgunGuard", "RedDemon", "InsectBoss"],
+                "count": 10
+            }
+        },
+        {
+            "name": "Kills: Red's Dead, Baby (Other red things, 25/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["ShotgunGuard", "RedDemon", "InsectBoss"],
+                "count": 25
+            }
+        },
+        {
+            "name": "Kills: Dead Red Redemption (Other red things 50/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["ShotgunGuard", "RedDemon", "InsectBoss"],
+                "count": 50
+            }
+        },
+        {
+            "name": "Kills: Warranty Voided (Robots 10/100)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
+                "count": 10
+            }
+        },
+        {
+            "name": "Kills: Raze Of The Robots (Robots 50/100)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
+                "count": 50
+            }
+        },
+        {
+            "name": "Kills: Demise Of The Machines (Robots 100/100)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
+                "count": 100
+            },
+            "reward": {
+                "desc": "Plasma carry +20",
+                "ammoType": "Plasma",
+                "addAmmo": 20,
+                "addMaxAmmo": 20
+            }
+        },
+        {
+            "name": "Kills: Clear Skies (Flying things 10/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
+                "count": 10
+            }
+        },
+        {
+            "name": "Kills: No Fly Zone (Flying things 25/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
+                "count": 25
+            }
+        },
+        {
+            "name": "Kills: Death From Below (Flying things 50/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
+                "count": 50 
+            }
+        },
+        {
+            "name": "Items: Shell Collector",
+            "rule": "StuffCollected",
+            "params": {
+                "stuff": "Shot",
+                "count": 800
+            },
+            "reward": {
+                "desc": "Shot carry +40",
+                "ammoType": "Shot",
+                "addAmmo": 20,
+                "addMaxAmmo": 40
+            }
+        },
+        {
+            "name": "Items: Full Metal Jacket (400/800)",
+            "rule": "StuffCollected",
+            "params": {
+                "stuff": "Bullet",
+                "count": 400
+            }
+        },
+        {
+            "name": "Items: Top Brass (800/800)",
+            "rule": "StuffCollected",
+            "params": {
+                "stuff": "Bullet",
+                "count": 800
+            },
+            "reward": {
+                "desc": "Bullet carry +40",
+                "ammoType": "Bullet",
+                "addAmmo": 40,
+                "addMaxAmmo": 40
+            }
+        },
+
+        {
+            "name": "Items: Air Miles Collector",
+            "rule": "StuffCollected",
+            "params": {
+                "stuff": "Fuel",
+                "count": 1000
+            }
+        },
+        {
+            "name": "Items: Frequent Flier",
+            "rule": "StuffCollected",
+            "params": {
+                "stuff": "Fuel",
+                "count": 2000
+            },
+            "reward": {
+                "desc": "Fuel carry +250",
+                "addMaxFuel": 250
+            }
+        }
+    ] 	
+}
