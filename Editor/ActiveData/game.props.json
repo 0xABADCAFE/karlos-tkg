@@ -117,7 +117,7 @@
             }
         },
         {
-            "name": "Kills: Warranty Voided (Robots 10/100)",
+            "name": "Kills: Warranty Voided (Robots 10/200)",
             "rule": "GroupKillCount",
             "params": {
                 "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
@@ -125,7 +125,7 @@
             }
         },
         {
-            "name": "Kills: Raze Of The Robots (Robots 50/100)",
+            "name": "Kills: Raze Of The Robots (Robots 50/200)",
             "rule": "GroupKillCount",
             "params": {
                 "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
@@ -133,7 +133,7 @@
             }
         },
         {
-            "name": "Kills: Demise Of The Machines (Robots 100/100)",
+            "name": "Kills: Demise Of The Machines (Robots 100/200)",
             "rule": "GroupKillCount",
             "params": {
                 "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
@@ -146,7 +146,6 @@
                 "addMaxAmmo": 40
             }
         },
-
 
         {
             "name": "Kills: Red Menace (Other red things 10/50)",
@@ -196,7 +195,6 @@
                 "count": 50 
             }
         },
-
 
         {
             "name": "Found: Hey, nice desk, Picard.",
@@ -342,6 +340,37 @@
                 "desc": "Fuel carry +250",
                 "addMaxFuel": 250
             }
+        },
+
+        {
+            "name": "Kills: Droid Rage (Robots 200/200)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
+                "count": 200
+            },
+            "reward": {
+                "desc": "Charged Plasma +10, Max Carry +10",
+                "ammoType": "ChargedPlasma",
+                "addAmmo": 10,
+                "addMaxAmmo": 10
+            }
+        },
+
+        {
+            "name": "Kills: Giant Killer (Big Things)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["BigInsect", "InsectBoss", "Crab", "Wasp", "Mantis"],
+                "count": 20
+            },
+            "reward": {
+                "desc": "Rocket +6, Max Carry +6",
+                "ammoType": "Rocket",
+                "addAmmo": 6,
+                "addMaxAmmo": 6
+            }
         }
+
     ] 	
 }
