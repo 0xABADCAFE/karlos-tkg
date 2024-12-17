@@ -8,7 +8,7 @@
 
 
 ; Select the engine version to use
-Set TKGEngine `C:RequestChoice TITLE "AB3D2 Redux" BODY "Choose Engine:*n*nASM: Assembler version, AGA only.*nASM Dev: As above, with developer options.*nRTG: RTG/AGA comptabile.*nRTG Dev: As above, with developer options.*n*nNote:*nASM builds lag behind the RTG builds featurewise*nbut may be slightly faster on lower end systems.*n*nRTG builds do not require RTG, AGA is supported.*nOCS/ECS systems are also supported in RTG mode." GADGETS "ASM|ASM Dev|RTG|RTG Dev|Cancel"`
+Set TKGEngine `C:RequestChoice TITLE "AB3D2 Redux" BODY "Choose Engine:*n*nRelease: Normal release, AGA/RTG.*nDeveloper: Developer build.*n*nNote: OCS/ECS systems are also supported in RTG mode." GADGETS "Release|Developer|Cancel"`
 
 If $TKGEngine EQ 0
     Quit
@@ -33,18 +33,10 @@ If $TKGSpec EQ 2
 EndIf
 
 If $TKGEngine EQ 1
-   bin/tkg_asm
+   bin/tkg
 EndIf
-
 If $TKGEngine EQ 2
-   bin/tkg_asm_dev > T:tkg_debuglog_asm.txt
-   multiview T:tkg_debuglog_asm.txt
-EndIf
-If $TKGEngine EQ 3
-   bin/tkg_c
-EndIf
-If $TKGEngine EQ 4
-   bin/tkg_c_dev > T:tkg_debuglog.txt
+   bin/tkg_dev > T:tkg_debuglog.txt
    multiview T:tkg_debuglog.txt
 EndIf
 
