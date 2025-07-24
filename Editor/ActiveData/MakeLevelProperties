@@ -18,35 +18,22 @@ class LevelPropertiesBuilder {
 
     public function build() {
         $oData       = $this->loadSource();
-        $sZoneErrata = $this->buildZoneErrata($oData);
-        file_put_contents($this->sTargetPath, $sZoneErrata);
+        $sZonePVSErrata = $this->buildZonePVSErrata($oData);
+        file_put_contents($this->sTargetPath, $sZonePVSErrata);
     }
    
 
  
-    private function buildZoneErrata(stdClass $oData): string {
+    private function buildZonePVSErrata(stdClass $oData): string {
+		$sData = '';
 
-        $oZoneErrata           = (array)$oData->ZoneErrata;        
-        $iZoneErrataListLength = count($oZoneErrata);
+		foreach ($oData->ZonePVSErrata as $iZoneID => $aRemoveZoneIDs) {
+			$aRemoveZoneIDs[] = -1;
+			$sData .= pack('nn*', $iZoneID, ...$aRemoveZoneIDs);
+		}
 
-        echo "iZoneErrataListLength:", $iZoneErrataListLength, "\n";
-
-        $sZoneErrataHeader = pack('n', $iZoneErrataListLength);
-        $sZoneErrataBlob   = "";
-        $aOffsets          = [];
-
-        foreach ($oZoneErrata as $aExcludedZoneIDs) {
-            $aOffsets[] = strlen($sZoneErrataBlob);
-            $sZoneErrataBlob .= pack(
-                'C*',
-                count($aExcludedZoneIDs),
-                ...$aExcludedZoneIDs
-            );
-        }
-
-        $sZoneErrataHeader .= pack('n*', ...$aOffsets);
-
-        return $sZoneErrataHeader . $sZoneErrataBlob;
+		$sData .= pack('n', -1);
+        return $sData;
     }
 
 
@@ -85,11 +72,18 @@ class LevelPropertiesBuilder {
     }
 }
 
-$aOpts = getopt('i:o:', []);
+if (!isset($_SERVER['argv'][1])) {
+	throw new RuntimeException("No level specified");
+}
 
-$sSource = $aOpts['i'] ?? 'level_properties.json';
-$sTarget = $aOpts['o'] ?? 'level_properties.dat';
+$sLevel = strtoupper($_SERVER['argv'][1]);
 
+if (!preg_match('/^[A-P]$/', $sLevel)) {
+	throw new RuntimeException('Invalid Level ID ' . $sLevel);
+}
+
+$sSource = sprintf('Errata/LEVEL_%s.json', $sLevel);
+$sTarget = sprintf('../../Game/Levels/LEVEL_%s/errata.dat', $sLevel);
 $oBuilder = new LevelPropertiesBuilder(
     $sSource,
     $sTarget

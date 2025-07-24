@@ -7,15 +7,27 @@
 ; the ability to add paths to an assign.
 
 
+; Try to autodetect which CPU to use
+Set UseCPU 68030
+C:CPU CHECK 68060 > NIL:
+If $RC EQ 0
+	Set UseCPU 68060
+Else
+	C:CPU CHECK 68040 > NIL:
+	If $RC EQ 0
+		Set UseCPU 68040
+	Endif
+Endif
+
 ; Select the engine version to use
-Set TKGEngine `C:RequestChoice TITLE "AB3D2 Redux" BODY "Choose Engine:*n*nASM: Assembler version, AGA only.*nASM Dev: As above, with developer options.*nRTG: RTG/AGA comptabile.*nRTG Dev: As above, with developer options.*n*nNote:*nASM builds lag behind the RTG builds featurewise*nbut may be slightly faster on lower end systems.*n*nRTG builds do not require RTG, AGA is supported.*nOCS/ECS systems are also supported in RTG mode." GADGETS "ASM|ASM Dev|RTG|RTG Dev|Cancel"`
+Set TKGEngine `C:RequestChoice TITLE "AB3D2 Redux" BODY "Choose Engine:*n*nRelease: Normal release, AGA/RTG.*nDeveloper: Developer build.*n*nNote: OCS/ECS systems are also supported in RTG mode." GADGETS "Release|Developer|Cancel"`
 
 If $TKGEngine EQ 0
     Quit
 Endif
 
 ; Select the system spec to use
-Set TKGSpec `C:RequestChoice TITLE "AB3D 2 Redux" BODY "Choose Game Specification:*n*nHigh Spec: UAE, PiStorm, 68080, 68060*nLow Spec: 68030+*n*nBy default, the engine will use fullscreen mode if*na 68040 or higher is detected.*nHigh spec mode uses more vector objects and*nincreased level geometry/detailing.*nFor 68030, 2/3 screen size and/or 1x2 pixelmode*nis recommended." GADGETS "High Spec|Low Spec|Cancel"`
+Set TKGSpec `C:RequestChoice TITLE "AB3D 2 Redux - $UseCPU" BODY "Choose Game Specification:*n*nHigh Spec: UAE, PiStorm, 68080, 68060*nLow Spec: 68030+*n*nBy default, the engine will use fullscreen mode if*na 68040 or higher is detected.*nHigh spec mode uses more vector objects and*nincreased level geometry/detailing.*nFor 68030, 2/3 screen size and/or 1x2 pixelmode*nis recommended." GADGETS "High Spec|Low Spec|Cancel"`
 
 If $TKGSpec EQ 0
     Quit
@@ -33,18 +45,10 @@ If $TKGSpec EQ 2
 EndIf
 
 If $TKGEngine EQ 1
-   bin/tkg_asm
+   bin/$UseCPU/tkg
 EndIf
-
 If $TKGEngine EQ 2
-   bin/tkg_asm_dev > T:tkg_debuglog_asm.txt
-   multiview T:tkg_debuglog_asm.txt
-EndIf
-If $TKGEngine EQ 3
-   bin/tkg_c
-EndIf
-If $TKGEngine EQ 4
-   bin/tkg_c_dev > T:tkg_debuglog.txt
+   bin/$UseCPU/tkg_dev > T:tkg_debuglog.txt
    multiview T:tkg_debuglog.txt
 EndIf
 

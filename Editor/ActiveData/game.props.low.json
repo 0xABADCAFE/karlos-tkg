@@ -96,10 +96,10 @@
                 "count": 100
             },
             "reward": {
-                "desc": "Shells +40",
-                "ammoType": "Shot",
+                "desc": "Blaster +40, Carry +40",
+                "ammoType": "Blaster",
                 "addAmmo": 40,
-                "addMaxAmmo": 0
+                "addMaxAmmo": 40
             }
         },
         {
@@ -116,6 +116,86 @@
                 "addHealth": 200
             }
         },
+        {
+            "name": "Kills: Warranty Voided (Robots 10/200)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
+                "count": 10
+            }
+        },
+        {
+            "name": "Kills: Raze Of The Robots (Robots 50/200)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
+                "count": 50
+            }
+        },
+        {
+            "name": "Kills: Demise Of The Machines (Robots 100/200)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
+                "count": 100
+            },
+            "reward": {
+                "desc": "Plasma +40, Max Carry +40",
+                "ammoType": "Plasma",
+                "addAmmo": 40,
+                "addMaxAmmo": 40
+            }
+        },
+
+        {
+            "name": "Kills: Red Menace (Other red things 10/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["ShotgunGuard", "RedDemon", "InsectBoss"],
+                "count": 10
+            }
+        },
+        {
+            "name": "Kills: Red's Dead, Baby (Other red things, 25/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["ShotgunGuard", "RedDemon", "InsectBoss"],
+                "count": 25
+            }
+        },
+        {
+            "name": "Kills: Dead Red Redemption (Other red things 50/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["ShotgunGuard", "RedDemon", "InsectBoss"],
+                "count": 50
+            }
+        },
+        {
+            "name": "Kills: Clear Skies (Flying things 10/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
+                "count": 10
+            }
+        },
+        {
+            "name": "Kills: No Fly Zone (Flying things 25/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
+                "count": 25
+            }
+        },
+        {
+            "name": "Kills: Death From Below (Flying things 50/50)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
+                "count": 50 
+            }
+        },
+
         {
             "name": "Found: Hey, nice desk, Picard.",
             "rule": "ZoneFound",
@@ -205,84 +285,6 @@
             }
         },
         {
-            "name": "Kills: Red Menace (Other red things 10/50)",
-            "rule": "GroupKillCount",
-            "params": {
-                "aliens": ["ShotgunGuard", "RedDemon", "InsectBoss"],
-                "count": 10
-            }
-        },
-        {
-            "name": "Kills: Red's Dead, Baby (Other red things, 25/50)",
-            "rule": "GroupKillCount",
-            "params": {
-                "aliens": ["ShotgunGuard", "RedDemon", "InsectBoss"],
-                "count": 25
-            }
-        },
-        {
-            "name": "Kills: Dead Red Redemption (Other red things 50/50)",
-            "rule": "GroupKillCount",
-            "params": {
-                "aliens": ["ShotgunGuard", "RedDemon", "InsectBoss"],
-                "count": 50
-            }
-        },
-        {
-            "name": "Kills: Warranty Voided (Robots 10/100)",
-            "rule": "GroupKillCount",
-            "params": {
-                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
-                "count": 10
-            }
-        },
-        {
-            "name": "Kills: Raze Of The Robots (Robots 50/100)",
-            "rule": "GroupKillCount",
-            "params": {
-                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
-                "count": 50
-            }
-        },
-        {
-            "name": "Kills: Demise Of The Machines (Robots 100/100)",
-            "rule": "GroupKillCount",
-            "params": {
-                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
-                "count": 100
-            },
-            "reward": {
-                "desc": "Plasma carry +20",
-                "ammoType": "Plasma",
-                "addAmmo": 20,
-                "addMaxAmmo": 20
-            }
-        },
-        {
-            "name": "Kills: Clear Skies (Flying things 10/50)",
-            "rule": "GroupKillCount",
-            "params": {
-                "aliens": ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
-                "count": 10
-            }
-        },
-        {
-            "name": "Kills: No Fly Zone (Flying things 25/50)",
-            "rule": "GroupKillCount",
-            "params": {
-                "aliens": ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
-                "count": 25
-            }
-        },
-        {
-            "name": "Kills: Death From Below (Flying things 50/50)",
-            "rule": "GroupKillCount",
-            "params": {
-                "aliens": ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
-                "count": 50 
-            }
-        },
-        {
             "name": "Items: Shell Collector",
             "rule": "StuffCollected",
             "params": {
@@ -338,6 +340,37 @@
                 "desc": "Fuel carry +250",
                 "addMaxFuel": 250
             }
+        },
+
+        {
+            "name": "Kills: Droid Rage (Robots 200/200)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
+                "count": 200
+            },
+            "reward": {
+                "desc": "Charged Plasma +10, Max Carry +10",
+                "ammoType": "ChargedPlasma",
+                "addAmmo": 10,
+                "addMaxAmmo": 10
+            }
+        },
+
+        {
+            "name": "Kills: Giant Killer (Big Things)",
+            "rule": "GroupKillCount",
+            "params": {
+                "aliens": ["BigInsect", "InsectBoss", "Crab", "Wasp", "Mantis"],
+                "count": 20
+            },
+            "reward": {
+                "desc": "Rocket +6, Max Carry +6",
+                "ammoType": "Rocket",
+                "addAmmo": 6,
+                "addMaxAmmo": 6
+            }
         }
+
     ] 	
 }
