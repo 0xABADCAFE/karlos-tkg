@@ -20,7 +20,7 @@ Else
 Endif
 
 ; Select the engine version to use
-Set TKGEngine `C:RequestChoice TITLE "AB3D2 Redux" BODY "Choose Engine:*n*nRelease: Normal release, AGA/RTG.*nDeveloper: Developer build.*n*nNote: OCS/ECS systems are also supported in RTG mode." GADGETS "Release|Developer|Cancel"`
+Set TKGEngine `C:RequestChoice TITLE "AB3D2 Redux - $UseCPU" BODY "Choose Engine:*n*nRelease: Normal release, AGA/RTG.*nDeveloper: Developer build.*n*nNote: OCS/ECS systems are also supported in RTG mode." GADGETS "Release|Developer|Cancel"`
 
 If $TKGEngine EQ 0
     Quit
