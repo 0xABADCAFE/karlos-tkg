@@ -1,5 +1,6 @@
 Game/intro.exe
 Game/tkgpatch.exe
+Game/junk/*
 Editor/LevelEdit/*
 Editor/Storage/XC-data/*
 Editor/ActiveData/Graphics/*/*.info
