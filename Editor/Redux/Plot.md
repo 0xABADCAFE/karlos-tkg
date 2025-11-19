@@ -45,7 +45,7 @@ Level begins in the medical bay:
 - Wall panel display shows a lockdown is in effect.
 - Soon becomes obvious the ship has been infected by the breed.
 
-Beyond the quarantine isolation door an artium section contains an (almost) fully sealed isolation bulkhead door preventing access to the forwawrd teleport section. The level exit doors connect to one of the umbilicals through which the ship is attached to the station, which requires a key. The only other route is through a systems section that follow the original level layout.
+Beyond the quarantine isolation door an atrium section contains an (almost) fully-sealed isolation bulkhead door preventing access to the forward teleport section. The level exit doors connect to one of the umbilicals through which the ship is attached to the station, which requires a key. The only other route is through a systems section that follow the original level layout.
 
 - Reynolds must find the key to open this door to complete the level.
 - Original level access to the bridge is a dead end, with another isolation door engaged.
@@ -53,7 +53,7 @@ Beyond the quarantine isolation door an artium section contains an (almost) full
 - The concepts of door keys, bridges and teleports are introduced here.
 
 The ship's bridge section on the flight deck is now only accessible by teleport:
-- More situational information is given.
+- More situational information is revealed.
 - Displays reveal the current location (LV-612) and a drone view of the docking ring.
 - Armoury section is initially locked.
 - Completion of the flight deck section permits telportation back to the systems section.
@@ -65,35 +65,35 @@ The ship's bridge section on the flight deck is now only accessible by teleport:
 Exiting Level A leads through the docking umbilical to one of the numerous levels in the docking ring of the orbital station.
 
 - Continuity is maintained, the initial area of the level visually matches the exit of the preceding level.
-- A situational display reveals that quarter of the ring has been sealed and vented to space, intimating heavy damage to that area.
+- A situational display reveals that quarter of the ring has been sealed and vented to space, suggesting heavy damage to that area.
 - Remaining entrances to the inner maintenance and cargo handling sections of the ring are locked, requiring a key to open.
 - Key lowers lift in the cargo section and also unlocks the doors currently blocking access.
 - Introduces heavy mechanoid (headlight robot) and additional seceret area mechanisms, e.g. shoot doors.
 - Introduces drone enemy (replaces triclaw).
 - A large situational display shows that the station is on auxilliary power and will deorbit due to atmospheric drag if primary power is not restored. Imtimation of intentional sabotage.
 - Escape is only possible after taking down the heavy mechanoid. The exit shaft is now a maintenance duct that leads to the engineering section of the station.
-- Additional secret areas to find.
+- Additional secret areas to find, introducing drone enemy.
 
 ## Level C: Infestation
 
-Begins at the bottom of the maitnenance shaft. Overal level layout as per Team17 design but rethemed into an engineering section:
+Begins at the bottom of the maitnenance shaft. Overall level layout as per Team17 design but reimagined as an engineering section:
 
 - Central loop replaced with an information systems area clearly indicating that the cooling system for the primary reactor is offline and consequently running at minimum output.
-- Right hand branch off the loop reimagined as storage areas with an alien infestation nest area.
+- Right-hand branch off the loop reimagined as storage areas with an alien infestation nest area.
 - Increase verticality with lifts replacing many of the stairs.
-- Left hand branch off the loop reimagined as computer core areas, homage to System Purge level in AB3D1.
+- Left-hand branch off the loop reimagined as computer core areas, homage to System Purge level in AB3D1.
 - Reynolds must find the two keys that permit entry to the power plant level to restart the sabotaged reactor.
 - Further alien classes introduced.
 - Additional secret areas to find.
-- Intimation that current reactor shutdown and threat to orbital installation is deliberate, i.e. the station has been scuttled.
+- Intimation that current reactor shutdown and threat to orbital installation is deliberate, i.e. the station has been scuttled and with it, any chance of escape.
 
 ## Level D: System Restart (TODO)
 
 Replacement level:
 - Reynolds must restart the primary reactor to stabilise the station.
 - Restart results in the route back to the maintenance level becoming inacessible.
-- Introduces the same mid level boss after reactor restart.
-- Reveals that the station was attacked by an alien vessel, explaining the ring damage and lockdown
+- Introduces the same mid-level boss after reactor restart.
+- Reveals that the station was attacked and breached by an alien vessel, explaining the ring damage and lockdown
 - The only route left is to push forwards, through the attached alien vessel.
 
 ## Level E: Exit Strategy (TODO)
