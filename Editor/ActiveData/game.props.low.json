@@ -370,6 +370,15 @@
                 "addAmmo": 6,
                 "addMaxAmmo": 6
             }
+        },
+        
+        {
+            "name": "Don't mind the gap!",
+            "rule": "ZoneFound",
+            "params": {
+                "level": 2,
+                "zone": 223
+            }
         }
 
     ] 	
