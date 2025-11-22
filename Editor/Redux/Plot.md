@@ -142,11 +142,58 @@ This is a significant divergence from the original level sequence. Reynolds is t
 * Learn more about the purpose of LV-612.  
 * Should introduce the concept that the planet has multiple remote facilities connected by a teleport network.
 
+From this point, the exact ordering of levels is undecided.
+
 ### Level G: Ore Processing (WIP)
 
 The original Level F, reimagined as a resource processing facility.
 
 * Large hot central chasma part of a foundry-like structure.  
 * Includes bonus areas only accessible via the jetpack, which is hidden in this level.  
-* Further refinement needed.
+* Further purpose-driven refinement needed.
+
+### Arena (WIP)
+
+The original Level H, expanded and reimagined as a combat test environment with various hazards. This should be used as a midway boss stage.
+
+* Good candidate for a horde mode diversion, with staged release of enemies based on door/lift activation on taking down various denizens or collecting items.
+
+### Research Labs (WIP)
+
+Original Level J, reimagined as a weapons research facility, bored into rock. This level should be sequenced into the Arena level and could be used to hint at as yet unencountered enemies. The level has been significantly re-themed but lacks any custom textures at this time.
+
+* Should add information panels showing biomechanical schematics of various existing Breed types.  
+* Should include some clues as to the origin of the Breed.
+
+### Storage Bay (WIP)
+
+Original Level K. Requires a re-theme and potential outdoor sections and a purpose beyond key hunting.
+
+### Hive Outpost (WIP, new name required)
+
+Original Level I. This level needs a better purpose and/or replacing entirely. It could be reimagined as an infested industrial plant or as some sort of communication centre, for example, re-establishing contact or groundside control of the orbital station.
+
+### Hive Perimeter (WIP, new name required)
+
+Original Level L. This is another boss level that first introduces the crab boss.
+
+### Hive Command 1 (WIP, new name required)
+
+Original Level M. This level has been significantly re-themed and redesigned as a night-time environment inspired by the original playable AB3D1 demo.
+
+* Needs a new name and a more concrete purpose than destroying the alien terminal.  
+* Alien terminal could be re-imagined as some artefact that has been used as a form of mental conduit or relay.
+
+### Hive Command 2 (WIP, new name required)
+
+Original Level N. Has been re-themed but otherwise unmodified.
+
+### Hive Command 3 (WIP, new name required)
+
+Original Level O. Has been re-themed with only minor modifications.
+
+### Root Cause
+
+The final level. Other than the main boss, needs to wrap up the plot and might benefit from a gauntlet to get to the actual exit as described in the original end text. Could end with a teleport back to the bridge section of the Indomitable with updated panel displays.
+
 
