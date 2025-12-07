@@ -61,8 +61,8 @@ The file header should contain a simple format and version indication.
 | - | - | - | - |
 | 0 | Format | `char[4]` | `TKGD` |
 | 4 | Subformat | `char[4]` | `GMOD`, `LMOD`, etc. |
-| 8 | Requires | `uint16[2]` | Major:Minor minimum engine version |
-| 12 | Checksum | `uint32` | Basic checksum of the whole file data |
+| 8 | Requires | `uint16[2]` | Major:Minor minimum engine version required to load and process the file. |
+| 12 | Version | `uint16[2]` | Major:Minor version of the file itself. |
 
 All values that are larger than a byte will be stored in Big Endian byte order.
 
@@ -79,8 +79,9 @@ Everything following the header shall be a chunk. A chunk should forst indicate 
 | Base + 8 | Content | Varying | Chunk Data, pad |
 
 **Notes:**
-
- - Due to alignment, the length field should always be a multiple of 4.
+ - The Length field always includes the header.
+     - Due to alignment requirements, the length field should always be a multiple of 4.
+     - The mininum possible length is 8 bytes, i.e. just the header data.
  - Chunks can be individually loaded to different locations or the entire file can be loaded as a single allocation.
 
 ## Common Chunk Types
@@ -89,7 +90,7 @@ The following chunk types are common to each defined data file and can only be i
 
 ### Index
 
-The Index chunk must immediately follow the file header in any file that contains it. The Index chunk shall contain a list of offsets point to the start of every other chunk in the file.
+The Index chunk must immediately follow the file header in any file that contains it. The Index chunk shall contain a list of 32-bit offsets, each measured from the start of the file to each Chunk present in the file.
 
 **Proposed structure:**
 
@@ -97,19 +98,19 @@ The Index chunk must immediately follow the file header in any file that contain
 | - | - | - | - |
 | Base + 0 | Ident | `char[4]` | `INDX` |
 | Base + 4 | Length | `uint32` | Total size of the chunk |
-| Base + 8 | Content | `uint32[...]` | Offset List |
+| Base + 8 | Index | `uint32[...]` | List of offsets |
 
 **Notes:**
 
 - Index chunk does not index itself.
-- Offsets are measured from the beginning of the file data.
+- Chunk index entries are measured from the beginning of the file data.
 - The list count is trivial to derive as ( _chunk size_ / 4) - 2
 - The ordering of chunks is not strongly mandated but should follow the conventions expected by the engine target version.
-- When a file is loaded in its entirety, the offset values in the index can be converted to absolute pointers to the data by adding the base address of the allocation to them.
+- (Low Level): When a file is loaded in its entirety, the chunk offset values in the list can be converted to their absolute in-memory addresses by adding the address at which the file itself is loaded.
 
 ### String Heap
 
-The String Heap chunk gathers together all common strings into a single blob of null-terminated values. There is no length indicator or padding per-entry but the blob itself will be padded out to the next 32-bit boundary if necessary.
+The String Heap chunk gathers together common strings into a single blob of null-terminated values. There is no length indicator or padding per-entry but the blob itself will be padded out to the next 32-bit boundary if necessary.
 
 **Proposed structure:**
 
@@ -124,15 +125,14 @@ The String Heap chunk gathers together all common strings into a single blob of 
 - When present in a file, the String Heap should be the first entry in the Index chunk
     - Can be located anwyhere in the file after the Index chunk.
     - Being placed last in the file is generally the most convenient for tooling that creates the file.
-- Other chunks containing string references store the offset into the heap as a 32-bit offset from the heap chunk base address.
-- At load time, the code for parsing/validating any given chunk type shall add the String Heap chunk base address to an offset, converting it into it's corresponding runtime pointer.
 
-For external references into the String Heap chunk:
+Other chunks that contain string references shall store a 32-bit offset into the String Heap chunk content:
 
-- The minimum legal 32-bit offset is 8.
-    - This will be prompoted to a pointer to the string immediately following the String Heap chunk header.
-- An offset value of 0 is assumed to be equivalent to null and will have the base address of the String Heap added to it.
-- An offset value between 1 and 7 shall be handled as a null, with appropriate developer mode warnings.
+- The offset to the string is measured from the beginning of the String Heap chunk:
+    - The minimum legal 32-bit offset is 8.
+    - (Low Level): On parsing the chunk, the string offset is converted into an appropriate address by adding the the address at which the String Heap is located in memory.
+- An offset value of 0 is zero meaning a null refence.
+- An offset value between 1 and 7 is considered error.
 
 ## Modification File Chunk Types
 
