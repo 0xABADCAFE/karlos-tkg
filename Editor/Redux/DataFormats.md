@@ -59,10 +59,10 @@ The file header should contain a simple format and version indication.
 
 | Offset | Data | Type | Notes |
 | - | - | - | - |
-| 0 | Format | char[4] | `TKGD` |
-| 4 | Subformat | char[4] | `GMOD`, `LMOD`, etc. |
-| 8 | Requires | uint16[2] | Major:Minor minimum engine version |
-| 12 | Checksum | uint32 | Basic checksum of the whole file data |
+| 0 | Format | `char[4]` | `TKGD` |
+| 4 | Subformat | `char[4]` | `GMOD`, `LMOD`, etc. |
+| 8 | Requires | `uint16[2]` | Major:Minor minimum engine version |
+| 12 | Checksum | `uint32` | Basic checksum of the whole file data |
 
 All values that are larger than a byte will be stored in Big Endian byte order.
 
@@ -74,9 +74,9 @@ Everything following the header shall be a chunk. A chunk should forst indicate 
 
 | Offset | Data | Type | Notes |
 | - | - | - | - |
-| Base + 0 | Ident | char[4] | Purpose-specific identifier for the chunk data |
-| Base + 4 | Length | uint32 | Total length of the data, including any padding |
-| Base + 8 | Content | Varying | Data, pad |
+| Base + 0 | Ident | `char[4]` | Purpose-specific identifier for the chunk data |
+| Base + 4 | Length | `uint32` | Total length of the data, including any padding |
+| Base + 8 | Content | Varying | Chunk Data, pad |
 
 **Notes:**
 
@@ -95,9 +95,9 @@ The Index chunk must immediately follow the file header in any file that contain
 
 | Offset | Data | Type | Notes |
 | - | - | - | - |
-| Base + 0 | Ident | char[4] | `CIDX` |
-| Base + 4 | Length | uint32 | Total size of the chunk |
-| Base + 8 | Content | uint32[ ] | Offset List |
+| Base + 0 | Ident | `char[4]` | `INDX` |
+| Base + 4 | Length | `uint32` | Total size of the chunk |
+| Base + 8 | Content | `uint32[...]` | Offset List |
 
 **Notes:**
 
@@ -115,9 +115,9 @@ The String Heap chunk gathers together all common strings into a single blob of 
 
 | Offset | Data | Type | Notes |
 | - | - | - | - |
-| Base + 0 | Ident | char[4] | `STRH` |
-| Base + 4 | Length | uint32 | Total size of the chunk |
-| Base + 8 | Content | char[ ] | Catenated string data, zero padded at end if necessary |
+| Base + 0 | Ident | `char[4]` | `STRH` |
+| Base + 4 | Length | `uint32` | Total size of the chunk |
+| Base + 8 | Content | `char[...]` | Catenated string data, zero padded at end if necessary |
 
 **Notes:**
 
@@ -144,11 +144,11 @@ This chunk specifies the default game limits for the player inventory.
 
 | Offset | Data | Type | Notes |
 | - | - | - | - |
-| Base + 0 | Ident | char[4] | `INVL` |
-| Base + 4 | Length | uint32 | Total size of the chunk |
-| Base + 8 | Health | uint16 | Health Limit |
-| Base + 10 | Fuel | uint16 | Fuel Limit |
-| Base + 12 | Ammo | uint16[] | Ammo Limit, entry per type (20) |
+| Base + 0 | Ident | `char[4]` | `INVL` |
+| Base + 4 | Length | `uint32` | Total size of the chunk |
+| Base + 8 | Health | `uint16` | Health Limit |
+| Base + 10 | Fuel | `uint16` | Fuel Limit |
+| Base + 12 | Ammo | `uint16[...]` | Ammo Limit, entry per type (20) |
 
 
 ### Achievements
@@ -159,24 +159,27 @@ This chunk specifies the set of achievements that are defined by the modificatio
 
 | Offset | Data | Type | Notes |
 | - | - | - | - |
-| Base + 0 | Ident | char[4] | `ACHV` |
-| Base + 4 | Length | uint32 | Total size of the chunk |
-| Base + 8 | Content | Achievement [ ] | Achievement list |
+| Base + 0 | Ident | `char[4]` | `ACHV` |
+| Base + 4 | Length | `uint32` | Total size of the chunk |
+| Base + 8 | Content | `Achievement[...]` | Achievement list |
 
 
 **Achievement Record structure:**
 
 | Offset | Data | Type | Notes |
 | - | - | - | - |
-| 0 | Name | uint32 | Offset into String Heap for the achievement name |
-| 4 | Rule Type ID | uint16 | Enumerated ID of the rule logic |
-| 6 | Reward ID | uint16 | Specific enumeration of the Reward (if any) |
-| 8 | Parameters | uint8[ 8 ] | Parameters for the rule logic |
+| 0 | Name | `uint32` | Offset into String Heap for the achievement name |
+| 4 | Rule Type ID | `uint16` | Enumerated ID of the rule logic |
+| 6 | Reward ID | `uint16` | Specific enumeration of the Reward (if any) |
+| 8 | Parameters | `uint8[ 8 ]` | Parameter space for the rule logic |
 
 **Notes:**
 
-- Total size 16 bytes
-- The interpretation of the parameters depends strictly on the rule used.
+- Fixed total size is 16 bytes.
+- Rule ID enumerates a specific function that is called to test if the achievement condition is met.
+- The interpretation of the parameter space data depends strictly on the rule used.
+- Achievements are only tested at runtime when specific signals are set, e.g. a kill, item collect, etc.
+- A bitmap of the specific achievements already awarded is recorded in the player progression.
 
 ### Achievement Rewards
 
@@ -186,24 +189,22 @@ This chunk defines the reward associated with the achievements that have them.
 
 | Offset | Data | Type | Notes |
 | - | - | - | - |
-| Base + 0 | Ident | char[4] | `RWRD` |
-| Base + 4 | Length | uint32 | Total size of the chunk |
-| Base + 8 | Content | Reward [ ] | Reward list |
-
+| Base + 0 | Ident | `char[4]` | `RWRD` |
+| Base + 4 | Length | `uint32` | Total size of the chunk |
+| Base + 8 | Content | `Reward[...]` | Reward list |
 
 **Proposed Reward structure:**
 
 | Offset | Data | Type | Notes |
 | - | - | - | - |
-| 0 | Description | uint32 | Offset into String Heap for the description |
-| 4 | Applicator Type ID | uint 16 | Enumerated ID of the application logic |
-| 6 | Parameters | uint8[ 26 ] | Parameters for the application logic |
+| 0 | Description | `uint32` | Offset into String Heap for the description |
+| 4 | Applicator Type ID | `uint16` | Enumerated ID of the application logic |
+| 6 | Parameters | `uint8[26]` | Parameter space for the application logic |
 
 **Notes:**
 
-- Total size 32 bytes
-- The interpretation of the parameters depends strictly on the rule used.
-
+- Fixed total size is 32 bytes.
+- The interpretation of the parameter space data depends strictly on the rule used.
 
 ## Level Modification Chunk Types
 
@@ -217,9 +218,9 @@ The PVS Errata chunk contains a set of Zone ID lists. Each Zone ID list begins w
 
 | Offset | Data | Type | Notes |
 | - | - | - | - |
-| Base + 0 | Ident | char[4] | `PVSE` |
-| Base + 4 | Length | uint32 | Total size of the chunk |
-| Base + 8 | Content | int16[ ] | List data |
+| Base + 0 | Ident | `char[4]` | `PVSE` |
+| Base + 4 | Length | `uint32` | Total size of the chunk |
+| Base + 8 | Content | `int16[...]` | List data |
 
 **Notes:**
 
@@ -241,25 +242,54 @@ The data shall be a simple list of Zone ID that should have their backdrop flag 
 
 | Offset | Data | Type | Notes |
 | - | - | - | - |
-| Base + 0 | Ident | char[4] | `BKDE` |
-| Base + 4 | Length | uint32 | Total size of the chunk |
-| Base + 8 | Content | int16[ ] | List data |
+| Base + 0 | Ident | `char[4]` | `BKDE` |
+| Base + 4 | Length | `uint32` | Total size of the chunk |
+| Base + 8 | Content | `int16[...]` | List data |
+
+**Notes:**
+
+- This chunk is optional.
 
 ### Zone Messages
 
-The Zone Messages chunk contains a list of Zone ID that have specific messages attaged to them when the player enters the Zone for the first time. This is intended to replace the current invisible object collection behaviour and allow for greater flexibility in narrative expansion.
+The Zone Messages chunk contains a list of Zone ID that have specific messages attached to them when the player enters the Zone for the first time. This is intended to replace the current invisible object collection behaviour and allow for greater flexibility in narrative expansion.
 
 **Proposed structure:**
 
 | Offset | Data | Type | Notes |
 | - | - | - | - |
-| Base + 0 | Ident | char[4] | `ZMSG` |
-| Base + 4 | Length | uint32 | Total size of the chunk |
-| Base + 8 | List | { int16, uint16, uint32}[ ] | Zone ID, Message Attributes, Heap Offset |
+| Base + 0 | Ident | `char[4]` | `ZMSG` |
+| Base + 4 | Length | `uint32` | Total size of the chunk |
+| Base + 8 | List | `{ int16, uint16, uint32 }[...]` | Zone ID, Message Attributes, Heap Offset |
 
 **Notes:**
 
+- This chunk is optional.
 - Each record contains the Zone ID, Attributes and offset in the String Heap chunk to the message text.
+    - After loading, each offset is converted to the appropriate in-memory address.
+ 
+- The Attributes word is based on the current in game messaging format, which reserves the uppermost two bits for the message label and the remainder as the overall length of the string.
+    - Although string rendering will stop at a null byte, the engine knows that strings below a certain length will not require wrapping.
+    - Knowing the length ahead of time allows for faster rendering.
+
+### Object Messages
+
+The Object Messages chunk contains a list of Object ID that have specific messages attached to them when the player finds, activates, kills or destroys a particular object. This is intended to replace the current behaviour and allow for greater flexibility in narrative expansion.
+
+**Proposed structure:**
+
+| Offset | Data | Type | Notes |
+| - | - | - | - |
+| Base + 0 | Ident | `char[4]` | `OMSG` |
+| Base + 4 | Length | `uint32` | Total size of the chunk |
+| Base + 8 | List | `{ int16, uint16, uint32 }[...]` | Object ID, Message Attributes, Heap Offset |
+
+**Notes:**
+
+- This chunk is optional.
+- To preserve backwards compatibility, the existing object messaging mechanism shall be retained.
+    - When an object has an existing legacy text and an entry in the Object Messages chunk, the existing message shall be pushed first.
+- Each record contains the Object ID, Attributes and offset in the String Heap chunk to the message text.
     - After loading, each offset is converted to the appropriate in-memory address.
  
 - The Attributes word is based on the current in game messaging format, which reserves the uppermost two bits for the message label and the remainder as the overall length of the string.
