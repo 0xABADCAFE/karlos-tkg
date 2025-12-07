@@ -3,8 +3,9 @@ Game/tkgpatch.exe
 Game/junk/*
 Editor/LevelEdit/*
 Editor/Storage/XC-data/*
-Editor/ActiveData/Graphics/*/*.info
+Editor/Assets/Graphics/*/*.info
 Editor/**/_UAEFSDB.___
 Game/**/_UAEFSDB.___
 Game/game.stats
 Game/game.prefs
+Game/prefs.cfg
