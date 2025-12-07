@@ -1,4 +1,4 @@
-# Modification Data Formats (V2 provisional)
+# Modification Data Formats (Provisional)
 
 The following document describes a proposed data format for game modification files. At the time of writing there are two files that this format intends to replace:
 
@@ -37,6 +37,26 @@ The key problem with each format is that they are intended for completely genera
 ## Proposed structure
 
 While IFF and XSF are overkill, the container/chunk concept is ideal and we can take cues from it.
+
+### Type Conventions
+
+This document uses the following conventions for types:
+
+- char for 8-bit character data
+- int<_size_> / uint<_size_> for signed and unsigned integer types, e.g. int8, uint16
+- <_type_>[<_size_>] for fixed length arrays, e.g. uint32[8]
+- <_type_>[...] for varying length arrays, e.g. char[...]
+- { <_type_>, <_type_>, ... } for unnamed tuples, e.g. { uint32, int16, int16 }
+
+A type name may also refer to a named structure definiton. In addition there are two special purpose aliases of the uint32 scalar:
+
+- ChkOffs is a 32-bit offset value that measures the distance from the beginning of the file to the beginning of a Chunk.
+- StrOffs is a 32-bit offset value that measures the distance from the beginning of the String Heap Chunk to the first character of a string in the chunk data.
+
+Each of the above offset types are converted to in-memory addresses after loading by adding their offset value to a base address:
+
+- For ChkOffs values, the address at which the entire file data was loaded is used.
+- For StrOffs values, the address at which the String Heap chunk was loaded is used.
 
 ### Header
 
@@ -98,7 +118,7 @@ The Index chunk must immediately follow the file header in any file that contain
 | - | - | - | - |
 | Base + 0 | Ident | `char[4]` | `INDX` |
 | Base + 4 | Length | `uint32` | Total size of the chunk |
-| Base + 8 | Index | `uint32[...]` | List of offsets |
+| Base + 8 | Index | `ChkOffs[...]` | List of offsets |
 
 **Notes:**
 
@@ -126,13 +146,13 @@ The String Heap chunk gathers together common strings into a single blob of null
     - Can be located anwyhere in the file after the Index chunk.
     - Being placed last in the file is generally the most convenient for tooling that creates the file.
 
-Other chunks that contain string references shall store a 32-bit offset into the String Heap chunk content:
+Other chunks that contain StrOffs fields are resolved to absolute `char const*` addresses:
 
 - The offset to the string is measured from the beginning of the String Heap chunk:
     - The minimum legal 32-bit offset is 8.
     - (Low Level): On parsing the chunk, the string offset is converted into an appropriate address by adding the the address at which the String Heap is located in memory.
 - An offset value of 0 is zero meaning a null refence.
-- An offset value between 1 and 7 is considered error.
+- An offset value between 1 and 7 is considered an error.
 
 ## Modification File Chunk Types
 
@@ -168,7 +188,7 @@ This chunk specifies the set of achievements that are defined by the modificatio
 
 | Offset | Data | Type | Notes |
 | - | - | - | - |
-| 0 | Name | `uint32` | Offset into String Heap for the achievement name |
+| 0 | Name | `StrOffs` | Offset into String Heap for the achievement name |
 | 4 | Rule Type ID | `uint16` | Enumerated ID of the rule logic |
 | 6 | Reward ID | `uint16` | Specific enumeration of the Reward (if any) |
 | 8 | Parameters | `uint8[ 8 ]` | Parameter space for the rule logic |
@@ -197,7 +217,7 @@ This chunk defines the reward associated with the achievements that have them.
 
 | Offset | Data | Type | Notes |
 | - | - | - | - |
-| 0 | Description | `uint32` | Offset into String Heap for the description |
+| 0 | Description | `StrOffs` | Offset into String Heap for the description |
 | 4 | Applicator Type ID | `uint16` | Enumerated ID of the application logic |
 | 6 | Parameters | `uint8[26]` | Parameter space for the application logic |
 
@@ -260,7 +280,7 @@ The Zone Messages chunk contains a list of Zone ID that have specific messages a
 | - | - | - | - |
 | Base + 0 | Ident | `char[4]` | `ZMSG` |
 | Base + 4 | Length | `uint32` | Total size of the chunk |
-| Base + 8 | List | `{ int16, uint16, uint32 }[...]` | Zone ID, Message Attributes, Heap Offset |
+| Base + 8 | List | `{ int16, uint16, StrOffs }[...]` | Zone ID, Message Attributes, Heap Offset |
 
 **Notes:**
 
@@ -282,7 +302,7 @@ The Object Messages chunk contains a list of Object ID that have specific messag
 | - | - | - | - |
 | Base + 0 | Ident | `char[4]` | `OMSG` |
 | Base + 4 | Length | `uint32` | Total size of the chunk |
-| Base + 8 | List | `{ int16, uint16, uint32 }[...]` | Object ID, Message Attributes, Heap Offset |
+| Base + 8 | List | `{ int16, uint16, StrOffs }[...]` | Object ID, Message Attributes, Heap Offset |
 
 **Notes:**
 
