@@ -68,7 +68,7 @@ All values that are larger than a byte will be stored in Big Endian byte order.
 
 ### Chunks
 
-Everything following the header shall be a chunk. A chunk should forst indicate the data format length, followed by the data itself. Where the data are not aligned to 32 bits, zero padding will be appended:
+Everything following the header shall be a chunk. A chunk first indicates the data format and length, followed by the data itself. Where the remaining data are not aligned to 32 bits, zero padding will be appended:
 
 **Proposed structure:**
 
@@ -102,8 +102,8 @@ The Index chunk must immediately follow the file header in any file that contain
 
 **Notes:**
 
-- Index chunk does not index itself.
-- Chunk index entries are measured from the beginning of the file data.
+- Index chunk does not contain an entry for itself.
+- Chunk index offsets are measured from the beginning of the file data to the beginning of the chunk Ident.
 - The list count is trivial to derive as ( _chunk size_ / 4) - 2
 - The ordering of chunks is not strongly mandated but should follow the conventions expected by the engine target version.
 - (Low Level): When a file is loaded in its entirety, the chunk offset values in the list can be converted to their absolute in-memory addresses by adding the address at which the file itself is loaded.
