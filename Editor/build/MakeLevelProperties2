@@ -1,0 +1,156 @@
+#!/usr/bin/php
+<?php
+
+declare(strict_types=1);
+
+namespace TKGD;
+
+use stdClass;
+use RuntimeException;
+
+require 'src/Library.php';
+
+class LevelPropertiesBuilder {
+
+    private const string PVS_ERRATA_IDENT = 'PVSE';
+    private const string ZONE_MESSAGE_IDENT = 'ZMSG';
+
+    private string $sSourcePath;
+    private string $sTargetPath;
+
+    public function __construct(string $sSource, string $sTarget) {
+        $this->assertSourceReadable($sSource);
+        $this->assertTargetWritable($sTarget);
+        $this->sSourcePath = $sSource;
+        $this->sTargetPath = $sTarget;
+    }
+
+    public function build() {
+        $oData = $this->loadSource();
+
+        $oStringBlob = new Data\Format\StringBlob(Data\Format\Chunk::FIXED_SIZE);
+        $oFile = new Data\Format\IndexedFile(
+            new Data\Format\Header(
+                eSubFormat: Data\Format\SubFormat::Level,
+                oVersion:  $this->parseVersion($oData, 'Version'),
+                oRequires: $this->parseVersion($oData, 'Requires')
+            ),
+            $oStringBlob
+        );
+
+        $oFile->addChunk($this->buildZonePVSErrata($oData, $oStringBlob));
+        $oFile->addChunk($this->buildZoneMessages($oData, $oStringBlob));
+        file_put_contents($this->sTargetPath, $oFile->toBinary());
+    }
+
+
+    private function parseVersion(stdClass $oData, string $sField): Data\Format\Version {
+        if (empty($oData->{$sField})) {
+            throw new RuntimeException('Missing version field ' . $sField);
+        }
+        if (!preg_match('/^(\d+)\.(\d+)$/', (string)$oData->{$sField}, $aMatches)) {
+            throw new RuntimeException('Malformed version field ' . $sField);
+        }
+        return new Data\Format\Version((int)$aMatches[1], (int)$aMatches[2]);
+    }
+
+    private function buildZonePVSErrata(
+        stdClass $oData,
+        Data\Format\StringBlob $oStringBlob
+    ): Data\Format\Chunk {
+        return new Data\Format\Chunk(
+            self::PVS_ERRATA_IDENT,
+            new class($oData->ZonePVSErrata) implements Data\Format\BinaryEncodable {
+                public function __construct(private stdClass $aZonePVSErrata) {}
+                public function toBinary(): string {
+                    $sData = '';
+                    foreach ($this->aZonePVSErrata as $iZoneID => $aRemoveZoneIDs) {
+                        $aRemoveZoneIDs[] = -1;
+                        $sData .= pack('nn*', $iZoneID, ...$aRemoveZoneIDs);
+                    }
+                    $sData .= pack('n', -1);
+                    return $sData;
+                }
+            }
+        );
+    }
+
+    private function buildZoneMessages(
+        stdClass $oData,
+        Data\Format\StringBlob $oStringBlob
+    ): Data\Format\Chunk {
+        return new Data\Format\Chunk(
+            self::ZONE_MESSAGE_IDENT,
+            new class($oData->ZoneMessages, $oStringBlob) implements Data\Format\BinaryEncodable {
+                public function __construct(
+                    private stdClass $aZoneMessages,
+                    private Data\Format\StringBlob $oStringBlob
+                ) {}
+
+                public function toBinary(): string {
+                    $aData = [];
+                    foreach ($this->aZoneMessages as $iZoneID => $sMessage) {
+                        $aData[] = $iZoneID;
+                        $aData[] = $this->oStringBlob->add($sMessage);
+                    }
+                    return pack('n*', ...$aData);
+                }
+            }
+        );
+    }
+
+
+    private function loadSource(): stdClass {
+        $oData = json_decode(file_get_contents($this->sSourcePath));
+        if (empty($oData)) {
+            throw new RuntimeException('Unable to load source ' . $this->sSourcePath);
+        }
+
+        return $oData;
+    }
+
+    private function assertSourceReadable(string $sSource): void {
+        if (!is_readable($sSource)) {
+            throw new RuntimeException('Source ' . $sSource . ' is not readable');
+        }
+        if (!is_file($sSource)) {
+            throw new RuntimeException('Source ' . $sSource . ' is not a file');
+        }
+    }
+
+    private function assertTargetWritable(string $sTarget): void {
+        if (file_exists($sTarget)) {
+            if (!is_file($sTarget)) {
+                throw new RuntimeException('Target ' . $sTarget . ' is not a file');
+            }
+            if (!is_writable($sTarget)) {
+                throw new RuntimeException('Target ' . $sTarget . ' is not writable');
+            }
+        } else {
+            $sTargetPath = dirname($sTarget);
+            if (!is_writable($sTargetPath)) {
+                throw new RuntimeException('Target directory ' . $sTargetPath . ' is not writable');
+            }
+        }
+    }
+}
+
+if (!isset($_SERVER['argv'][1])) {
+    throw new RuntimeException("No level specified");
+}
+
+$sLevel = strtoupper($_SERVER['argv'][1]);
+
+if (!preg_match('/^[A-P]$/', $sLevel)) {
+    throw new RuntimeException('Invalid Level ID ' . $sLevel);
+}
+
+$sSource = sprintf('test/level_%s.json', $sLevel);
+$sTarget = sprintf('test/level_%s.props', $sLevel);
+$oBuilder = new LevelPropertiesBuilder(
+    $sSource,
+    $sTarget
+);
+
+$oBuilder->build();
+
