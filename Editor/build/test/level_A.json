@@ -1,7 +1,7 @@
 {
     "Requires": "1.32767",
     "Version": "1.0",
-    "ZonePVSErrata": {
+    "PVSErrata": {
         "4": [ 17 ],
         "5": [ 181 ],
         "34": [ 37 ],
@@ -24,6 +24,8 @@
         "251": [ 183 ]
     },
     "ZoneMessages": {
-        "1": "This is a test message for zone 1."
+        "2": { "attr":0, "text": "This is a test message for zone 2." },
+        "3": { "attr":0, "text": "This one is for zone 3." },
+        "5": { "attr":0, "text": "Guess what this one is for?" }
     }
 }

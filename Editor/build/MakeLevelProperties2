@@ -60,11 +60,11 @@ class LevelPropertiesBuilder {
     ): Data\Format\Chunk {
         return new Data\Format\Chunk(
             self::PVS_ERRATA_IDENT,
-            new class($oData->ZonePVSErrata) implements Data\Format\BinaryEncodable {
-                public function __construct(private stdClass $aZonePVSErrata) {}
+            new class($oData->PVSErrata) implements Data\Format\BinaryEncodable {
+                public function __construct(private stdClass $aPVSErrata) {}
                 public function toBinary(): string {
                     $sData = '';
-                    foreach ($this->aZonePVSErrata as $iZoneID => $aRemoveZoneIDs) {
+                    foreach ($this->aPVSErrata as $iZoneID => $aRemoveZoneIDs) {
                         $aRemoveZoneIDs[] = -1;
                         $sData .= pack('nn*', $iZoneID, ...$aRemoveZoneIDs);
                     }
@@ -89,11 +89,11 @@ class LevelPropertiesBuilder {
 
                 public function toBinary(): string {
                     $aData = [];
-                    foreach ($this->aZoneMessages as $iZoneID => $sMessage) {
-                        $aData[] = $iZoneID;
-                        $aData[] = $this->oStringBlob->add($sMessage);
+                    foreach ($this->aZoneMessages as $iZoneID => $oInfo) {
+                        $aData[] = $iZoneID << 16 | $oInfo->attr | strlen($oInfo->text);
+                        $aData[] = $this->oStringBlob->add($oInfo->text);
                     }
-                    return pack('n*', ...$aData);
+                    return pack('N*', ...$aData);
                 }
             }
         );
