@@ -23,6 +23,9 @@
         "183": [ 11 ],
         "251": [ 183 ]
     },
+    "BackdropErrata": [
+        13, 17, 29
+    ],
     "ZoneMessages": {
         "2": { "attr":0, "text": "This is a test message for zone 2." },
         "3": { "attr":0, "text": "This one is for zone 3." },
