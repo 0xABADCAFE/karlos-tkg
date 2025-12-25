@@ -1,24 +1,22 @@
-# Modification Data Formats (Provisional)
+# Modification Data Format
 
-The following document describes a proposed data format for game modification files. At the time of writing there are two files that this format intends to replace:
+The following document describes the data format for game modification files. At the time of writing there are two types of modification file:
 
 - AB3:Includes/game.props
-    - Contains current inventory limits and achievements.
-- AB3:Levels/LEVEL_x/errata.dat
-    - Contains PVS fixes/optimisations that cannot be solved by the current runtime validator.
+    - Global modifiations to the game behaviour such as Inventory limits, achievements and rewards.
 
-The goal of this document is to define a format that can replace both of these domain-specific resources and allow trivial addition of new data sections without requiring further changes.
+- AB3:Levels/LEVEL_x/level.props
+    - Per-level modifications such as geometry fixes, objectives and zone or entity specific additional metadata.
 
-The data structures will require a corresponding rewrite of the logic that loads and parses them.
 
-## Required features
+## Features
 
-- Trivial to load, ideally as a single in memory allocation.
-- Ideally compressable using the existing SB format utilities.
-- In-place data conversion, e.g. offsets to pointers.
+- Trivial to load as a single in memory allocation.
+- Compressable using the existing SB utilities.
+- In-place data conversion after loading/decompression, e.g. offsets to addresses.
 - Version checked.
 
-## Prior Art
+### Prior Art
 
 - IFF
     - This provides a simple container format for chunked binary data.
@@ -32,15 +30,50 @@ The data structures will require a corresponding rewrite of the logic that loads
     - At least 32-bit aligned data.
     - Old personal project, not really maintained.
 
-The key problem with each format is that they are intended for completely general-purpose use, incremental loading and other features that are basically overkill. It's also not clear that they can work in conjunction with the compression mechanisms used by the game.
-        
-## Proposed structure
+There are are shared issues with each format:
 
-While IFF and XSF are overkill, the container/chunk concept is ideal and we can take cues from it.
+ - Overly general purpose.
+ - Intended for incremental load and parse, which is not well suited to the goal of loading the entire data once and processing in-place.
+
+### Design Choices
+
+Like IFF and XSF the data are organised into a header followed by a sequential arrangement of data chunks:
+
+- Strict 32-bit alignment of boundaries, e.g. Header and Chunk sizes.
+- Header indicates overall content type, version and version required.
+- Chunks begin with a minimal subheader for the chunk type and data size.
+- Where necessary, Chunks are zero padded to the next 32-bit aligned length.
+- Chunk subheader data size field represents the complete size of the Chunk, including the subheader, any padding and is consequently always a multiple of 4.
+
+
+## Structure
+
+
+### Source Assets
+
+A JSON-based text format is used for the source assets from which the binary files are compiled. The source asset is intended to be human editable in a basic text editor rather than machine generated. Consequently the following relaxations of the JSON notation are supported:
+
+ - Line comments beginning with `//` are supported.
+ - Lists and arrays may include a trailing comma.
+
+** Example **
+
+```
+    {
+        // A tuple of name:quantity pairs, with a trailing comma.
+        "FruitBowl": {
+            "Oranges": 5,
+            "Apples": 3,
+        },
+    }
+```
+
+The tooling that generates the binary files from the assets can trivially strip these modifications from the source text to yeild strict JSON for parsing.
+
 
 ### Type Conventions
 
-This document uses the following conventions for types:
+This document uses the following C-like conventions for binary types:
 
 - char for 8-bit character data
 - int<_size_> / uint<_size_> for signed and unsigned integer types, e.g. int8, uint16
@@ -50,59 +83,117 @@ This document uses the following conventions for types:
 
 A type name may also refer to a named structure definiton. In addition there are two special purpose aliases of the uint32 scalar:
 
-- ChkOffs is a 32-bit offset value that measures the distance from the beginning of the file to the beginning of a Chunk.
+- ChkOffs is a 32-bit offset value that measures the distance from the beginning of the file to the beginning of a Chunk. Conceptually this can be thought of as a union:
+
+```
+    union ChkOffs {
+        // In file
+        uint32 fileOffset;
+
+        // At runtime
+        Chunk const* chunkAddress; // (Chunk const*) ((uint32)baseAddress + fileOffset)
+    };
+```
+
 - StrOffs is a 32-bit offset value that measures the distance from the beginning of the String Heap Chunk to the first character of a string in the chunk data.
+
+```
+    union StrOffs {
+        // In file
+        uint32 heapOffset;
+
+        // At runtime
+        char const* stringAddress; // (char const*) ((uint32)chunkAddress + heapOffset)
+    };
+```
+
 
 Each of the above offset types are converted to in-memory addresses after loading by adding their offset value to a base address:
 
 - For ChkOffs values, the address at which the entire file data was loaded is used.
 - For StrOffs values, the address at which the String Heap chunk was loaded is used.
 
+All values that are larger than a byte will be stored in Big-Endian byte order.
+
+
 ### Header
 
-The file header should contain a simple format and version indication.
+The file header should contain a simple type and version indication:
 
-- Format indicator shall be a simple 4-byte value that indicates this file contains game data:
-    - `TKGD`
+- Type indicator shall be a simple 4-byte value that indicates the specific content of the file. At the time of writing we require a global format for game modification and a per-level format for level modifications:
 
-- Subformat indicator shall be a simple 4-byte value that indicates the specific content of the file. At the time of writing we require a global format for game modification and a per-level format for level modifications:
-
-    - `GMOD`: Identifies the global game modification file.   
+    - `GMOD`: Identifies the global game modification file.
     - `LMOD`: Identifies a per-level modification file.
 
 - Version
     - Basic version data of the file.
+    - Includes a major and minor component.
+ 
 - Version Required
-    - Defines the minimum version of the engine that the data format will work with. This should be composed of a major and minor component.
+    - Defines the minimum version of the engine that the data format will work with.
+    - Includes a major and minor component.
 
-**Proposed structure:**
+**Asset Structure:**
 
-| Offset | Data | Type | Notes |
-| - | - | - | - |
-| 0 | Format | `char[4]` | `TKGD` |
-| 4 | Subformat | `char[4]` | `GMOD`, `LMOD`, etc. |
-| 8 | Requires | `uint16[2]` | Major:Minor minimum engine version required to load and process the file. |
-| 12 | Version | `uint16[2]` | Major:Minor version of the file itself. |
+Within the source asset, the header is defines by a root level node indicated by a `Header` key:
 
-All values that are larger than a byte will be stored in Big Endian byte order.
+```
+    "Header": {
+        "Type":"<Game|Level>",
+        "Description": "<optional description>",
+        "Version": "<major>.<minor>",
+        "Requires": "<major>.<minor>",
+    }
+```
+
+- The fields can be present in any order.
+- Only one Header structure may be present.
+- The Type field is a human-readable enumeration of the Subformat:
+    - `GMOD`: Game
+    - `LMOD`: Level
+
+- The Description field is optional.
+   - When omitted, the corresponding binary field is set to zero.
+   - When included, the file is guaranteed to contain the String Heap chunk even if there are no other string data.
+
+
+**Binary Structure:**
+
+The asset fields are encoded into a 16-byte binary structure:
+
+```
+    {
+        char[4]   Type;        //  0: GMOD, LMOD, etc
+        uint16[2] Requires;    //  4: [0] Major, [1] Minor
+        uint16[2] Version;     //  8: [0] Major, [1] Minor
+        StrOffs   Description; // 12:
+    }
+
+```
+
 
 ### Chunks
 
-Everything following the header shall be a chunk. A chunk first indicates the data format and length, followed by the data itself. Where the remaining data are not aligned to 32 bits, zero padding will be appended:
+Everything following the header is a Chunk. A Chunk begins with the data format and length, followed by the data itself.
 
-**Proposed structure:**
+**Asset Structure:**
 
-| Offset | Data | Type | Notes |
-| - | - | - | - |
-| Base + 0 | Ident | `char[4]` | Purpose-specific identifier for the chunk data |
-| Base + 4 | Length | `uint32` | Total length of the data, including any padding |
-| Base + 8 | Content | Varying | Chunk Data, pad |
+There is no secific user-defined generalisation for the asset structure, only the data embedded within it, which is type-specific. The sub header is automatically generated based on the final encoded size and type information.
 
-**Notes:**
- - The Length field always includes the header.
-     - Due to alignment requirements, the length field should always be a multiple of 4.
-     - The mininum possible length is 8 bytes, i.e. just the header data.
- - Chunks can be individually loaded to different locations or the entire file can be loaded as a single allocation.
+
+**Binary Structure:**
+
+```
+    {
+        char[4]    Type;    // 0:
+        uint32     Size;    // 4: Total size, including header, content and any padding
+        uint8[...] Content; // 8: Content, padding
+    }
+
+```
+
+The interpretation of the Content depends on the specific chunk type.
+
 
 ## Common Chunk Types
 
@@ -287,7 +378,7 @@ The Zone Messages chunk contains a list of Zone ID that have specific messages a
 - This chunk is optional.
 - Each record contains the Zone ID, Attributes and offset in the String Heap chunk to the message text.
     - After loading, each offset is converted to the appropriate in-memory address.
- 
+
 - The Attributes word is based on the current in game messaging format, which reserves the uppermost two bits for the message label and the remainder as the overall length of the string.
     - Although string rendering will stop at a null byte, the engine knows that strings below a certain length will not require wrapping.
     - Knowing the length ahead of time allows for faster rendering.
@@ -311,7 +402,7 @@ The Object Messages chunk contains a list of Object ID that have specific messag
     - When an object has an existing legacy text and an entry in the Object Messages chunk, the existing message shall be pushed first.
 - Each record contains the Object ID, Attributes and offset in the String Heap chunk to the message text.
     - After loading, each offset is converted to the appropriate in-memory address.
- 
+
 - The Attributes word is based on the current in game messaging format, which reserves the uppermost two bits for the message label and the remainder as the overall length of the string.
     - Although string rendering will stop at a null byte, the engine knows that strings below a certain length will not require wrapping.
     - Knowing the length ahead of time allows for faster rendering.
