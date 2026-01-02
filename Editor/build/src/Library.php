@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace TKGD\Data\Format;
 
+use stdClass;
+use RangeException;
+use RuntimeException;
+
 /**
  * File subformat enumeration
  */
@@ -29,7 +33,10 @@ final class Version implements BinaryEncodable {
     public const int FIXED_SIZE = 4;
     private const int MAX = 65535;
 
-    public function __construct(public int $iMajor, public int $iMinor) {
+    public function __construct(
+        public readonly int $iMajor,
+        public readonly int $iMinor
+    ) {
         assert(
             $iMajor >= 0 && $iMajor <= self::MAX &&
             $iMinor >= 0 && $iMinor <= self::MAX,
@@ -58,7 +65,8 @@ final class Header implements BinaryEncodable {
     public function __construct(
         public readonly SubFormat $eSubFormat,
         public readonly Version $oVersion,
-        public readonly Version $oRequires
+        public readonly Version $oRequires,
+        public readonly int $iDescriptionOffset = 0
     ) { }
 
     public function toBinary(): string {
@@ -66,7 +74,9 @@ final class Header implements BinaryEncodable {
         return self::IDENT .
             $this->eSubFormat->value .
             $this->oRequires->toBinary() .
-            $this->oVersion->toBinary();
+            $this->oVersion->toBinary() .
+            pack('N', $this->iDescriptionOffset)
+        ;
     }
 }
 
@@ -177,7 +187,7 @@ final class IndexedFile implements BinaryEncodable {
     private array $aChunks = [];
 
     public function __construct(
-        private Header $oHeader,
+        public readonly Header $oHeader,
         private StringBlob $oStringBlob
     ) {}
 
@@ -214,40 +224,116 @@ final class IndexedFile implements BinaryEncodable {
         return ChunkIdent::CHUNK_INDEX . pack('N*', ...$aPackLongs);
     }
 }
-/*
-$oStringBlob =  new StringBlob(Chunk::FIXED_SIZE);
 
-$oFile = new IndexedFile(
-    new Header(
-        eSubFormat: SubFormat::Level,
-        oVersion: new Version(1, 0),
-        oRequires: new Version(1, 11)
-    ),
-    $oStringBlob
-);
+abstract class Builder {
+    protected readonly string $sSourcePath;
+    protected readonly string $sTargetPath;
 
-$oStringBlob->add('This is a string.');
-$oStringBlob->add('Well, this should be a different string');
-
-$oPayload = new class implements BinaryEncodable {
-    public function toBinary(): string {
-        return 'abadcafe1';
+    public function __construct(string $sSource, string $sTarget) {
+        $this->assertSourceReadable($sSource);
+        $this->assertTargetWritable($sTarget);
+        $this->sSourcePath = $sSource;
+        $this->sTargetPath = $sTarget;
     }
-};
 
-$oFile->addChunk(
-    new Chunk(
-        'TST0',
-        $oPayload
-    )
-);
+    public function build() {
+        $oData = $this->loadSource();
 
-$oFile->addChunk(
-    new Chunk(
-        'TST1',
-        $oPayload
-    )
-);
+        if (empty($oData->Header)) {
+            throw new RuntimeException('Missing Header section');
+        }
 
-echo bin2hex($oFile->toBinary());
-*/
+        $oStringBlob = new StringBlob(Chunk::FIXED_SIZE);
+        $oFile = new IndexedFile(
+            new Header(
+                eSubFormat: $this->getSubformat($oData->Header),
+                oVersion:   $this->parseVersion($oData->Header, 'Version'),
+                oRequires:  $this->parseVersion($oData->Header, 'Requires'),
+                iDescriptionOffset: $oStringBlob->add($oData->Header->Description ?? '')
+            ),
+            $oStringBlob
+        );
+
+        $this->preprocess($oFile->oHeader, $oData, $oStringBlob);
+        foreach ($this->getChunks($oData, $oStringBlob) as $oChunk) {
+            $oFile->addChunk($oChunk);
+        }
+
+        file_put_contents($this->sTargetPath, $oFile->toBinary());
+    }
+
+    /**
+     * Return the enumerated subformat of the data or throw an exception if it's not the
+     * expected type.
+     *
+     * @throws RuntimeException
+     */
+    protected abstract function getSubformat(stdClass $oData): SubFormat;
+
+    /**
+     * This method is called before getChunks() and allows the implementation to do any special tasks
+     * such as building lookups etc.
+     */
+    protected abstract function preprocess(Header $oHeader, stdClass $oData, StringBlob $oStringBlob): void;
+
+    /**
+     * The specific implementation must return the array of chunks to be
+     * added here.
+     *
+     * @return array<Chunk>
+     */
+    protected abstract function getChunks(stdClass $oData, StringBlob $oStringBlob): array;
+
+    private function parseVersion(stdClass $oData, string $sField): Version {
+        if (empty($oData->{$sField})) {
+            throw new RuntimeException('Missing version field ' . $sField);
+        }
+        if (!preg_match('/^(\d+)\.(\d+)$/', (string)$oData->{$sField}, $aMatches)) {
+            throw new RuntimeException('Malformed version field ' . $sField);
+        }
+        return new Version((int)$aMatches[1], (int)$aMatches[2]);
+    }
+
+    private function loadSource(): stdClass {
+        $str_contents = file_get_contents($this->sSourcePath);
+        $str_contents = preg_replace('/\/\/.*$/m', '', $str_contents);
+        $str_contents = preg_replace('/,\s*\}/', '}', $str_contents);
+        $str_contents = preg_replace('/,\s*\]/', ']', $str_contents);
+
+        if (empty($str_contents)) {
+            RuntimeException('Unable to load source ' . $this->sSourcePath . ', appears to be empty');
+        }
+
+        $oData = json_decode($str_contents);
+        if (empty($oData)) {
+            throw new RuntimeException('Unable to load source ' . $this->sSourcePath);
+        }
+
+        return $oData;
+    }
+
+    private function assertSourceReadable(string $sSource): void {
+        if (!is_readable($sSource)) {
+            throw new RuntimeException('Source ' . $sSource . ' is not readable');
+        }
+        if (!is_file($sSource)) {
+            throw new RuntimeException('Source ' . $sSource . ' is not a file');
+        }
+    }
+
+    private function assertTargetWritable(string $sTarget): void {
+        if (file_exists($sTarget)) {
+            if (!is_file($sTarget)) {
+                throw new RuntimeException('Target ' . $sTarget . ' is not a file');
+            }
+            if (!is_writable($sTarget)) {
+                throw new RuntimeException('Target ' . $sTarget . ' is not writable');
+            }
+        } else {
+            $sTargetPath = dirname($sTarget);
+            if (!is_writable($sTargetPath)) {
+                throw new RuntimeException('Target directory ' . $sTargetPath . ' is not writable');
+            }
+        }
+    }
+}

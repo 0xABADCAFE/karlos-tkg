@@ -201,66 +201,259 @@ The following chunk types are common to each defined data file and can only be i
 
 ### Index
 
-The Index chunk must immediately follow the file header in any file that contains it. The Index chunk shall contain a list of 32-bit offsets, each measured from the start of the file to each Chunk present in the file.
+The Index Chunk contains an list of `ChkOffs` entires that point to the location of other Chunks in the file. The Index chunk must immediately follow the file header in any file that contains it. Since this implies a fixed location, the Index Chunk does not contain an entry for itself.
 
-**Proposed structure:**
+**Asset Structure:**
 
-| Offset | Data | Type | Notes |
-| - | - | - | - |
-| Base + 0 | Ident | `char[4]` | `INDX` |
-| Base + 4 | Length | `uint32` | Total size of the chunk |
-| Base + 8 | Index | `ChkOffs[...]` | List of offsets |
+The Index Chunk is not manually generated and consequently does not have a defined asset structure. It is produced as an artefact by the compilation process.
+
+**Binary Structure:**
+
+
+```
+    {
+        char[4]    Type;    // 0: { 'I', 'N', 'D', 'X' }
+        uint32     Size;    // 4: (N * 4) + 8
+        ChkOffs[N] Index;   // 8:
+    }
+```
 
 **Notes:**
 
-- Index chunk does not contain an entry for itself.
-- Chunk index offsets are measured from the beginning of the file data to the beginning of the chunk Ident.
-- The list count is trivial to derive as ( _chunk size_ / 4) - 2
-- The ordering of chunks is not strongly mandated but should follow the conventions expected by the engine target version.
-- (Low Level): When a file is loaded in its entirety, the chunk offset values in the list can be converted to their absolute in-memory addresses by adding the address at which the file itself is loaded.
+- The number of entries in the Index is trivially determined from the Size field, e.g. (Size - 8)/4.
+
 
 ### String Heap
 
-The String Heap chunk gathers together common strings into a single blob of null-terminated values. There is no length indicator or padding per-entry but the blob itself will be padded out to the next 32-bit boundary if necessary.
+The String Heap Chunk gathers together text data from Chunks into a single blob of null-terminated strings, allowing them to be represented as `StrOffs` entries in the Chunks that define them rather than being directly embedded.
 
-**Proposed structure:**
+**Asset Structure:**
 
-| Offset | Data | Type | Notes |
-| - | - | - | - |
-| Base + 0 | Ident | `char[4]` | `STRH` |
-| Base + 4 | Length | `uint32` | Total size of the chunk |
-| Base + 8 | Content | `char[...]` | Catenated string data, zero padded at end if necessary |
+The String Heap Chunk is not manually generated and consequently does not have a defined asset structure. It is produced as an artefact by the compilation process.
+
+
+**Binary structure:**
+
+```
+    {
+        char[4]   Type;    // 0: { 'S', 'T', 'R', 'H' }
+        uint32    Size;    // 4:
+        char[...] Content; // 8:
+    }
+```
 
 **Notes:**
 
-- When present in a file, the String Heap should be the first entry in the Index chunk
-    - Can be located anwyhere in the file after the Index chunk.
-    - Being placed last in the file is generally the most convenient for tooling that creates the file.
+- Unlike the Index Chunk, the String Heap Chunk does not have a predefined location in the file and will always have an entry in the Index Chunk.
+    - It may be simpler for tooling to place the String Heap Chunk as the final Chunk.
 
-Other chunks that contain StrOffs fields are resolved to absolute `char const*` addresses:
+- As char array data, individual strings are null-terminated but not padded. Only the end of the 
+- Only unique strings are recorded in the heap.
+- `StrOffs` values are measured from the beginning of the String Heap Chunk, meaning that the smallest non-zero value is 8.
+    - Empty strings are not encoded and will generate zero as the `StrOffs` value, which will be interpreted as NULL reference when converted to a pointer at runtime.
 
-- The offset to the string is measured from the beginning of the String Heap chunk:
-    - The minimum legal 32-bit offset is 8.
-    - (Low Level): On parsing the chunk, the string offset is converted into an appropriate address by adding the the address at which the String Heap is located in memory.
-- An offset value of 0 is zero meaning a null refence.
-- An offset value between 1 and 7 is considered an error.
+## Game Modification Asset
 
-## Modification File Chunk Types
+### LinkDefs
 
-### InventoryLimits
+The asset file file for the main modification contains sections that are not directly converted into Chunks but exist to define values that are. The `LinkDefs` node defines a set of Label to ID lookups that assign names to entities defined in the original game link file.
 
-This chunk specifies the default game limits for the player inventory.
+**Asset Structure:**
 
-**Proposed structure:**
+```
+    "LinkDefs": {
+        "AlienTypes": {
+            // The game link file defines up 20 alien types, enumerated 0-19.
+            // This node defines names to each type that are then used in the rest of the file.
+            "<name>": <id>,
+        },
+        "PlayerAmmoTypes": {
+            // The game link file defines up to 20 ammunition types, enumerated 0-19. These are
+            // shared between aliens and the player and any 10 of these are assignable to
+            // the weapons used by the player. This node defines names for those used by player
+            // weapons.
+            // It is worth noting that a pickup can award any amount of any of the 20 ammunition
+            // types.
+            "<name>": <id>,
 
-| Offset | Data | Type | Notes |
-| - | - | - | - |
-| Base + 0 | Ident | `char[4]` | `INVL` |
-| Base + 4 | Length | `uint32` | Total size of the chunk |
-| Base + 8 | Health | `uint16` | Health Limit |
-| Base + 10 | Fuel | `uint16` | Fuel Limit |
-| Base + 12 | Ammo | `uint16[...]` | Ammo Limit, entry per type (20) |
+        },
+        "SpecialAmmoTypes": {
+            // Since the Player can not use the other 10 ammunition types directly and a pickup
+            // can give any of the 20 defined types, we can repurpose the other types for special
+            // collectables.
+            "<name>": <id>,
+        },
+```
 
+The tooling that generates the binary modification file parses the `LinkDefs` node to build the required mapping of names back to integer values.
+
+### DefaultInventoryLimits
+
+The `DefaultInventoryLimits` node sets the initial limits for player comsumables and ammunition when starting a new game:
+
+**Asset Structure:**
+
+```
+    "DefaultInventoryLimits": {
+        "MaxHealth": <count>,
+        "MaxJetpackFuel": <count>,
+        "MaxAmmo": {
+            // Initial limits for each of the PlayerAmmoTypes and SpecialAmmoTypes
+            "<name>": <count>,
+        },
+    },
+
+```
+
+The initial limits defined here can be raised via rewards for completing objectives or finding special bonus items. The actual limits are saved in the player progress data when exiting the game.
+
+The `DefaultInventoryLimits` data are encoded into a Chunk:
+
+**Binary structure:**
+
+```
+    {
+        char[4]    Type;      // 0: { 'I', 'N', 'V', 'L' }
+        uint32     Size;      // 4:
+        uint16     MaxHealth; // 8:
+        uint16     MaxFuel;   // 10:
+        uint16[20] MaxAmmo;   // 12: One for each of every ammunition type.
+    }
+```
+
+**Notes:**
+
+- The binary chunk contains a value for each of the 20 ammunition types defined in the game.
+- If no limit is defined for any particular `PlayerAmmoType`, the internal default value of 32767 is used.
+- If the `MaxHealth` limit is ommitted, the internal default value of 32767 is used.
+- If the `MaxFuel` limit is ommitted, the internal default of 255 is used.
+
+### Rewards
+
+Rewards are modifications to the active Inventory Limits that are awarded for completing various achievements or collecting special items.
+
+In order to make the asset file more accessible, like text strings, rewards are defined inline within other structures. Also, like text strings, rewards are collected into a single Chunk witin the file.
+
+Rewards define two parts:
+
+- Immediate bonus - Adds health/fuel/ammo 
+- Carry limit bonus - Increases the amount of health/fuel/ammo
+
+A reward can contain any combination of these. Where there are both carry limit bonuses and immediate bonuses, the carry limit bonus is applied first.
+
+**Asset Structure**
+
+```
+    "Reward": {
+        "Description": "<text>",
+        "Immediate": {
+            // Immediate bonuses (if any)
+            "AddHealth": <count>,
+            "AddJetpackFuel": <count>,
+            "AddAmmo": {
+                "<name>": <count>,
+            },
+        },
+        "CarryLimit": {
+            // Carry limit bonuses (if any)
+            "AddHealth": <count>,
+            "AddJetpackFuel": <count>,
+            "AddAmmo": {
+                "<name>": <count>,
+            }
+        }
+    }
+
+```
+
+**Binary Structure:**
+
+Individual Reward structures are varying length due to the fact they are not required to modify the entire player inventory. References to reward data in other Chunks operate along the same principle as `StrOffs` values; a 32-bit offset value that when added to the address location of the Reward Chunk, give the location of the reward data. An offset of zero, is considered a NULL reference.
+
+```
+    {
+        char[4]     Type;       // 0: { 'R', 'W', 'R', 'D' }
+        uint32      Size;       // 4:
+        uint16[...] RewardList; // 8:
+    }
+```
+
+The `RewardList` field is a stream of varying sized structures. For simplicity of parsing, an offset pair is embedded that indicate the locations of the carry and immediate bonus offset struture in the binary. 
+
+
+```
+    {
+        StrOffs Description;
+        
+        // Following offsets are measured relative to the start of the structure.
+        // If an offset is zero, the corresponding section does not exist.
+        uint16      CarryOffset;
+        uint16      ImmediateOffset;
+        uint16[...] CarryBonusData;     // if present
+        uint16[...] ImmediateBonusData; // if present
+    }
+```
+
+At least one of `CarryBonusData` and `ImmediateBonusData` must be present. These are varying length uint16 arrays that are terminated by an 0xFFFF entry. These contain the Health, Fuel and Ammo increments as defined by a `Reward` node. The data in these arrays conforms to the following structure:
+
+```
+    {
+        uint16 AddHealth;      // Always present, can be zero if no bonus.
+        uint16 AddJetpackFuel; // Always present, can be zero if no bonus.
+        {
+            uint16 AmmoType;
+            uint16 Count;
+        } [...] AddAmmo;
+        uint16 _terminator; // 0xFFFF
+    }
+```
+
+**Notes**
+
+- A complete Reward structure always contains the Health and Fuel values, with a zero value indicating no change to the required inventory/limit.
+- The `AddAmmo` list can be empty if there are no specific ammunition bonuses.
+- If the entire Bonus structure is an odd number of uint16, it is padded to the next 32-bit boundary.
+
+**Worked Examples**
+
+The following asset defines a 40 point health bonus, plus a permanent increase of 40 for the maximum health.
+
+```
+    "Reward": {
+        "Description": "Hands of the Healer! +40 HP",
+        "Immediate": {
+            "AddHealth": 40,
+        },
+        "CarryLimit": {
+            "AddHealth": 40,
+        }
+    }
+
+```
+
+The corresponding binary representation:
+
+```
+    {
+        .Description = <offset in String Heap>, // 0
+        .CarryOffset = 8,                       // 4
+        .ImmediateOffset = 14,                  // 6
+        {
+            // Carry Bonus Data
+            .AddHealth = 40;                    // 8
+            .AddJetpackFuel = 0,                // 10
+            // AddAmmo list empty
+            ._terminator = 0xFFFF               // 12
+        },
+        {
+            // Immediate Bonus Data
+            .AddHealth = 40;                    // 14
+            .AddJetpackFuel = 0,                // 16
+            // AddAmmo list empty
+            ._terminator = 0xFFFF               // 18
+        }
+    }
+```
 
 ### Achievements
 

@@ -10,58 +10,48 @@ use RuntimeException;
 
 require 'src/Library.php';
 
-class LevelPropertiesBuilder {
+class LevelPropertiesBuilder extends Data\Format\Builder {
 
+    private const string SUBFORMAT_NAME = 'Level';
     private const string PVS_ERRATA_IDENT = 'PVSE';
     private const string BACKDROP_ERRATA_IDENT = 'BKDE';
     private const string ZONE_MESSAGE_IDENT = 'ZMSG';
     private const string OBJECT_MESSAGE_IDENT = 'OMSG';
 
-    private string $sSourcePath;
-    private string $sTargetPath;
-
-    public function __construct(string $sSource, string $sTarget) {
-        $this->assertSourceReadable($sSource);
-        $this->assertTargetWritable($sTarget);
-        $this->sSourcePath = $sSource;
-        $this->sTargetPath = $sTarget;
+    protected function getSubFormat(stdClass $oData): Data\Format\SubFormat {
+        if (!isset($oData->DataType) || self::SUBFORMAT_NAME !== $oData->DataType) {
+            throw new RuntimeException('Missing or unexpected DataType');
+        }
+        return Data\Format\SubFormat::Level;
     }
 
-    public function build() {
-        $oData = $this->loadSource();
-
-        $oStringBlob = new Data\Format\StringBlob(Data\Format\Chunk::FIXED_SIZE);
-        $oFile = new Data\Format\IndexedFile(
-            new Data\Format\Header(
-                eSubFormat: Data\Format\SubFormat::Level,
-                oVersion:  $this->parseVersion($oData, 'Version'),
-                oRequires: $this->parseVersion($oData, 'Requires')
-            ),
-            $oStringBlob
+    protected function preprocess(
+        Data\Format\Header $oHeader,
+        stdClass $oData,
+        Data\Format\StringBlob $oStringBlob
+    ): void {
+        printf(
+            "Building %s [version: %d.%d, target: %d.%d]...\n",
+            $this->sTargetPath,
+            $oHeader->oVersion->iMajor,
+            $oHeader->oVersion->iMinor,
+            $oHeader->oRequires->iMajor,
+            $oHeader->oRequires->iMinor
         );
-
-        if (isset($oData->PVSErrata)) {
-            $oFile->addChunk($this->buildZonePVSErrata($oData, $oStringBlob));
-        }
-        if (isset($oData->BackdropErrata)) {
-            $oFile->addChunk($this->buildZoneBackropErrata($oData, $oStringBlob));
-        }
-
-        if (isset($oData->ZoneMessages)) {
-            $oFile->addChunk($this->buildZoneMessages($oData, $oStringBlob));
-        }
-        file_put_contents($this->sTargetPath, $oFile->toBinary());
     }
 
-
-    private function parseVersion(stdClass $oData, string $sField): Data\Format\Version {
-        if (empty($oData->{$sField})) {
-            throw new RuntimeException('Missing version field ' . $sField);
+    public function getChunks(stdClass $oData, Data\Format\StringBlob $oStringBlob): array {
+        $aChunks = [];
+        if (isset($oData->ZoneErrata->PVSDeletions)) {
+            $aChunks[] = $this->buildZonePVSErrata($oData, $oStringBlob);
         }
-        if (!preg_match('/^(\d+)\.(\d+)$/', (string)$oData->{$sField}, $aMatches)) {
-            throw new RuntimeException('Malformed version field ' . $sField);
+        if (isset($oData->ZoneErrata->NoSkyVisible)) {
+            $aChunks[] = $this->buildZoneBackropErrata($oData, $oStringBlob);
         }
-        return new Data\Format\Version((int)$aMatches[1], (int)$aMatches[2]);
+        if (isset($oData->ZoneMessages)) {
+            $aChunks[] = $this->buildZoneMessages($oData, $oStringBlob);
+        }
+        return $aChunks;
     }
 
     private function buildZonePVSErrata(
@@ -70,7 +60,7 @@ class LevelPropertiesBuilder {
     ): Data\Format\Chunk {
         return new Data\Format\Chunk(
             self::PVS_ERRATA_IDENT,
-            new class($oData->PVSErrata) implements Data\Format\BinaryEncodable {
+            new class($oData->ZoneErrata->PVSDeletions) implements Data\Format\BinaryEncodable {
                 public function __construct(private stdClass $aPVSErrata) {}
                 public function toBinary(): string {
                     $sData = '';
@@ -91,7 +81,7 @@ class LevelPropertiesBuilder {
     ): Data\Format\Chunk {
         return new Data\Format\Chunk(
             self::BACKDROP_ERRATA_IDENT,
-            new class($oData->BackdropErrata) implements Data\Format\BinaryEncodable {
+            new class($oData->ZoneErrata->NoSkyVisible) implements Data\Format\BinaryEncodable {
                 public function __construct(private array $aBackdropErrata) {}
                 public function toBinary(): string {
                     $this->aBackdropErrata[] = -1;
@@ -128,41 +118,6 @@ class LevelPropertiesBuilder {
             }
         );
     }
-
-
-    private function loadSource(): stdClass {
-        $oData = json_decode(file_get_contents($this->sSourcePath));
-        if (empty($oData)) {
-            throw new RuntimeException('Unable to load source ' . $this->sSourcePath);
-        }
-
-        return $oData;
-    }
-
-    private function assertSourceReadable(string $sSource): void {
-        if (!is_readable($sSource)) {
-            throw new RuntimeException('Source ' . $sSource . ' is not readable');
-        }
-        if (!is_file($sSource)) {
-            throw new RuntimeException('Source ' . $sSource . ' is not a file');
-        }
-    }
-
-    private function assertTargetWritable(string $sTarget): void {
-        if (file_exists($sTarget)) {
-            if (!is_file($sTarget)) {
-                throw new RuntimeException('Target ' . $sTarget . ' is not a file');
-            }
-            if (!is_writable($sTarget)) {
-                throw new RuntimeException('Target ' . $sTarget . ' is not writable');
-            }
-        } else {
-            $sTargetPath = dirname($sTarget);
-            if (!is_writable($sTargetPath)) {
-                throw new RuntimeException('Target directory ' . $sTargetPath . ' is not writable');
-            }
-        }
-    }
 }
 
 if (!isset($_SERVER['argv'][1])) {
@@ -175,8 +130,8 @@ if (!preg_match('/^[A-P]$/', $sLevel)) {
     throw new RuntimeException('Invalid Level ID ' . $sLevel);
 }
 
-$sSource = sprintf('test/level_%s.json', $sLevel);
-$sTarget = sprintf('test/level_%s.props', $sLevel);
+$sSource = sprintf('test/levels/level_%s.json', $sLevel);
+$sTarget = sprintf('test/levels/level_%s.props', $sLevel);
 $oBuilder = new LevelPropertiesBuilder(
     $sSource,
     $sTarget

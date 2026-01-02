@@ -1,0 +1,44 @@
+{
+    // Don't Panic. This file is JSON with line commenting supported.
+    // It also supports trailing commas on lists.
+    "Header": {
+        "DataType":"Level",
+        "Requires": "1.32767",
+        "Version": "1.0",
+        "Description": "The Awakening",
+    },
+    "ZoneErrata": {
+        "PVSDeletions": {
+            // Zone ID => [ List of zone ID in PVS to be removed ]
+            "4": [ 17 ],
+            "5": [ 181 ],
+            "34": [ 37 ],
+            "36": [ 31 ],
+            "37": [ 34, 45, 46, 47, 248 ],
+            "38": [ 30, 31 ],
+            "40": [ 248 ],
+            "120": [ 92 ],
+            "125": [ 59 ],
+            "182": [ 134 ],
+            "72": [ 69 ],
+            "99": [ 101 ],
+            "101": [ 71 ],
+            "106": [ 112 ],
+            "108": [ 106 ],
+            "112": [ 110 ],
+            "110": [ 112 ],
+            "251": [ 183 ],
+            "183": [ 11 ],
+            "251": [ 183 ],
+        },
+        "NoSkyVisible": [
+            // List of Zone ID that should have their backdrop flag cleared as the sky impossible to see.
+            13, 17, 29,
+        ]
+    },
+    "ZoneMessages": {
+        "2": { "attr":0, "text": "This is a test message for zone 2." },
+        "3": { "attr":0, "text": "This one is for zone 3." },
+        "5": { "attr":0, "text": "Guess what this one is for?" }
+    },
+}
