@@ -1,0 +1,167 @@
+#!/usr/bin/php
+<?php
+
+declare(strict_types=1);
+
+namespace TKGD;
+
+use stdClass;
+use RuntimeException;
+
+require 'src/Library.php';
+
+class GamePropertiesBuilder extends Data\Format\Builder {
+
+    private const string SUBFORMAT_NAME = 'Game';
+
+    private const string INVENTORY_LIMITS_IDENT = 'INVL';
+
+    private array $aAlienTypes             = [];
+    private array $aPlayerAmmoTypes        = [];
+    private array $aPlayerSpecialAmmoTypes = [];
+
+    protected function getSubFormat(stdClass $oData): Data\Format\SubFormat {
+        if (!isset($oData->DataType) || self::SUBFORMAT_NAME !== $oData->DataType) {
+            throw new RuntimeException('Missing or unexpected DataType');
+        }
+        return Data\Format\SubFormat::Game;
+    }
+
+    protected function preprocess(
+        Data\Format\Header $oHeader,
+        stdClass $oData,
+        Data\Format\StringBlob $oStringBlob
+    ): void {
+        printf(
+            "Building %s [%s version: %d.%d, target: %d.%d]...\n",
+            $this->sTargetPath,
+            $oData->Description,
+            $oHeader->oVersion->iMajor,
+            $oHeader->oVersion->iMinor,
+            $oHeader->oRequires->iMajor,
+            $oHeader->oRequires->iMinor
+        );
+        if (empty($oData->LinkDefs)) {
+            throw new RuntimeException('LinkDefs cannot be empty');
+        }
+        $this->processLinkDefs($oData->LinkDefs);
+    }
+
+    public function getChunks(stdClass $oData, Data\Format\StringBlob $oStringBlob): array {
+        $aChunks = [];
+
+        if (!empty($oData->DefaultInventoryLimits)) {
+            $aChunks[] = $this->buildDefaultInventoryLimits($oData, $oStringBlob);
+        }
+
+        return $aChunks;
+    }
+
+    private function processLinkDefs(stdClass $oLinkDefs): void {
+        if (empty($oLinkDefs->AlienTypes)) {
+            throw new RuntimeException('AlienTypes cannot be empty');
+        }
+        $this->aAlienTypes = (array)$oLinkDefs->AlienTypes;
+        printf("Got %d Alien Types\n", count($this->aAlienTypes));
+        if (empty($oLinkDefs->PlayerAmmoTypes)) {
+            throw new RuntimeException('PlayerAmmoTypes cannot be empty');
+        }
+        $this->aPlayerAmmoTypes = (array)$oLinkDefs->PlayerAmmoTypes;
+        printf("Got %d Player Ammo Types\n", count($this->aPlayerAmmoTypes));
+
+        if (!empty($oLinkDefs->PlayerSpecialAmmoTypes)) {
+            $this->aPlayerSpecialAmmoTypes = (array)$oLinkDefs->PlayerSpecialAmmoTypes;
+            printf("Got %d Player Special Ammo Types\n", count($this->aPlayerSpecialAmmoTypes));
+        }
+    }
+
+    private function buildDefaultInventoryLimits(
+        stdClass $oData,
+        Data\Format\StringBlob $oStringBlob
+    ): Data\Format\Chunk {
+        return new Data\Format\Chunk(
+            self::INVENTORY_LIMITS_IDENT,
+            new class (
+                $oData->DefaultInventoryLimits,
+                $this->aPlayerAmmoTypes
+            ) implements Data\Format\BinaryEncodable {
+
+                private const int NUM_AMMO_TYPES   = 20;
+                private const int DEF_AMMO_LIMIT   = 32767;
+                private const int DEF_HEALTH_LIMIT = 32767;
+                private const int DEF_FUEL_LIMIT   = 255;
+
+                public function __construct(
+                    private stdClass $oInventoryLimits,
+                    private array $aPlayerAmmoTypes
+                ) {}
+
+                public function toBinary(): string {
+                    $aMaxAmmoCounts = array_fill(0, self::NUM_AMMO_TYPES - 1, 0);
+                    foreach ($this->aPlayerAmmoTypes as $sName => $iIndex) {
+                        $aMaxAmmoCounts[$iIndex] = self::DEF_AMMO_LIMIT;
+                    }
+                    foreach ($this->oInventoryLimits->MaxAmmo as $sAmmoKey => $iValue) {
+                        $iIndex = $this->aPlayerAmmoTypes[$sAmmoKey];
+                        $aMaxAmmoCounts[$iIndex] = $iValue;
+                    }
+
+                    return pack(
+                        'n*',
+                        $this->oInventoryLimits->MaxHealth ?? self::DEF_HEALTH_LIMIT,
+                        $this->oInventoryLimits->MaxJetpackFuel ?? self::DEF_FUEL_LIMIT,
+                        ...$aMaxAmmoCounts
+                    );
+                }
+            }
+        );
+    }
+
+
+//     private function buildZoneMessages(
+//         stdClass $oData,
+//         Data\Format\StringBlob $oStringBlob
+//     ): Data\Format\Chunk {
+//         return new Data\Format\Chunk(
+//             self::ZONE_MESSAGE_IDENT,
+//             new class($oData->ZoneMessages, $oStringBlob) implements Data\Format\BinaryEncodable {
+//                 public function __construct(
+//                     private stdClass $aZoneMessages,
+//                     private Data\Format\StringBlob $oStringBlob
+//                 ) {}
+//
+//                 public function toBinary(): string {
+//                     $aData = [];
+//                     foreach ($this->aZoneMessages as $iZoneID => $oInfo) {
+//                         $aData[] = $iZoneID << 16 | $oInfo->attr | strlen($oInfo->text);
+//                         $aData[] = $this->oStringBlob->add($oInfo->text);
+//                     }
+//                     // Terminate with a -1 zone reference
+//                     $aData[] = 0xFFFF0000;
+//
+//                     return pack('N*', ...$aData);
+//                 }
+//             }
+//         );
+//     }
+}
+
+if (!isset($_SERVER['argv'][1])) {
+    throw new RuntimeException("No level specified");
+}
+
+$sName = $_SERVER['argv'][1];
+
+if (empty($sName)) {
+    throw new RuntimeException('Invalid Level ID ' . $sName);
+}
+
+$sSource = sprintf('test/mods/%s.json', $sName);
+$sTarget = sprintf('test/mods/%s.props', $sName);
+$oBuilder = new GamePropertiesBuilder(
+    $sSource,
+    $sTarget
+);
+
+$oBuilder->build();
+

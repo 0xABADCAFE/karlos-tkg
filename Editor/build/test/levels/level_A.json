@@ -7,6 +7,9 @@
         "Version": "1.0",
         "Description": "The Awakening",
     },
+    "Import": {
+        "LinkDefs": "common/linkdefs.json",
+    },
     "ZoneErrata": {
         "PVSDeletions": {
             // Zone ID => [ List of zone ID in PVS to be removed ]

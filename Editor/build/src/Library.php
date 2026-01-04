@@ -225,19 +225,27 @@ final class IndexedFile implements BinaryEncodable {
     }
 }
 
+
+
 abstract class Builder {
-    protected readonly string $sSourcePath;
+    protected readonly string $sBase;
+    protected readonly string $sSourceBase;
     protected readonly string $sTargetPath;
 
-    public function __construct(string $sSource, string $sTarget) {
-        $this->assertSourceReadable($sSource);
+    public function __construct(
+        string $sSourceBase,
+        string $sSource,
+        string $sTarget
+    ) {
+        $this->assertSourceReadable($sSourceBase . $sSource);
         $this->assertTargetWritable($sTarget);
-        $this->sSourcePath = $sSource;
+        $this->sSourceBase = $sSourceBase;
+        $this->sSourcePath = $sSourceBase . $sSource;
         $this->sTargetPath = $sTarget;
     }
 
     public function build() {
-        $oData = $this->loadSource();
+        $oData = $this->loadSource($this->sSourcePath);
 
         if (empty($oData->Header)) {
             throw new RuntimeException('Missing Header section');
@@ -294,19 +302,26 @@ abstract class Builder {
         return new Version((int)$aMatches[1], (int)$aMatches[2]);
     }
 
-    private function loadSource(): stdClass {
-        $str_contents = file_get_contents($this->sSourcePath);
+    private function loadSource(string $sSourcePath): stdClass {
+        $str_contents = file_get_contents($sSourcePath);
         $str_contents = preg_replace('/\/\/.*$/m', '', $str_contents);
         $str_contents = preg_replace('/,\s*\}/', '}', $str_contents);
         $str_contents = preg_replace('/,\s*\]/', ']', $str_contents);
 
         if (empty($str_contents)) {
-            RuntimeException('Unable to load source ' . $this->sSourcePath . ', appears to be empty');
+            RuntimeException('Unable to load source ' . $SourcePath . ', appears to be empty');
         }
 
         $oData = json_decode($str_contents);
         if (empty($oData)) {
             throw new RuntimeException('Unable to load source ' . $this->sSourcePath);
+        }
+
+        if (!empty($oData->Import)) {
+            foreach ($oData->Import as $sField => $sIncludePath) {
+                echo "Importing ", $sIncludePath, "\n";
+                $oData->Import->{$sField} = $this->loadSource($this->sSourceBase . $sIncludePath);
+            }
         }
 
         return $oData;
