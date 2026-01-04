@@ -8,6 +8,7 @@
         "Description": "The Awakening",
     },
     "Import": {
+        // Definitions become acessible as Import->LinkDefs->...
         "LinkDefs": "common/linkdefs.json",
     },
     "ZoneErrata": {
@@ -25,7 +26,7 @@
             "182": [ 134 ],
             "72": [ 69 ],
             "99": [ 101 ],
-            "101": [ 71 ],
+            "101": [ 71 ],r
             "106": [ 112 ],
             "108": [ 106 ],
             "112": [ 110 ],

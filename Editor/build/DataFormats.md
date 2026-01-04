@@ -70,7 +70,6 @@ A JSON-based text format is used for the source assets from which the binary fil
 
 The tooling that generates the binary files from the assets can trivially strip these modifications from the source text to yeild strict JSON for parsing.
 
-
 ### Type Conventions
 
 This document uses the following C-like conventions for binary types:
@@ -81,40 +80,30 @@ This document uses the following C-like conventions for binary types:
 - <_type_>[...] for varying length arrays, e.g. char[...]
 - { <_type_>, <_type_>, ... } for unnamed tuples, e.g. { uint32, int16, int16 }
 
-A type name may also refer to a named structure definiton. In addition there are two special purpose aliases of the uint32 scalar:
+A type name may also refer to a named structure definiton. All values that are larger than a byte will be stored in Big-Endian byte order.
 
-- ChkOffs is a 32-bit offset value that measures the distance from the beginning of the file to the beginning of a Chunk. Conceptually this can be thought of as a union:
+In addition to the above, there is a special interpetation of a uint32 value that represents an offset from some defined base to the start location of some data of a particular type:
 
 ```
-    union ChkOffs {
-        // In file
-        uint32 fileOffset;
+    union Offset<T> {
+        // In file and immediately after loading
+        uint32 offset;
 
-        // At runtime
-        Chunk const* chunkAddress; // (Chunk const*) ((uint32)baseAddress + fileOffset)
+        // After loading and processing, T* ((uint32)baseAddress + offset)
+        T const* memoryLocation;
     };
 ```
 
-- StrOffs is a 32-bit offset value that measures the distance from the beginning of the String Heap Chunk to the first character of a string in the chunk data.
+When the file is loaded and the in-memory baseAddress is known, these offsets are converted to their respective pointer locations by adding the offset and interpeting the resuting value as the data type
 
-```
-    union StrOffs {
-        // In file
-        uint32 heapOffset;
+There are two implementations that are common:
 
-        // At runtime
-        char const* stringAddress; // (char const*) ((uint32)chunkAddress + heapOffset)
-    };
-```
+- `typedef Offset<Chunk> ChkOffs;`
+    -  Distance from the beginning of the file to the beginning of a Chunk.
 
 
-Each of the above offset types are converted to in-memory addresses after loading by adding their offset value to a base address:
-
-- For ChkOffs values, the address at which the entire file data was loaded is used.
-- For StrOffs values, the address at which the String Heap chunk was loaded is used.
-
-All values that are larger than a byte will be stored in Big-Endian byte order.
-
+- `typedef Offset<char> StrOffs;`
+    - Distance from the beginning of the String Heap Chunk to the first character of a string in the chunk data.
 
 ### Header
 
@@ -128,7 +117,7 @@ The file header should contain a simple type and version indication:
 - Version
     - Basic version data of the file.
     - Includes a major and minor component.
- 
+
 - Version Required
     - Defines the minimum version of the engine that the data format will work with.
     - Includes a major and minor component.
@@ -170,6 +159,58 @@ The asset fields are encoded into a 16-byte binary structure:
     }
 
 ```
+
+### Import Node
+
+Asset files support an import mechanism that allows definitions to be loaded in other files. This is intended to ensure a single point of defintion, especially for things like entity names, etc.
+
+```
+    "Import": {
+        "<name>":"<path to file>",
+    }
+```
+
+For each entry in the Import node, the corresponding file is loaded and the root structure defined within it is assigned to the corresponding key in the Import node. For example:
+
+
+** Main asset.json**
+
+```
+{
+    "Import": {
+        "Fruit": "common/fruit.json",
+    },
+}
+```
+
+** Include common/fruit.json **
+
+```
+{
+    // Enumerated fruit
+    "Apple": 0,
+    "Banana": 1,
+    "Pear": 2,
+    "Orange": 3,
+}
+```
+
+On parsing the `asset.json` file, processing the Import node attempts to load the `common/fruit,json` and apply the contents in place, e.g:
+
+```
+{
+    "Import": {
+        "Fruit": {
+            "Apple": 0,
+            "Banana": 1,
+            "Pear": 2,
+            "Orange": 3,
+        },
+    },
+}
+```
+
+This behaviour is only applied to the Import node. Note that the process supports nesting. This allows an imported file to import further definitio
 
 
 ### Chunks
@@ -247,45 +288,59 @@ The String Heap Chunk is not manually generated and consequently does not have a
 - Unlike the Index Chunk, the String Heap Chunk does not have a predefined location in the file and will always have an entry in the Index Chunk.
     - It may be simpler for tooling to place the String Heap Chunk as the final Chunk.
 
-- As char array data, individual strings are null-terminated but not padded. Only the end of the 
+- As char array data, individual strings are null-terminated but not padded. Only the end of the
 - Only unique strings are recorded in the heap.
 - `StrOffs` values are measured from the beginning of the String Heap Chunk, meaning that the smallest non-zero value is 8.
     - Empty strings are not encoded and will generate zero as the `StrOffs` value, which will be interpreted as NULL reference when converted to a pointer at runtime.
 
-## Game Modification Asset
+## Imports
 
-### LinkDefs
+### Link Definitions
 
-The asset file file for the main modification contains sections that are not directly converted into Chunks but exist to define values that are. The `LinkDefs` node defines a set of Label to ID lookups that assign names to entities defined in the original game link file.
+The Link Definitions include acts as a bridge between the data in the original game test.lnk file an asset file by assigning names to ID lookups.
 
 **Asset Structure:**
 
 ```
-    "LinkDefs": {
-        "AlienTypes": {
-            // The game link file defines up 20 alien types, enumerated 0-19.
-            // This node defines names to each type that are then used in the rest of the file.
-            "<name>": <id>,
-        },
-        "PlayerAmmoTypes": {
-            // The game link file defines up to 20 ammunition types, enumerated 0-19. These are
-            // shared between aliens and the player and any 10 of these are assignable to
-            // the weapons used by the player. This node defines names for those used by player
-            // weapons.
-            // It is worth noting that a pickup can award any amount of any of the 20 ammunition
-            // types.
-            "<name>": <id>,
-
-        },
-        "SpecialAmmoTypes": {
-            // Since the Player can not use the other 10 ammunition types directly and a pickup
-            // can give any of the 20 defined types, we can repurpose the other types for special
-            // collectables.
-            "<name>": <id>,
-        },
+{
+    "AlienTypes": {
+        // The game link file defines up 20 alien types, enumerated 0-19.
+        // This node defines names to each type that are then used in the rest of the file.
+        "<name>": <id>,
+    },
+    "PlayerAmmoTypes": {
+        // The game link file defines up to 20 ammunition types, enumerated 0-19. These are
+        // shared between aliens and the player and any 10 of these are assignable to
+        // the weapons used by the player. This node defines names for those used by player
+        // weapons.
+        // It is worth noting that a pickup can award any amount of any of the 20 ammunition
+        // types.
+        "<name>": <id>,
+    },
+    "SpecialAmmoTypes": {
+        // Since the Player can not use the other 10 ammunition types directly and a pickup
+        // can give any of the 20 defined types, we can repurpose the other types for special
+        // collectables.
+        "<name>": <id>,
+    },
+    // Other lookups
+}
 ```
 
 The tooling that generates the binary modification file parses the `LinkDefs` node to build the required mapping of names back to integer values.
+
+
+## Game Modification Asset
+
+### Imports
+
+The game modification file must `Import` the Link Definitions file as `LinkDefs` in order to have access the appropriate link enumerations.
+
+```
+    "Import": {
+        "LinkDefs": "<path to link definitions file>",
+    },
+```
 
 ### DefaultInventoryLimits
 
@@ -336,7 +391,7 @@ In order to make the asset file more accessible, like text strings, rewards are 
 
 Rewards define two parts:
 
-- Immediate bonus - Adds health/fuel/ammo 
+- Immediate bonus - Adds health/fuel/ammo
 - Carry limit bonus - Increases the amount of health/fuel/ammo
 
 A reward can contain any combination of these. Where there are both carry limit bonuses and immediate bonuses, the carry limit bonus is applied first.
@@ -363,7 +418,6 @@ A reward can contain any combination of these. Where there are both carry limit 
             }
         }
     }
-
 ```
 
 **Binary Structure:**
@@ -378,13 +432,12 @@ Individual Reward structures are varying length due to the fact they are not req
     }
 ```
 
-The `RewardList` field is a stream of varying sized structures. For simplicity of parsing, an offset pair is embedded that indicate the locations of the carry and immediate bonus offset struture in the binary. 
-
+The `RewardList` field is a stream of varying sized structures. For simplicity of parsing, an offset pair is embedded that indicate the locations of the carry and immediate bonus offset struture in the binary.
 
 ```
     {
         StrOffs Description;
-        
+
         // Following offsets are measured relative to the start of the structure.
         // If an offset is zero, the corresponding section does not exist.
         uint16      CarryOffset;
