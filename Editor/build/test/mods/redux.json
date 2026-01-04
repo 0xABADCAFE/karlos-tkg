@@ -7,48 +7,9 @@
         "Version": "1.0",
         "Description": "AB3DII-TKG Redux",
     },
-    "LinkDefs": {
-        // Contains labels for enumerated endities in the base GameLink file.
-        "AlienTypes": {
-            "Beast": 0,
-            "ShotgunGuard": 1,
-            "BasicGuard": 2,
-            "Marine": 3,
-            "GreenDemon": 4,
-            "PlasmaGuard": 5,
-            "Defender": 6,
-            "RedDemon": 7,
-            "Worm": 8,
-            "Insectoid": 10,
-            "Priest": 11,
-            "BigInsect": 12,
-            "Drone": 14,
-            "Wasp": 15,
-            "Mantis": 16,
-            "InsectBoss": 17,
-            "Crab": 18,
-            "Old": 19,
-        },
-        "PlayerAmmoTypes": {
-            // There are 20 possible ammo types defined in the GameLink file but only 10 of them
-            // can be used for the player weapon slots.
-            "Plasma": 0,
-            "Bullet": 1,
-            "Rocket": 2,
-            "Shot": 7,
-            "Grenade": 8,
-            "Bouncer": 14,
-            "Mine": 15,
-            "Blaster": 16,
-            "ChargedPlasma": 19,
-        },
-        "SpecialAmmoTypes": {
-            // Since the Player can not use the other 10 ammo types directly and a pickup can
-            // give any of the 20 defined types, we can repurpose the other types for special
-            // collectables.
-            "Bandolier": 3,
-            "Backpack": 4,
-        },
+    "Import": {
+        // Definitions become acessible as Import->LinkDefs->...
+        "LinkDefs": "common/linkdefs.json",
     },
     "DefaultInventoryLimits": {
         // When starting a new game, these are the maximum carry limits for each class of collectable.

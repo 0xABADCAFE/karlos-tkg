@@ -33,7 +33,7 @@
         "Blaster": 16,
         "ChargedPlasma": 19,
     },
-    "SpecialAmmoTypes": {
+    "PlayerSpecialAmmoTypes": {
         // Since the Player can not use the other 10 ammo types directly and a pickup can
         // give any of the 20 defined types, we can repurpose the other types for special
         // collectables.

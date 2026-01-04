@@ -31,8 +31,9 @@ class LevelPropertiesBuilder extends Data\Format\Builder {
         Data\Format\StringBlob $oStringBlob
     ): void {
         printf(
-            "Building %s [version: %d.%d, target: %d.%d]...\n",
+            "Building %s ['%s' version: %d.%d, target: %d.%d]...\n",
             $this->sTargetPath,
+            $oData->Header->Description ?? '<No Description>',
             $oHeader->oVersion->iMajor,
             $oHeader->oVersion->iMinor,
             $oHeader->oRequires->iMajor,

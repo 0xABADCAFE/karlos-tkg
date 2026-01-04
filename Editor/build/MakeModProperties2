@@ -33,18 +33,18 @@ class GamePropertiesBuilder extends Data\Format\Builder {
         Data\Format\StringBlob $oStringBlob
     ): void {
         printf(
-            "Building %s [%s version: %d.%d, target: %d.%d]...\n",
+            "Building %s ['%s' version: %d.%d, target: %d.%d]...\n",
             $this->sTargetPath,
-            $oData->Description,
+            $oData->Header->Description ?? '<unnamed>',
             $oHeader->oVersion->iMajor,
             $oHeader->oVersion->iMinor,
             $oHeader->oRequires->iMajor,
             $oHeader->oRequires->iMinor
         );
-        if (empty($oData->LinkDefs)) {
-            throw new RuntimeException('LinkDefs cannot be empty');
+        if (empty($oData->Import->LinkDefs)) {
+            throw new RuntimeException('LinkDefs import cannot be empty');
         }
-        $this->processLinkDefs($oData->LinkDefs);
+        $this->processLinkDefs($oData->Import->LinkDefs);
     }
 
     public function getChunks(stdClass $oData, Data\Format\StringBlob $oStringBlob): array {
@@ -83,7 +83,8 @@ class GamePropertiesBuilder extends Data\Format\Builder {
             self::INVENTORY_LIMITS_IDENT,
             new class (
                 $oData->DefaultInventoryLimits,
-                $this->aPlayerAmmoTypes
+                $this->aPlayerAmmoTypes,
+                $this->aPlayerSpecialAmmoTypes
             ) implements Data\Format\BinaryEncodable {
 
                 private const int NUM_AMMO_TYPES   = 20;
@@ -93,7 +94,8 @@ class GamePropertiesBuilder extends Data\Format\Builder {
 
                 public function __construct(
                     private stdClass $oInventoryLimits,
-                    private array $aPlayerAmmoTypes
+                    private array $aPlayerAmmoTypes,
+                    private array $aPlayerSpecialAmmoTypes
                 ) {}
 
                 public function toBinary(): string {
@@ -102,7 +104,9 @@ class GamePropertiesBuilder extends Data\Format\Builder {
                         $aMaxAmmoCounts[$iIndex] = self::DEF_AMMO_LIMIT;
                     }
                     foreach ($this->oInventoryLimits->MaxAmmo as $sAmmoKey => $iValue) {
-                        $iIndex = $this->aPlayerAmmoTypes[$sAmmoKey];
+                        $iIndex = $this->aPlayerAmmoTypes[$sAmmoKey]
+                            ?? $this->aPlayerSpecialAmmoTypes[$sAmmoKey]
+                            ?? throw new RuntimeException('Unknown ammunition type ' . $sAmmoKey);
                         $aMaxAmmoCounts[$iIndex] = $iValue;
                     }
 
@@ -156,9 +160,10 @@ if (empty($sName)) {
     throw new RuntimeException('Invalid Level ID ' . $sName);
 }
 
-$sSource = sprintf('test/mods/%s.json', $sName);
+$sSource = sprintf('mods/%s.json', $sName);
 $sTarget = sprintf('test/mods/%s.props', $sName);
 $oBuilder = new GamePropertiesBuilder(
+    'test/',
     $sSource,
     $sTarget
 );
