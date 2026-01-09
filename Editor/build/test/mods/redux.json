@@ -31,6 +31,7 @@
         },
     },
     "SpecialAmmoBonuses": {
+        // Reward definitions for collecting each type of special ammo.
         "Bandolier": {
             "Description": "Found Bandolier. Increased ammo carry.",
             "AddMaxAmmo": {

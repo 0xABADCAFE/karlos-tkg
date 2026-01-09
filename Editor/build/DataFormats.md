@@ -96,7 +96,7 @@ In addition to the above, there is a special interpetation of a uint32 value tha
 
 When the file is loaded and the in-memory baseAddress is known, these offsets are converted to their respective pointer locations by adding the offset and interpeting the resuting value as the data type
 
-There are two implementations that are common:
+There are two common implementations:
 
 - `typedef Offset<Chunk> ChkOffs;`
     -  Distance from the beginning of the file to the beginning of a Chunk.
@@ -195,7 +195,7 @@ For each entry in the Import node, the corresponding file is loaded and the root
 }
 ```
 
-On parsing the `asset.json` file, processing the Import node attempts to load the `common/fruit,json` and apply the contents in place, e.g:
+On parsing the `asset.json` file, processing the Import node attempts to load the `common/fruit.json` and apply the contents in place, e.g:
 
 ```
 {
@@ -210,7 +210,7 @@ On parsing the `asset.json` file, processing the Import node attempts to load th
 }
 ```
 
-This behaviour is only applied to the Import node. Note that the process supports nesting. This allows an imported file to import further definitio
+This behaviour is only applied to the Import node. Note that the process supports nesting. This allows an imported file to import further definitions.
 
 
 ### Chunks
@@ -288,7 +288,7 @@ The String Heap Chunk is not manually generated and consequently does not have a
 - Unlike the Index Chunk, the String Heap Chunk does not have a predefined location in the file and will always have an entry in the Index Chunk.
     - It may be simpler for tooling to place the String Heap Chunk as the final Chunk.
 
-- As char array data, individual strings are null-terminated but not padded. Only the end of the
+- As char array data, individual strings are null-terminated but not padded. Only the end of the chunk is padded.
 - Only unique strings are recorded in the heap.
 - `StrOffs` values are measured from the beginning of the String Heap Chunk, meaning that the smallest non-zero value is 8.
     - Empty strings are not encoded and will generate zero as the `StrOffs` value, which will be interpreted as NULL reference when converted to a pointer at runtime.
