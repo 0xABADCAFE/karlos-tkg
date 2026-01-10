@@ -425,7 +425,7 @@ A reward can contain any combination of these. Where there are both carry limit 
 
 **Binary Structure:**
 
-Individual Reward structures are varying length due to the fact they are not required to modify the entire player inventory. References to reward data in other Chunks operate along the same principle as `StrOffs` values; a 32-bit offset value that when added to the address location of the Reward Chunk, give the location of the reward data. An offset of zero, is considered a NULL reference.
+Reward definitions are consolidated into a single Chunk. Individual Reward structures are varying length due to the fact they are not required to modify the entire player inventory. Therefore, References to reward data in other Chunks operate along the same principle as `StrOffs` values; a 32-bit offset value that when added to the address location of the Reward Chunk, give the location of the reward data. An offset of zero, is considered a NULL reference.
 
 ```
     {
@@ -472,7 +472,7 @@ At least one of `CarryBonusData` and `ImmediateBonusData` must be present. These
 
 **Worked Examples**
 
-The following asset defines a 40 point health bonus, plus a permanent increase of 40 for the maximum health.
+The following asset node defines a 40 point health bonus, plus a permanent increase of 40 for the maximum health.
 
 ```
     "Reward": {
@@ -492,24 +492,62 @@ The corresponding binary representation:
 ```
     {
         .Description = <offset in String Heap>, // 0
-        .CarryOffset = 8,                       // 4
-        .ImmediateOffset = 14,                  // 6
-        {
-            // Carry Bonus Data
+        .ImmediateOffset = 8,                   // 4
+        .CarryOffset     = 14,                  // 6
+        { // 8
+            // Immediate Bonus Data
             .AddHealth = 40;                    // 8
             .AddJetpackFuel = 0,                // 10
             // AddAmmo list empty
             ._terminator = 0xFFFF               // 12
         },
-        {
-            // Immediate Bonus Data
+        { // 14
+            // Carry Bonus Data
             .AddHealth = 40;                    // 14
             .AddJetpackFuel = 0,                // 16
             // AddAmmo list empty
             ._terminator = 0xFFFF               // 18
+        }                                       // 20 - no padding required
+    } // Total Size 20
+```
+
+The following asset node defines an increased carry limit for explosives only:
+
+```
+    "Reward": {
+        "Description": "Boomer! Increased explosives carry.",
+        "CarryLimit": {
+            "AddAmmo": {
+                "Rockets": 3,
+                "Grenades": 6,
+                "Mines": 2,
+            },
         }
     }
+
 ```
+
+The corresponding binary representation:
+```
+    {
+        .Description = <offset in String Heap>, // 0
+        .CarryOffset = 8,                       // 4
+        .ImmediateOffset = 0,                   // 6
+        { // 8
+            // Carry Bonus Data
+            .AddHealth = 0;                     // 8
+            .AddJetpackFuel = 0,                // 10
+            .AddAmmo = {
+                <Rocket ID>, 3,                 // 12
+                <Grenade ID>, 6,                // 16
+                <Mine ID>, 2                    // 20
+            },
+            ._terminator = 0xFFFF,              // 24
+        }                                       // 26 - padding required
+        ._padding = 0xFFFF,                     // 26
+    } // Total Size 28
+```
+
 
 ## TODO - Rewrite everything below
 
@@ -542,31 +580,6 @@ This chunk specifies the set of achievements that are defined by the modificatio
 - The interpretation of the parameter space data depends strictly on the rule used.
 - Achievements are only tested at runtime when specific signals are set, e.g. a kill, item collect, etc.
 - A bitmap of the specific achievements already awarded is recorded in the player progression.
-
-### Achievement Rewards
-
-This chunk defines the reward associated with the achievements that have them.
-
-**Proposed structure:**
-
-| Offset | Data | Type | Notes |
-| - | - | - | - |
-| Base + 0 | Ident | `char[4]` | `RWRD` |
-| Base + 4 | Length | `uint32` | Total size of the chunk |
-| Base + 8 | Content | `Reward[...]` | Reward list |
-
-**Proposed Reward structure:**
-
-| Offset | Data | Type | Notes |
-| - | - | - | - |
-| 0 | Description | `StrOffs` | Offset into String Heap for the description |
-| 4 | Applicator Type ID | `uint16` | Enumerated ID of the application logic |
-| 6 | Parameters | `uint8[26]` | Parameter space for the application logic |
-
-**Notes:**
-
-- Fixed total size is 32 bytes.
-- The interpretation of the parameter space data depends strictly on the rule used.
 
 ## Level Modification Chunk Types
 

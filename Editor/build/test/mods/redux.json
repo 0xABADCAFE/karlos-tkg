@@ -34,10 +34,6 @@
         // Reward definitions for collecting each type of special ammo.
         "Bandolier": {
             "Description": "Found Bandolier. Increased ammo carry.",
-            "Immediate": {
-                "AddHealth": 5,
-                "AddJetpackFuel": 7,
-            },
             "CarryLimit": {
                 "AddHealth": 11,
                 "AddJetpackFuel": 13,
