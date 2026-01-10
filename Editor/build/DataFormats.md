@@ -51,12 +51,12 @@ Like IFF and XSF the data are organised into a header followed by a sequential a
 
 ### Source Assets
 
-A JSON-based text format is used for the source assets from which the binary files are compiled. The source asset is intended to be human editable in a basic text editor rather than machine generated. Consequently the following relaxations of the JSON notation are supported:
+A JSON-based text format is used for the source assets from which the binary files are compiled. The source asset is intended to be human editable in a basic text editor rather than machine generated. Consequently the following relaxations of JSON notation are supported:
 
  - Line comments beginning with `//` are supported.
  - Lists and arrays may include a trailing comma.
 
-** Example **
+**Example**
 
 ```
     {
@@ -160,9 +160,9 @@ The asset fields are encoded into a 16-byte binary structure:
 
 ```
 
-### Import Node
+### Import
 
-Asset files support an import mechanism that allows definitions to be loaded in other files. This is intended to ensure a single point of defintion, especially for things like entity names, etc.
+Asset files support an import mechanism that allows definitions to be loaded in from other files. This is intended to ensure a single point of defintion, especially for things like entity names, etc.
 
 ```
     "Import": {
@@ -172,8 +172,7 @@ Asset files support an import mechanism that allows definitions to be loaded in 
 
 For each entry in the Import node, the corresponding file is loaded and the root structure defined within it is assigned to the corresponding key in the Import node. For example:
 
-
-** Main asset.json**
+**Main asset.json**
 
 ```
 {
@@ -183,7 +182,7 @@ For each entry in the Import node, the corresponding file is loaded and the root
 }
 ```
 
-** Include common/fruit.json **
+**Include common/fruit.json**
 
 ```
 {
@@ -210,8 +209,10 @@ On parsing the `asset.json` file, processing the Import node attempts to load th
 }
 ```
 
-This behaviour is only applied to the Import node. Note that the process supports nesting. This allows an imported file to import further definitions.
+**Note:**
 
+- This behaviour is only applied to the Import node.
+- The process supports nesting and imports are processed recursively.
 
 ### Chunks
 
@@ -219,7 +220,7 @@ Everything following the header is a Chunk. A Chunk begins with the data format 
 
 **Asset Structure:**
 
-There is no secific user-defined generalisation for the asset structure, only the data embedded within it, which is type-specific. The sub header is automatically generated based on the final encoded size and type information.
+There is no secific user-defined generalisation for the asset structure, only the data embedded within it, which is type-specific. A sub-header is automatically generated based on the final encoded size and type information.
 
 
 **Binary Structure:**
@@ -230,10 +231,9 @@ There is no secific user-defined generalisation for the asset structure, only th
         uint32     Size;    // 4: Total size, including header, content and any padding
         uint8[...] Content; // 8: Content, padding
     }
-
 ```
 
-The interpretation of the Content depends on the specific chunk type.
+The interpretation of the Content depends on the specific Chunk type.
 
 
 ## Common Chunk Types
@@ -242,21 +242,20 @@ The following chunk types are common to each defined data file and can only be i
 
 ### Index
 
-The Index Chunk contains an list of `ChkOffs` that point to the location of other Chunks in the file. Each offset is accompanied by the 4 character ident string of the Chunk pointed to, permitting simple verification of the data after loading and looking up the location of a Chunk by ident string. The Index chunk must immediately follow the file header in any file that contains it. Since this implies a fixed location, the Index Chunk does not contain an entry for itself.
+The Index Chunk contains a list of `ChkOffs` that point to the location of other Chunks in the file. Each offset is accompanied by the 4 character ident string of the Chunk pointed to, permitting simple verification of the data after loading and looking up the location of a Chunk by ident string. The Index chunk must immediately follow the file header in any file that contains it. Since this implies a fixed location, the Index Chunk does not contain an entry for itself.
 
 **Asset Structure:**
 
-The Index Chunk is not manually generated and consequently does not have a defined asset structure. It is produced as an artefact by the compilation process
+The Index Chunk is not manually generated and consequently does not have a defined asset structure. It is produced as an artefact by the compilation process.
 
 **Binary Structure:**
-
 
 ```
     {
         char[4]    Type;    // 0: { 'I', 'N', 'D', 'X' }
         uint32     Size;    // 4: (N * 8) + 8
         struct {            // 8:
-            char[4] Ident;
+            char[4] Ident;  // Each entry is 8 bytes
             ChkOffs Index;
         } [N]
     }
@@ -264,12 +263,12 @@ The Index Chunk is not manually generated and consequently does not have a defin
 
 **Notes:**
 
-- The number of entries in the Index is trivially determined from the Size field, e.g. (Size - 8)/4.
+- The number of entries in the Index is trivially determined from the Size field, e.g. (Size - 8)/8.
 
 
 ### String Heap
 
-The String Heap Chunk gathers together text data from Chunks into a single blob of null-terminated strings, allowing them to be represented as `StrOffs` entries in the Chunks that define them rather than being directly embedded.
+The String Heap Chunk consolidates text strings from Chunks into a single blob of null-terminated strings, allowing them to be represented as `StrOffs` entries in the Chunks that contain them rather than being directly embedded.
 
 **Asset Structure:**
 
@@ -297,6 +296,8 @@ The String Heap Chunk is not manually generated and consequently does not have a
     - Empty strings are not encoded and will generate zero as the `StrOffs` value, which will be interpreted as NULL reference when converted to a pointer at runtime.
 
 ## Imports
+
+This section describes the currently defined set of common import files.
 
 ### Link Definitions
 
@@ -334,6 +335,8 @@ The tooling that generates the binary modification file parses the `LinkDefs` no
 
 
 ## Game Modification Asset
+
+This section documents the main Game Modification file.
 
 ### Imports
 
@@ -385,6 +388,7 @@ The `DefaultInventoryLimits` data are encoded into a Chunk:
 - If no limit is defined for any particular `PlayerAmmoType`, the internal default value of 32767 is used.
 - If the `MaxHealth` limit is ommitted, the internal default value of 32767 is used.
 - If the `MaxFuel` limit is ommitted, the internal default of 255 is used.
+
 
 ### Rewards
 
@@ -464,7 +468,7 @@ At least one of `CarryBonusData` and `ImmediateBonusData` must be present. These
     }
 ```
 
-**Notes**
+**Notes:**
 
 - A complete Reward structure always contains the Health and Fuel values, with a zero value indicating no change to the required inventory/limit.
 - The `AddAmmo` list can be empty if there are no specific ammunition bonuses.
