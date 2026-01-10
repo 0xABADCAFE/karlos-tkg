@@ -336,11 +336,24 @@ The tooling that generates the binary modification file parses the `LinkDefs` no
 
 ## Game Modification Asset
 
-This section documents the main Game Modification file.
+This section documents the main Game Modification file. The specific ordering of nodes in the file is not important, only that they are added at the root level.
 
-### Imports
+### Header
 
-The game modification file must `Import` the Link Definitions file as `LinkDefs` in order to have access the appropriate link enumerations.
+The Game Modification file must include a `Header` node at the root level:
+
+```
+    "Header": {
+        "Type":"Game",
+        "Description": "<optional description>",
+        "Version": "<major>.<minor>",
+        "Requires": "<major>.<minor>",
+    },
+```
+
+### Import
+
+The game modification file must have an `Import` node for the Link Definitions data file as `LinkDefs` in order to have access the appropriate link enumerations.
 
 ```
     "Import": {
@@ -392,9 +405,7 @@ The `DefaultInventoryLimits` data are encoded into a Chunk:
 
 ### Rewards
 
-Rewards are modifications to the active Inventory Limits that are awarded for completing various achievements or collecting special items.
-
-In order to make the asset file more accessible, like text strings, rewards are defined inline within other structures. Also, like text strings, rewards are collected into a single Chunk witin the file.
+Rewards are modifications to the active Inventory Limits that are awarded for completing various achievements or collecting special items. In order to make the asset file more accessible, like text strings, rewards are defined inline within other structures that they pertain to. Also, like text strings, rewards are collected into a single Chunk witin the file.
 
 Rewards define two parts:
 
@@ -406,7 +417,7 @@ A reward can contain any combination of these. Where there are both carry limit 
 **Asset Structure**
 
 ```
-    "Reward": {
+    {
         "Description": "<text>",
         "Immediate": {
             // Immediate bonuses (if any)
@@ -479,7 +490,7 @@ At least one of `CarryBonusData` and `ImmediateBonusData` must be present. These
 The following asset node defines a 40 point health bonus, plus a permanent increase of 40 for the maximum health.
 
 ```
-    "Reward": {
+    {
         "Description": "Hands of the Healer! +40 HP",
         "Immediate": {
             "AddHealth": 40,
@@ -518,7 +529,7 @@ The corresponding binary representation:
 The following asset node defines an increased carry limit for explosives only:
 
 ```
-    "Reward": {
+    {
         "Description": "Boomer! Increased explosives carry.",
         "CarryLimit": {
             "AddAmmo": {
@@ -552,8 +563,43 @@ The corresponding binary representation:
     } // Total Size 28
 ```
 
+### SpecialAmmoBonuses
+
+The optional `SpecialAmmoBonuses` node defines a set of `Reward` definitions that pertain to the collection of items that give any of the ammunition types enumerated in the `SpecialAmmoTypes` node imported from `LinkDefs`. This allows for the definition of one-off collectable objects in game, that can give the special ammo type on collection, triggering the associated Reward as a consequence.
+
+**Asset Structure:**
+
+The Asset structure is a simple list of Special Ammo Name => Reward data
+
+```
+    "SpecialAmmoBonuses": {
+        "<Special Ammo Type>": {
+            <Reward Definition>
+        },
+    }
+
+```
+
+The `SpecialAmmoBonuses` data are encoded into a dedicated Chunk:
+
+**Binary structure:**
+
+```
+    {
+        char[4]    Type;      // 0: { 'S', 'P', 'A', 'B' }
+        uint32     Size;      // 4:
+        struct {
+            uint16 Reserved;
+            uint16 AmmoType;
+            Offset<Reward> Reward; // Offset to the already described varying length Reward structure.
+        } [N] // Each record is 8 bytes
+    }
+```
+
+The `Reserved` field is currently unused and presently only serves to keep each Offset record aligned.
 
 ## TODO - Rewrite everything below
+
 
 ### Achievements
 
