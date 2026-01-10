@@ -60,7 +60,7 @@ final class Version implements BinaryEncodable {
  */
 final class Header implements BinaryEncodable {
     public const string IDENT = 'TKGD';
-    public const int FIXED_SIZE = 16;
+    public const int FIXED_SIZE = 20;
 
     public function __construct(
         public readonly SubFormat $eSubFormat,
@@ -214,14 +214,18 @@ final class IndexedFile implements BinaryEncodable {
                 )
             );
         }
-        $iIndexSize = Chunk::FIXED_SIZE + count($this->aChunks) * self::SIZE_LONG;
+        $iIndexSize = Chunk::FIXED_SIZE + count($this->aChunks) * self::SIZE_LONG * 2;
         $iOffset    = Header::FIXED_SIZE + $iIndexSize;
-        $aPackLongs = [$iIndexSize];
+
+        // Start with the Index itself for validation purposes
+        $sBinary = ChunkIdent::CHUNK_INDEX . pack('N', $iIndexSize);
+
+
         foreach ($this->aChunks as $oChunk) {
-            $aPackLongs[] = $iOffset;
+            $sBinary .= $oChunk->sIdent . pack('N', $iOffset);
             $iOffset += $oChunk->size();
         }
-        return ChunkIdent::CHUNK_INDEX . pack('N*', ...$aPackLongs);
+        return $sBinary;
     }
 }
 

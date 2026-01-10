@@ -242,11 +242,11 @@ The following chunk types are common to each defined data file and can only be i
 
 ### Index
 
-The Index Chunk contains an list of `ChkOffs` entires that point to the location of other Chunks in the file. The Index chunk must immediately follow the file header in any file that contains it. Since this implies a fixed location, the Index Chunk does not contain an entry for itself.
+The Index Chunk contains an list of `ChkOffs` that point to the location of other Chunks in the file. Each offset is accompanied by the 4 character ident string of the Chunk pointed to, permitting simple verification of the data after loading and looking up the location of a Chunk by ident string. The Index chunk must immediately follow the file header in any file that contains it. Since this implies a fixed location, the Index Chunk does not contain an entry for itself.
 
 **Asset Structure:**
 
-The Index Chunk is not manually generated and consequently does not have a defined asset structure. It is produced as an artefact by the compilation process.
+The Index Chunk is not manually generated and consequently does not have a defined asset structure. It is produced as an artefact by the compilation process
 
 **Binary Structure:**
 
@@ -254,8 +254,11 @@ The Index Chunk is not manually generated and consequently does not have a defin
 ```
     {
         char[4]    Type;    // 0: { 'I', 'N', 'D', 'X' }
-        uint32     Size;    // 4: (N * 4) + 8
-        ChkOffs[N] Index;   // 8:
+        uint32     Size;    // 4: (N * 8) + 8
+        struct {            // 8:
+            char[4] Ident;
+            ChkOffs Index;
+        } [N]
     }
 ```
 
@@ -372,7 +375,7 @@ The `DefaultInventoryLimits` data are encoded into a Chunk:
         uint32     Size;      // 4:
         uint16     MaxHealth; // 8:
         uint16     MaxFuel;   // 10:
-        uint16[20] MaxAmmo;   // 12: One for each of every ammunition type.
+        uint16[20] MaxAmmo;   // 12: One for each ammunition type.
     }
 ```
 
@@ -440,10 +443,10 @@ The `RewardList` field is a stream of varying sized structures. For simplicity o
 
         // Following offsets are measured relative to the start of the structure.
         // If an offset is zero, the corresponding section does not exist.
-        uint16      CarryOffset;
-        uint16      ImmediateOffset;
-        uint16[...] CarryBonusData;     // if present
+        uint16      ImmediateOffset;    // Offset to ImmediateBonusData, 0 if not present
+        uint16      CarryOffset;        // Offset to CarryBonusData, 0 if not present
         uint16[...] ImmediateBonusData; // if present
+        uint16[...] CarryBonusData;     // if present
     }
 ```
 
@@ -465,7 +468,7 @@ At least one of `CarryBonusData` and `ImmediateBonusData` must be present. These
 
 - A complete Reward structure always contains the Health and Fuel values, with a zero value indicating no change to the required inventory/limit.
 - The `AddAmmo` list can be empty if there are no specific ammunition bonuses.
-- If the entire Bonus structure is an odd number of uint16, it is padded to the next 32-bit boundary.
+- If the entire Bonus structure is an odd number of uint16, it is padded to the next 32-bit boundary with an additional termination word.
 
 **Worked Examples**
 
@@ -507,6 +510,8 @@ The corresponding binary representation:
         }
     }
 ```
+
+## TODO - Rewrite everything below
 
 ### Achievements
 

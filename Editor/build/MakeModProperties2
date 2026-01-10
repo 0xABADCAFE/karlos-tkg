@@ -10,11 +10,133 @@ use RuntimeException;
 
 require 'src/Library.php';
 
+class RewardList implements Data\Format\BinaryEncodable {
+
+    private array $aRewards = [];
+    private int   $iOffset  = Data\Format\Chunk::FIXED_SIZE;
+
+    public function __construct(
+        private array $aPlayerAmmoTypes,
+        private array $aPlayerSpecialAmmoTypes,
+        private Data\Format\StringBlob $oStringBlob
+    ) {
+    }
+
+    public function isEmpty(): bool {
+        return empty($this->aRewards);
+    }
+
+    public function addReward(stdClass $oData): int {
+        if (empty($oData->Description) || !is_string($oData->Description)) {
+            throw new RuntimeException('Invalid Reward Structure: Missing Description');
+        }
+        // Minimal validation.
+        $this->validate($oData);
+
+        $iReturnOffset = $this->iOffset;
+
+        $iDescOffset  = $this->oStringBlob->add($oData->Description);
+        $iCurrentSize = 8;
+
+        $aPayload = [
+            0,  // Immediate Offset
+            0,  // Carry Offset
+        ];
+
+        if (isset($oData->Immediate)) {
+            $iSize = $this->parsePayload($oData->Immediate, $aPayload);
+            $aPayload[0] = $iCurrentSize;
+            $iCurrentSize += $iSize;
+        }
+
+        if (isset($oData->CarryLimit)) {
+            $iSize = $this->parsePayload($oData->CarryLimit, $aPayload);
+            $aPayload[1] = $iCurrentSize;
+            $iCurrentSize += $iSize;
+        }
+
+        // Guarantee 32-bit alignment
+        if (count($aPayload) & 1) {
+            $aPayload[] = 0xFFFF;
+            $iCurrentSize += 2;
+        }
+
+        $this->iOffset += $iCurrentSize;
+
+        $this->aRewards[$iReturnOffset] = (object)[
+            'sDescription' => $oData->Description,
+            'iDescOffset'  => $iDescOffset,
+            'aPayload'     => $aPayload
+        ];
+
+        return $iReturnOffset;
+    }
+
+    public function toBinary(): string {
+        $sData = '';
+        foreach ($this->aRewards as $iOffset => $oData) {
+            $sData .= pack('Nn*', $oData->iDescOffset, ...$oData->aPayload);
+        }
+        return $sData;
+    }
+
+    /**
+     * Parses the expected JSON structure into the expected set of int16 words,
+     * slotting them into the array and terminating.
+     */
+    private function parsePayload(stdClass $oData, array &$aPayload): int {
+        $aPayload[] = (int)($oData->AddHealth ?? 0);
+        $aPayload[] = (int)($oData->AddJetpackFuel ?? 0);
+        $iSize = 6; // Includes terminator word
+        if (isset($oData->AddAmmo)) {
+            foreach ($oData->AddAmmo as $sName => $iQuantity) {
+                $iAmmoType = $this->aPlayerAmmoTypes[$sName] ??
+                    $this->aPlayerSpecialAmmoTypes[$sName] ??
+                    throw new RuntimeException('Unknown ammo type: ' . $sName);
+                $aPayload[] = $iAmmoType;
+                $aPayload[] = $iQuantity;
+                $iSize += 4;
+            }
+        }
+        $aPayload[] = 0xFFFF;
+        return $iSize;
+    }
+
+    private function validate(stdClass $oData): void {
+        if (empty($oData->Description) || !is_string($oData->Description)) {
+            throw new RuntimeException('Invalid Reward: Missing Description');
+        }
+        $bHasReward = false;
+        if (!empty($oData->Immediate)) {
+            $this->validateReward($oData->Immediate);
+            $bHasReward = true;
+        }
+        if (!empty($oData->CarryLimit)) {
+            $this->validateReward($oData->CarryLimit);
+            $bHasReward = true;
+        }
+        if (!$bHasReward) {
+            throw new RuntimeException('Invalid Reward: Missing one of Immediate or CarryLimit');
+        }
+    }
+
+    private function validateReward(stdClass $oData): void {
+        if (
+            empty($oData->AddHealth) &&
+            empty($oData->AddJetpackFuel) &&
+            empty($oData->AddAmmo)
+        ) {
+            throw new RuntimeException('Invalid Reward: Does not provide any inventory/carry');
+        }
+    }
+}
+
 class GamePropertiesBuilder extends Data\Format\Builder {
 
     private const string SUBFORMAT_NAME = 'Game';
-
     private const string INVENTORY_LIMITS_IDENT = 'INVL';
+    private const string REWARD_LIST_IDENT = 'RWRD';
+    private const string SPECIAL_AMMO_BONUS_IDENT = 'SPAB';
 
     private array $aAlienTypes             = [];
     private array $aPlayerAmmoTypes        = [];
@@ -48,10 +170,28 @@ class GamePropertiesBuilder extends Data\Format\Builder {
     }
 
     public function getChunks(stdClass $oData, Data\Format\StringBlob $oStringBlob): array {
+
+        $oRewardList = new RewardList(
+            $this->aPlayerAmmoTypes,
+            $this->aPlayerSpecialAmmoTypes,
+            $oStringBlob
+        );
+
         $aChunks = [];
 
         if (!empty($oData->DefaultInventoryLimits)) {
             $aChunks[] = $this->buildDefaultInventoryLimits($oData, $oStringBlob);
+        }
+
+        if (!empty($oData->SpecialAmmoBonuses)) {
+            $aChunks[] = $this->buildSpecialAmmoBonuses($oData, $oRewardList);
+        }
+
+        if (!$oRewardList->isEmpty()) {
+            $aChunks[] = new Data\Format\Chunk(
+                self::REWARD_LIST_IDENT,
+                $oRewardList
+            );
         }
 
         return $aChunks;
@@ -116,6 +256,39 @@ class GamePropertiesBuilder extends Data\Format\Builder {
                         $this->oInventoryLimits->MaxJetpackFuel ?? self::DEF_FUEL_LIMIT,
                         ...$aMaxAmmoCounts
                     );
+                }
+            }
+        );
+    }
+
+    private function buildSpecialAmmoBonuses(stdClass $oData, RewardList $oRewardList): Data\Format\Chunk {
+        return new Data\Format\Chunk(
+            self::SPECIAL_AMMO_BONUS_IDENT,
+            new class (
+                $this->aPlayerSpecialAmmoTypes,
+                $oData->SpecialAmmoBonuses,
+                $oRewardList
+            ) implements Data\Format\BinaryEncodable {
+                public function __construct(
+                    private readonly array    $aPlayerSpecialAmmoTypes,
+                    private readonly stdClass $oSpecialAmmoBonuses,
+                    private RewardList $oRewardList
+                ) {}
+
+                public function toBinary(): string {
+                    $sData = '';
+                    $i = 0;
+                    foreach ($this->oSpecialAmmoBonuses as $sSpecialAmmoType => $oRewardData) {
+                        $iSpecialAmmoType = $this->aPlayerSpecialAmmoTypes[$sSpecialAmmoType] ??
+                            throw new RuntimeException(
+                                'Unknown Special Ammo Type: ' . $sSpecialAmmoType
+                            );
+                        $iOffset = $this->oRewardList->addReward($oRewardData);
+                        $sData .= pack('nnN', $i++, $iSpecialAmmoType, $iOffset);
+                    }
+                    // -1 terminate the list
+                    $sData .= pack('n', 0xFFFF);
+                    return $sData;
                 }
             }
         );

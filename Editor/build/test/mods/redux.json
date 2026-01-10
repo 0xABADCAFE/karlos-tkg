@@ -34,17 +34,27 @@
         // Reward definitions for collecting each type of special ammo.
         "Bandolier": {
             "Description": "Found Bandolier. Increased ammo carry.",
-            "AddMaxAmmo": {
-                "Bullet": 200,
-                "Shot": 40
+            "Immediate": {
+                "AddHealth": 5,
+                "AddJetpackFuel": 7,
             },
+            "CarryLimit": {
+                "AddHealth": 11,
+                "AddJetpackFuel": 13,
+                "AddAmmo": {
+                    "Bullet": 200,
+                    "Shot": 40,
+                }
+            }
         },
         "Backpack": {
             "Description": "Found Backpack. Increased explosives carry.",
-            "AddMaxAmmo": {
-                "Grenade": 12,
-                "Rocket": 6
-            },
+            "CarryLimit": {
+                "AddAmmo": {
+                    "Grenade": 12,
+                    "Rocket": 6,
+                }
+            }
         },
     },
 
