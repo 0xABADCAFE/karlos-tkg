@@ -193,7 +193,56 @@ The initial limits defined here can be raised via rewards for completing objecti
 - If the `MaxFuel` limit is ommitted, the internal default of 255 is used.
 - If no limit is defined for any ammo type, the internal default value of 32767 is used.
 
+## Reward
 
+The `Reward` node defines a set of inventory modifications that can be applied as a bonus for completing certain objectives, achievements or collecting specific items.
+
+- Reward nodes are defined within the context of larger structures, e.g. achievements.
+- Reward nodes may contain both immediate and carry limit bonuses.
+- If a carry limit bonus and an immediate bonus are included for the same inventory item, the carry bonus is applied first.
+
+**Example:**
+
+```
+    {
+        "Description": "<text>",
+        "Immediate": {
+            // Immediate bonuses (if any)
+            "AddHealth": <count>,
+            "AddJetpackFuel": <count>,
+            "AddAmmo": {
+                "<name>": <count>,
+            },
+        },
+        "CarryLimit": {
+            // Carry limit bonuses (if any)
+            "AddHealth": <count>,
+            "AddJetpackFuel": <count>,
+            "AddAmmo": {
+                "<name>": <count>,
+            }
+        }
+    }
+```
+
+All fields are optional except for the `Description` and at least one immediate or carry limit modification.
+
+## SpecialAmmoBonuses
+
+The optional `SpecialAmmoBonuses` node defines a set of `Reward` definitions that pertain to the collection of items that give any of the ammunition types enumerated in the `SpecialAmmoTypes` node imported from `LinkDefs`. This allows for the definition of one-off collectable objects in game, that can give the special ammo type on collection, triggering the associated Reward as a consequence.
+
+**Asset Structure:**
+
+The Asset structure is a simple list of Special Ammo Name => Reward data
+
+```
+    "SpecialAmmoBonuses": {
+        "<Special Ammo Type>": {
+            <Reward Definition>
+        },
+    }
+
+```
 
 # Level Modification File
 
