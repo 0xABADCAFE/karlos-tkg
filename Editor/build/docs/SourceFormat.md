@@ -4,7 +4,17 @@ This document describes the text format used to define the behavioural modificat
 
 ## Basic Syntax
 
-In order to provide a convenient, human-editable and structured way of representing the game modification data, the syntax used is based on JSON with the following modifications:
+In order to provide a convenient, human-editable and structured way of representing the game modification data, the syntax used is based on JSON with the following modifications / relaxations:
+
+- Syntax differentiates between _identifier_ names and _key_ names:
+    - An _identifier_ is a structural member of some data type.
+    - A _key_ is a string that is mapped to some other value.
+
+- Identifier names may only contain letters, digits and underscore characters.
+    - String enclosure quotes are optional.
+
+- Key names may contain any valid characters.
+    - String enclosure quotes are mandatory.
 
 - Supports line comments beginning with `//`.
 - Permits a trailing comma after the final element of an array or tuple.
@@ -14,7 +24,7 @@ In order to provide a convenient, human-editable and structured way of represent
 ```
 {
     // A tuple of name:quantity pairs, with a trailing comma.
-    "FruitBowl": {
+    FruitBowl: {
         "Oranges": 5,
         "Apples": 3,
     },
@@ -29,17 +39,17 @@ Each document can contain a root-level `Import` node, which is used to import de
 
 Before parsing:
 
-`main.json`
+`main.rson`
 
 ```
 {
-    "Import": {
-        "Fruit": "common/fruit.json",
+    Import: {
+        Fruit: "common/fruit.rson",
     },
 }
 ```
 
-`common/fruit.json`
+`common/fruit.rson`
 
 ```
 {
@@ -55,9 +65,9 @@ After parsing:
 
 ```
 {
-    "Import": {
-        "Fruit": {
-           "Apple": 0,
+    Import: {
+        Fruit: {
+            "Apple": 0,
             "Banana": 1,
             "Pear": 2,
             "Orange": 3,
@@ -80,11 +90,11 @@ The main document file includes a `Header` node. This specifies what type of mod
 
 ```
 {
-    "Header": {
-        "Type":"<file type>",
-        "Description": "<optional description>",
-        "Version": "<major>.<minor>",
-        "Requires": "<major>.<minor>",
+    Header: {
+        Type:"<file type>",
+        Description: "<optional description>",
+        Version: "<major>.<minor>",
+        Requires: "<major>.<minor>",
     },
 
 }
@@ -107,16 +117,16 @@ Since the Game Modification files are an optional modding extension to the origi
 
 These definitions allow the various types to be referred to by name, rather than numerical values. To ensure a single point of definition, these are defined in a common import file:
 
-`common/linkdefs.json`
+`common/linkdefs.rson`
 
 ```
 {
-    "AlienTypes": {
+    AlienTypes: {
         // The game link file defines up 20 alien types, enumerated 0-19.
         // This node defines names to each type that are then used in the rest of the file.
         "<name>": <id>,
     },
-    "PlayerAmmoTypes": {
+    PlayerAmmoTypes: {
         // The game link file defines up to 20 ammunition types, enumerated 0-19. These are
         // shared between aliens and the player and any 10 of these are assignable to
         // the weapons used by the player. This node defines names for those used by player
@@ -125,7 +135,7 @@ These definitions allow the various types to be referred to by name, rather than
         // types.
         "<name>": <id>,
     },
-    "SpecialAmmoTypes": {
+    SpecialAmmoTypes: {
         // Since the Player can not use the other 10 ammunition types directly and a pickup
         // can give any of the 20 defined types, we can repurpose the other types for special
         // collectables.
@@ -138,8 +148,8 @@ This file is imported into a modification file using the following standard `Imp
 
 ```
 {
-    "Import": {
-        "LinkDefs": "common/linkdefs.json",
+    Import: {
+        LinkDefs: "common/linkdefs.rson",
     },
 }
 ```
@@ -152,14 +162,14 @@ The main game modification file lays out various game-wide rules that modify gam
 
 ```
 {
-    "Header": {
-        "Type":"Game",
-        "Description": "Example Game Modification",
-        "Version": "1.0",
-        "Requires": "1.13",
+    Header: {
+        Type: "Game",
+        Description: "Example Game Modification",
+        Version: "1.0",
+        Requires: "1.13",
     },
-    "Import": {
-        "LinkDefs": "common/linkdefs.json",
+    Import: {
+        LinkDefs: "common/linkdefs.rson",
     },
 
     // Remaining definitions
@@ -173,10 +183,10 @@ The `DefaultInventoryLimits` node sets the initial limits for player comsumables
 **Example:**
 
 ```
-    "DefaultInventoryLimits": {
-        "MaxHealth": <count>,
-        "MaxJetpackFuel": <count>,
-        "MaxAmmo": {
+    DefaultInventoryLimits: {
+        MaxHealth: <count>,
+        MaxJetpackFuel: <count>,
+        MaxAmmo: {
             // Initial limits for each of the Import->LinkDefs->PlayerAmmoTypes
             // and Import->LinkDefs->SpecialAmmoTypes
             "<name>": <count>,
@@ -205,20 +215,20 @@ The `Reward` node defines a set of inventory modifications that can be applied a
 
 ```
     {
-        "Description": "<text>",
-        "Immediate": {
+        Description: "<text>",
+        Immediate: {
             // Immediate bonuses (if any)
-            "AddHealth": <count>,
-            "AddJetpackFuel": <count>,
-            "AddAmmo": {
+            AddHealth: <count>,
+            AddJetpackFuel: <count>,
+            AddAmmo: {
                 "<name>": <count>,
             },
         },
-        "CarryLimit": {
+        CarryLimit: {
             // Carry limit bonuses (if any)
-            "AddHealth": <count>,
-            "AddJetpackFuel": <count>,
-            "AddAmmo": {
+            AddHealth: <count>,
+            AddJetpackFuel: <count>,
+            AddAmmo: {
                 "<name>": <count>,
             }
         }
@@ -236,7 +246,7 @@ The optional `SpecialAmmoBonuses` node defines a set of `Reward` definitions tha
 The Asset structure is a simple list of Special Ammo Name => Reward data
 
 ```
-    "SpecialAmmoBonuses": {
+    SpecialAmmoBonuses: {
         "<Special Ammo Type>": {
             <Reward Definition>
         },
@@ -252,14 +262,14 @@ The level modification file lays out various level-specific modifications that a
 
 ```
 {
-    "Header": {
-        "Type":"Level",
-        "Description": "New Level A",
-        "Version": "1.0",
-        "Requires": "1.13",
+    Header: {
+        Type: "Level",
+        Description: "New Level A",
+        Version: "1.0",
+        Requires: "1.13",
     },
-    "Import": {
-        "LinkDefs": "common/linkdefs.json",
+    Import: {
+        LinkDefs: "common/linkdefs.rson",
     },
 
     // Remaining definitions

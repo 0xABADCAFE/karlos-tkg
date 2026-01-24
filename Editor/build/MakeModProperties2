@@ -333,7 +333,7 @@ if (empty($sName)) {
     throw new RuntimeException('Invalid modification name');
 }
 
-$sSource = sprintf('mods/%s.json', $sName);
+$sSource = sprintf('mods/%s.rson', $sName);
 $sTarget = sprintf('test/mods/%s.props', $sName);
 $oBuilder = new GamePropertiesBuilder(
     'test/',

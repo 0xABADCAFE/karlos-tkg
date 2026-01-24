@@ -131,7 +131,7 @@ if (!preg_match('/^[A-P]$/', $sLevel)) {
     throw new RuntimeException('Invalid Level ID ' . $sLevel);
 }
 
-$sSource = sprintf('levels/level_%s.json', $sLevel);
+$sSource = sprintf('levels/level_%s.rson', $sLevel);
 $sTarget = sprintf('test/levels/level_%s.props', $sLevel);
 $oBuilder = new LevelPropertiesBuilder(
     'test/',

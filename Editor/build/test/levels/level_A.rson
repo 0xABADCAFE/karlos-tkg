@@ -9,7 +9,7 @@
     },
     "Import": {
         // Definitions become acessible as Import->LinkDefs->...
-        "LinkDefs": "common/linkdefs.json",
+        "LinkDefs": "common/linkdefs.rson",
     },
     "ZoneErrata": {
         "PVSDeletions": {
