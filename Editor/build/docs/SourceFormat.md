@@ -2,7 +2,7 @@
 
 This document describes the text format used to define the behavioural modification asset files used by the TKG engine.
 
-## Basic Syntax
+## RSON Basic Syntax
 
 In order to provide a convenient, human-editable and structured way of representing the game modification data, the syntax used is based on JSON with the following modifications / relaxations:
 
@@ -25,13 +25,17 @@ In order to provide a convenient, human-editable and structured way of represent
 
 ```
 {
-    // A tuple of name:quantity pairs, with a trailing comma.
+    // Define Fruitbowl as a tuple of name:quantity pairs, with a trailing comma.
     FruitBowl: {
-        "Oranges": 5,
+        "Oranges": 5, // Key names must be quoted and can contain any valid characters.
         "Apples": 3,
     },
 }
 ```
+
+## Document Conventions
+
+Within this document, names for expected values are enclosed in angle brackets. Where the corresponding type is an integer, `#` is prepended.
 
 ## Import Support
 
@@ -93,10 +97,10 @@ The main document file includes a `Header` node. This specifies what type of mod
 ```
 {
     Header: {
-        Type:"<file type>",
+        Type: "<file type>",
         Description: "<optional description>",
-        Version: "<major>.<minor>",
-        Requires: "<major>.<minor>",
+        Version: "<#major>.<#minor>",
+        Requires: "<#major>.<#minor>",
     },
 
 }
@@ -126,7 +130,7 @@ These definitions allow the various types to be referred to by name, rather than
     AlienTypes: {
         // The game link file defines up 20 alien types, enumerated 0-19.
         // This node defines names to each type that are then used in the rest of the file.
-        "<name>": <id>,
+        "<name>": <#id>,
     },
     PlayerAmmoTypes: {
         // The game link file defines up to 20 ammunition types, enumerated 0-19. These are
@@ -135,13 +139,13 @@ These definitions allow the various types to be referred to by name, rather than
         // weapons.
         // It is worth noting that a pickup can award any amount of any of the 20 ammunition
         // types.
-        "<name>": <id>,
+        "<name>": <#id>,
     },
     SpecialAmmoTypes: {
         // Since the Player can not use the other 10 ammunition types directly and a pickup
         // can give any of the 20 defined types, we can repurpose the other types for special
         // collectables.
-        "<name>": <id>,
+        "<name>": <#id>,
     },
     // Other lookups
 }
@@ -186,12 +190,12 @@ The `DefaultInventoryLimits` node sets the initial limits for player comsumables
 
 ```
     DefaultInventoryLimits: {
-        MaxHealth: <count>,
-        MaxJetpackFuel: <count>,
+        MaxHealth: <#count>,
+        MaxJetpackFuel: <#count>,
         MaxAmmo: {
             // Initial limits for each of the Import->LinkDefs->PlayerAmmoTypes
             // and Import->LinkDefs->SpecialAmmoTypes
-            "<name>": <count>,
+            "<name>": <#count>,
         },
     },
 
@@ -220,18 +224,18 @@ The `Reward` node defines a set of inventory modifications that can be applied a
         Description: "<text>",
         Immediate: {
             // Immediate bonuses (if any)
-            AddHealth: <count>,
-            AddJetpackFuel: <count>,
+            AddHealth: <#count>,
+            AddJetpackFuel: <#count>,
             AddAmmo: {
-                "<name>": <count>,
+                "<name>": <#count>,
             },
         },
         CarryLimit: {
             // Carry limit bonuses (if any)
-            AddHealth: <count>,
-            AddJetpackFuel: <count>,
+            AddHealth: <#count>,
+            AddJetpackFuel: <#count>,
             AddAmmo: {
-                "<name>": <count>,
+                "<name>": <#count>,
             }
         }
     }
