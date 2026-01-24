@@ -324,13 +324,13 @@ class GamePropertiesBuilder extends Data\Format\Builder {
 }
 
 if (!isset($_SERVER['argv'][1])) {
-    throw new RuntimeException("No level specified");
+    throw new RuntimeException('No modification name specified');
 }
 
 $sName = $_SERVER['argv'][1];
 
 if (empty($sName)) {
-    throw new RuntimeException('Invalid Level ID ' . $sName);
+    throw new RuntimeException('Invalid modification name');
 }
 
 $sSource = sprintf('mods/%s.json', $sName);

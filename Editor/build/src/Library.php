@@ -229,8 +229,6 @@ final class IndexedFile implements BinaryEncodable {
     }
 }
 
-
-
 abstract class Builder {
     protected readonly string $sBase;
     protected readonly string $sSourceBase;
@@ -311,6 +309,12 @@ abstract class Builder {
         $str_contents = preg_replace('/\/\/.*$/m', '', $str_contents);
         $str_contents = preg_replace('/,\s*\}/', '}', $str_contents);
         $str_contents = preg_replace('/,\s*\]/', ']', $str_contents);
+
+        $str_contents = preg_replace(
+            '/^\s*([A-Za-z_0-9]+)\:/m',
+            '"${1}":',
+            $str_contents
+        );
 
         if (empty($str_contents)) {
             RuntimeException('Unable to load source ' . $SourcePath . ', appears to be empty');

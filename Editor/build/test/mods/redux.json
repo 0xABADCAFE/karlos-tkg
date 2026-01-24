@@ -1,11 +1,11 @@
 {
     // Don't Panic. This file is JSON with line commenting supported.
     // It also supports trailing commas on lists.
-    "Header": {
-        "DataType": "Game",
-        "Requires": "1.255",
-        "Version": "1.0",
-        "Description": "AB3DII-TKG Redux",
+    Header: {
+        DataType: "Game",
+        Requires: "1.255",
+        Version: "1.0",
+        Description: "AB3DII-TKG Redux",
     },
     "Import": {
         // Definitions become acessible as Import->LinkDefs->...
