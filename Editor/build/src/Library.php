@@ -306,10 +306,20 @@ abstract class Builder {
 
     private function loadSource(string $sSourcePath): stdClass {
         $str_contents = file_get_contents($sSourcePath);
+
+        // Strip line comments
         $str_contents = preg_replace('/\/\/.*$/m', '', $str_contents);
+
+        // Strip trailing comma at end of structure definition
         $str_contents = preg_replace('/,\s*\}/', '}', $str_contents);
+
+        // Strip trailing comma at end of array definition
         $str_contents = preg_replace('/,\s*\]/', ']', $str_contents);
 
+        // String catenation (cpp style)
+        $str_contents = preg_replace('/"\s*"/', '', $str_contents);
+
+        // Add quotes to identifier names
         $str_contents = preg_replace(
             '/^\s*([A-Za-z_0-9]+)\:/m',
             '"${1}":',

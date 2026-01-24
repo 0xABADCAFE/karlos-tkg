@@ -2,9 +2,9 @@
 
 This document describes the text format used to define the behavioural modification asset files used by the TKG engine.
 
-## RSON Basic Syntax
+## Almost Right Simplified Object Notation (ARSON)
 
-In order to provide a convenient, human-editable and structured way of representing the game modification data, the syntax used is based on JSON with the following modifications / relaxations:
+In order to provide a convenient, human-editable and structured way of representing the game modification data, the syntax used is based on JSON, with a number of additional modifications:
 
 - Syntax differentiates between _identifier_ names and _key_ names:
     - An _identifier_ is a structural member of some data type.
@@ -20,6 +20,8 @@ In order to provide a convenient, human-editable and structured way of represent
 
 - Supports line comments beginning with `//`.
 - Permits a trailing comma after the final element of an array or tuple.
+- Automatically catenates strings split into multiple segments when separated only by whitespace, allowing long text to be flowed over multiple lines.
+
 
 **Example:**
 
@@ -30,6 +32,10 @@ In order to provide a convenient, human-editable and structured way of represent
         "Oranges": 5, // Key names must be quoted and can contain any valid characters.
         "Apples": 3,
     },
+    LongDescription:
+        "This is a pretty long bit of text that "
+        "can be broken down over multiple lines in order to make it "
+        "more legible.",
 }
 ```
 
