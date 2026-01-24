@@ -6,7 +6,7 @@ Assign tkg2: ab3:
 Assign sfx:  ab3:
 Assign tkgfx: ab3:SoundFX
 Assign ab3edit: ""
-Assign ab3: ab3edit:activedata ADD
+Assign ab3: ab3edit:Assets ADD
 Assign ab3: /Game/HighSpec ADD
 Path scripts editors editors/utils ADD ; paths
 Alias togglepack rx ab3edit:scripts/packer.rexx []
