@@ -12,9 +12,11 @@ In order to provide a convenient, human-editable and structured way of represent
 
 - Identifier names may only contain letters, digits and underscore characters.
     - String enclosure quotes are optional.
+    - Identifier names must be placed on their own line.
 
 - Key names may contain any valid characters.
     - String enclosure quotes are mandatory.
+    - Multiple, comma separated "key": value pairs can be placed on the same line but is discouraged.
 
 - Supports line comments beginning with `//`.
 - Permits a trailing comma after the final element of an array or tuple.

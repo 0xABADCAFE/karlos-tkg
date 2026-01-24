@@ -1,18 +1,16 @@
 {
-    // Don't Panic. This file is JSON with line commenting supported.
-    // It also supports trailing commas on lists.
-    "Header": {
-        "DataType":"Level",
-        "Requires": "1.32767",
-        "Version": "1.0",
-        "Description": "The Awakening",
+    Header: {
+        DataType: "Level",
+        Requires: "1.32767",
+        Version: "1.0",
+        Description: "The Awakening",
     },
-    "Import": {
+    Import: {
         // Definitions become acessible as Import->LinkDefs->...
-        "LinkDefs": "common/linkdefs.rson",
+        LinkDefs: "common/linkdefs.rson",
     },
-    "ZoneErrata": {
-        "PVSDeletions": {
+    ZoneErrata: {
+        PVSDeletions: {
             // Zone ID => [ List of zone ID in PVS to be removed ]
             "4": [ 17 ],
             "5": [ 181 ],
@@ -35,14 +33,23 @@
             "183": [ 11 ],
             "251": [ 183 ],
         },
-        "NoSkyVisible": [
+        NoSkyVisible: [
             // List of Zone ID that should have their backdrop flag cleared as the sky impossible to see.
             13, 17, 29,
         ]
     },
-    "ZoneMessages": {
-        "2": { "attr":0, "text": "This is a test message for zone 2." },
-        "3": { "attr":0, "text": "This one is for zone 3." },
-        "5": { "attr":0, "text": "Guess what this one is for?" }
+    ZoneMessages: {
+        "2": {
+            attr: 0,
+            text: "This is a test message for zone 2."
+        },
+        "3": {
+            attr: 0,
+            text: "This one is for zone 3."
+        },
+        "5": {
+            attr: 0,
+            text: "Guess what this one is for?"
+        }
     },
 }

@@ -1,6 +1,4 @@
 {
-    // Don't Panic. This file is JSON with line commenting supported.
-    // It also supports trailing commas on lists.
     Header: {
         DataType: "Game",
         Requires: "1.255",
@@ -17,38 +15,38 @@
         MaxHealth: 300,
         MaxJetpackFuel: 250,
         MaxAmmo: {
-            Blaster: 60,
-            Shot: 40,
-            Grenade: 12,
-            Bullet: 240,
-            Plasma: 100,
-            Rocket: 6,
-            ChargedPlasma: 10,
-            Mine: 5,
-            Bouncer: 30,
-            Bandolier: 1,
-            Backpack: 1,
+            "Blaster": 60,
+            "Shot": 40,
+            "Grenade": 12,
+            "Bullet": 240,
+            "Plasma": 100,
+            "Rocket": 6,
+            "ChargedPlasma": 10,
+            "Mine": 5,
+            "Bouncer": 30,
+            "Bandolier": 1,
+            "Backpack": 1,
         },
     },
     SpecialAmmoBonuses: {
         // Reward definitions for collecting each type of special ammo.
-        Bandolier: {
+        "Bandolier": {
             Description: "Found Bandolier. Increased ammo carry.",
             CarryLimit: {
                 AddHealth: 11,
                 AddJetpackFuel: 13,
                 AddAmmo: {
-                    Bullet: 200,
-                    Shot: 40,
+                    "Bullet": 200,
+                    "Shot": 40,
                 }
             }
         },
-        Backpack: {
+        "Backpack": {
             Description: "Found Backpack. Increased explosives carry.",
             CarryLimit: {
                 AddAmmo: {
-                    Grenade: 12,
-                    Rocket: 6,
+                    "Grenade": 12,
+                    "Rocket": 6,
                 }
             }
         },

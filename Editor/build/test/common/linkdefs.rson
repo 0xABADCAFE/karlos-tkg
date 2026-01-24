@@ -1,6 +1,6 @@
 {
     // Contains labels for enumerated endities in the base GameLink file.
-    "AlienTypes": {
+    AlienTypes: {
         "Beast": 0,
         "ShotgunGuard": 1,
         "BasicGuard": 2,
@@ -20,7 +20,7 @@
         "Crab": 18,
         "Old": 19,
     },
-    "PlayerAmmoTypes": {
+    PlayerAmmoTypes: {
         // There are 20 possible ammo types defined in the GameLink file but only 10 of them
         // can be used for the player weapon slots.
         "Plasma": 0,
@@ -33,14 +33,14 @@
         "Blaster": 16,
         "ChargedPlasma": 19,
     },
-    "PlayerSpecialAmmoTypes": {
+    PlayerSpecialAmmoTypes: {
         // Since the Player can not use the other 10 ammo types directly and a pickup can
         // give any of the 20 defined types, we can repurpose the other types for special
         // collectables.
         "Bandolier": 3,
         "Backpack": 4,
     },
-    "SoundEffects": {
+    SoundEffects: {
         "Aliens/Marine_Hurt": 0,
         "Aliens/Meat_Debris": 1,
         "Devices/Door_Start": 2,
