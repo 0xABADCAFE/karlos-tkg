@@ -129,7 +129,7 @@ The following rules are defined:
 
 ### StuffCollected
 
-The `StuffCollected` rule is triggered when the player collects some inventory consumable such as health, fuel or ammunition. The rule definition defines the following parameters:
+The `StuffCollected` rule is checked when the player collects some inventory consumable such as health, fuel or ammunition. This rule defines the following parameters:
 
 ```
     Params: {
@@ -138,7 +138,7 @@ The `StuffCollected` rule is triggered when the player collects some inventory c
     }
 ```
 
-Valid values for the consumable name are any of the `LinkDefs` defined ammunition types, `Health` and `Fuel`.
+Valid values for the consumable name are any of the `LinkDefs` enumerated `PlayerAmmoTypes`, `SpecialAmmoTypes`, `Health` and `Fuel`.
 
 **Example:**
 
@@ -172,10 +172,160 @@ Valid values for the consumable name are any of the `LinkDefs` defined ammunitio
 
 ### KillCount
 
+The `KillCount` rule is checked whenever an alien is killed by the player. This rule defines the following parameters:
+
+```
+    Params: {
+        Alien: "<alien name>",
+        Count: <#count>
+    }
+```
+
+Valid values for the alien name are any of the `LinkDefs` enumerated `AlienTypes`. There are no restrictions to the number of `KillCount` achievements for a specific alien type.
+
+**Example:**
+
+```
+    {
+        Description: "Kills: Endangered Species (Pest control 100/200)",
+        Rule: "KillCount",
+        Params: {
+            Alien: "Beast",
+            Count: 100
+        },
+        Reward: {
+            Description: "Blaster +40, Carry +40",
+            Immediate: {
+                AddAmmo: {
+                    "Blaster": 40,
+                }
+            },
+            CarryLimit: {
+                AddAmmo: {
+                    "Blaster": 40,
+                }
+            }
+        }
+    }
+```
+
 ### GroupKillCount
+
+The `GroupKillCount` rule is checked whenever an alien is killed by the player. This rule defines the following parameters:
+
+```
+    Params: {
+        Aliens: [
+            // Multiple entries
+            "<alien name>",
+        ],
+        Count: <#count>
+    }
+```
+
+Valid values for the alien name are any of the `LinkDefs` enumerated `AlienTypes`. There are no restrictions to the number of `GroupKillCount` achievements for a specific alien type.
+
+Killing any of the specified aliens counts towards the achievement.
+
+**Example:**
+
+```
+    {
+        Description: "Kills: Red's Dead, Baby (Other red things, 25/50)",
+        Rule: "GroupKillCount",
+        Params: {
+            Aliens: [
+                "ShotgunGuard",
+                "RedDemon",
+                "InsectBoss"
+            ],
+            Count: 25
+        }
+        // No particular reward for this one.
+    },
+```
 
 ### PlayerDied
 
+The `PlayerDied` rule is checked whenever the player dies. This rule defines the following parameters:
+
+```
+    Params: {
+        LevelMask: <#mask>,
+        Count: <#count>,
+        Overall: <bool>
+    }
+```
+
+The game separately tracks the number of times the player died in each level. The `LevelMask` field is a bitmap of the Level Numbers the rule applies to. This allows the definition of specific achievements for dying in a particular level or set of levels.
+
+The `Overall` flag specifies whether or not the required `Count` limit is tested against the death count any single level in the mask or the sum total death count for all of the levels in the mask.
+
+**Example:**
+
+```
+    {
+        // First time killed, any level."levelMask"
+        Description: "Died: 'Tis but a scratch!",
+        Rule: "PlayerDied",
+        Params: {
+            LevelMask: 65535,
+            Count: 1,
+            Overall: false
+        }
+    },
+```
+
 ### TimeImproved
 
+The `TimeImproved` rule is checked whenever the player completes a level. This rule defines the following parameters:
+
+```
+    Params: {
+        LevelMask: <#mask>,
+        Count: <#count>,
+        Overall: <bool>
+    }
+```
+
+The game separately tracks the shortest time the player has completed each level and the number of times it has been improved. The `LevelMask` field is a bitmap of the Level Numbers the rule applies to. This allows the definition of specific achievements for beating a past time in a particular level or set of levels.
+
+The `Overall` flag specifies whether or not the required `Count` limit is tested against the improvement count of any single level in the mask or the sum total improvement count for all of the levels in the mask.
+
+**Example:**
+
+```
+    {
+        Description: "Again: Action Replay (Beat any previous level time)",
+        Rule: "TimeImproved",
+        Params: {
+            LevelMask: 65535,
+            Count: 1,
+            Overall: true
+        }
+    },
+```
+
 ### ZoneFound
+
+The `ZoneFound` rule is checked whenever the player enters a given Zone for the first time. This rule defines the following parameters:
+
+```
+    Params: {
+        Level: <#level>,
+        Zone: <#zone>
+    }
+```
+
+**Example:**
+
+```
+    {
+        Description: "Overflow!",
+        Rule: "ZoneFound",
+        Params: {
+            Level: 1,
+            Zone: 256
+        }
+    }
+```
