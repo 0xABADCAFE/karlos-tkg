@@ -54,8 +54,8 @@ The `LevelDefs` type is a string literal that is used to specify a set of Levels
 
     // Below are valid definitions for all levels:
 
-    "ABCDEFGHIJKLMNOP"                  // Including any permutation, spaces or commas.
-    "*"                                 // Preferred
+    "ABCDEFGHIJKLMNOP"           // Including any permutation, spaces or commas.
+    "*"                          // Preferred
 
     // Below are a valid examples of all levels except A, C and E:
 
@@ -64,9 +64,9 @@ The `LevelDefs` type is a string literal that is used to specify a set of Levels
 
     // Illegal examples:
 
+    ""                           // Must not be empty.
     "ACEA"                       // Cannot specify a level code twice.
     "ACE1"                       // Illegal character class
-    ""                           // Must not be empty.
     "**"                         // Asterisk may occur only once.
 ```
 
@@ -126,6 +126,8 @@ The `Reward` structure defines a set of inventory modifications that can be appl
 
 ## Main Node Types
 
+The following nodes define the major behavioural modificatons. Generally, each one will be compiled into a distinct chunk within the generated asset binary.
+
 ### DefaultInventoryLimits
 
 The `DefaultInventoryLimits` node is a `SupplyQuantity` that sets the initial limits for player comsumables and ammunition when starting a new game:
@@ -158,22 +160,103 @@ The optional `SpecialAmmoBonuses` node defines a set of `Reward` definitions tha
     }
 ```
 
-### WeaponAdjustment (TODO)
+### WeaponAdjustment (TODO/WIP)
 
-The optional `WeaponAdjustment` node defines additional per-weapon behaviours for the player arsenal. These can include:
+The optional `WeaponAdjustment` node defines per-weapon behavioural changes for the player arsenal:
 
-- Offsets for the on-screen point of origin of visible projectiles when fired.
-- Recoil Impulse: Degree to which firing the weapon knocks the player backward.
-    - Should apply to heavier weapons only, e.g. Rockets.
+**Structure:**
 
-- Recoil Spray: Degree to which firing the weapon disturbs the player forwards direction.
-    - A random value within +/- the spray is added to the player pitch and yaw.
-    - Should apply to automatic weapons, potentially rising to the limit with duration of fire.
+```
+    WeaponAdjustment: {
+        "<weapon name>": {
+            // All fields are optional but at least one must be specified.
+            SpawnOffset: [<#x>, <#y>],
+            Recoil: <#amount>,
+            Spray: <#amount>,
+            BurstLimit: <#duration>,
+            Cooldown: <#duration>,
+            NoRun: <bool>,
+            NoCrouch: <bool>,
+            NoFly: <bool>,
+            NoFireSubmerged: <bool>
+        },
+    }
+```
 
-- Burst limit: Length of time a weapon can be fired repeatedly before forcing a cooldown.
-    - Makes most sense for rapid automatic and plasma weapons.
+**Notes:**
 
-- Cooldown time: Length of time before a weapon can be fired after a cooldown is triggered.
+- `SpawnOffset`
+    - Adjusts the on-screen location that the visible projectile launched from the weapon appears from.
+    - Has no effect for hitscanned ammunition types.
+
+- `Recoil`
+    - Sets the force with which firing the weapon will knock the player backwards.
+    - Larger values should only be used for heavier weapons, e.g. Rocket Launcher.
+
+- `Spray`
+    - Sets the degree to which firing the weapon disturbs the player forwards direction.
+    - Random values within +/- the spray value are added to the player yaw and pitch.
+    - Should be restricted to rapid fire automatic weapons, potentially starting off small and rising with the duration of fire up to the spray limit.
+
+- `BurstLimit`
+    - Sets the number of shots a weapon can fire continuously before forcing a cooldown.
+    - Should be reserved for rapid automatic and plasma weapons.
+
+- `Cooldown`
+    - Sets the length of time in game ticks before a weapon can be fired after a cooldown is triggered.
+    - Switching weapons might be faster.
+
+The following options define how a given weapon encumbers the player.
+
+- `NoRun`
+    - When true, prevents running while the weapon is equipped.
+    - Should be reserved for heavy/bulky weapons, e.g. Rocked Laucher, Chain Cannon.
+    - Run state is disabled when the weapon is equipped, forcing the player to walk.
+
+- `NoCrouch`
+    - When true, prevents the player from crouching while the weapon is equipped.
+    - Should be reserved for heavy/bulky weapons, e.g. Rocked Laucher, Chain Cannon.
+    - Crouch state is disabled when the weapon is euipped, forcing the player to stand.
+    - If the player is in a zone that prevents standing, the weapon cannot be equipped.
+
+- `NoFly`
+    - When true, prevents the player flying while the weapon is equipped.
+    - Should be reserved for heavy/bulky weapons, e.g. Rocked Laucher, Chain Cannon.
+    - Fly state is disabled when the weapon is equipped.
+    - Weapon cannot be equipped while the player is actively flying but can be equipped while falling.
+
+- `NoFireSubmerged`
+    - When true, prevents the weapon being fired while the player is submerged in liquid.
+
+**Example:**
+
+```
+    // Values shown here are illustrative until properly defined.
+
+    WeaponAdjustment: {
+        "RocketLauncher": {
+            SpawnOffset: [50, 10],   // Shift to the right and up slightly
+            Recoil: 10,              // Fairly big kick
+
+            // Weapon is too slow firing to have any spray or cooldown
+            // and too chonky to use just anywhere.
+
+            NoRun: true,             // Too big to run with.
+            NoCrouch: true,          // Too big to crouch with.
+            NoFly: true,             // Too big to fly with.
+            NoFireSubmerged: true    // You'd be suicidal to try.
+        },
+        "AssaultRifle": {
+            // Hitscanned projectile doesn't have visible spawn offset.
+            // Small enough not to be encumbered.
+
+            Recoil: 1,               // Small recoil
+            Spray: 5,                // Modest interference with aim per shot.
+            BurstLimit: 40,          // That's a full magazine anyway...
+            Cooldown: 100,           // 2 seconds in game ticks.
+        },
+    }
+```
 
 ### Achievements
 
@@ -184,6 +267,7 @@ The optional `Achievements` node defines an array of achievement defintions that
 ```
     Achievements: [
         {
+            Order: <#value>,
             Description: "<text>",
             Rule: "<enumerated rule name>",
 
@@ -198,7 +282,15 @@ The optional `Achievements` node defines an array of achievement defintions that
     ]
 ```
 
-The following rules are defined:
+**Notes:**
+
+- The order that achievements are defined in is important as the game maintains a basic bitmap of the achieved ones in the player progress file.
+- New achievements must be added at the end of the list if the the definitions are to remain congruent with the existing progression data.
+- The `Order` field allows the definitions to be reorganised within the source file without impacting the final order they are written to the asset binary.
+    - All Achievement data are first sorted by ascending `Order` value, followed by their initial position wherever two `Order` values are the same.
+    - The `Order` value is optional and only used by the data compilation. Ommitting the field is equivalent to setting it to zero.
+
+The following `Rule` types are defined:
 
 #### Achievement Rule: Collected
 
