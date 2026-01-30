@@ -1,8 +1,8 @@
 # Game Modification File
 
-[Back](./SourceFormat.md)
+[Source Format](./SourceFormat.md)
 
-The main game modification file lays out various game-wide rules that modify game behaviour. As a primary asset, this must include the correct header and must import the `LinkDefs` node.
+The main game modification file lays out various game-wide rules that modify game behaviour. As a primary asset, this must include the correct header and must import the [`LinkDefs`](./LinkDefsImport.md) node.
 
 **Example:**
 
@@ -26,9 +26,9 @@ The main game modification file lays out various game-wide rules that modify gam
 
 The following data structures are used in multiple definitions:
 
-### LevelDefs
+### LevelList
 
-The `LevelDefs` type is a string literal that is used to specify a set of Levels. The following conventions are used:
+The `LevelList` type is a string literal that is used to specify a set of Levels. The following conventions are used:
 
 - Each distinct level is denoted by a single uppercase character A-P.
     - Level letter codes can occur in any order.
@@ -416,13 +416,13 @@ The `PlayerDied` rule is checked whenever the player dies. This rule defines the
 
 ```
     Params: {
-        Levels: "<LevelDefs>",
+        Levels: "<LevelList>",
         Count: <#count>,
         Overall: <bool>
     }
 ```
 
-The game separately tracks the number of times the player died in each level. The `Levels` field is a `LevelDefs` string specifies which levels the rule applies to. This allows the definition of specific achievements for dying in a particular level or set of levels.
+The game separately tracks the number of times the player died in each level. The `Levels` field is a `LevelList` string specifies which levels the rule applies to. This allows the definition of specific achievements for dying in a particular level or set of levels.
 
 The `Overall` flag specifies whether or not the required `Count` limit is tested against the death count any single level in the set or the sum total death count for all of the levels in the set.
 
@@ -448,7 +448,7 @@ The `TimeImproved` rule is checked whenever the player completes a level. This r
 
 ```
     Params: {
-        Levels: "<LevelDefs>",
+        Levels: "<LevelList>",
         Count: <#count>,
         Overall: <bool>
     }
@@ -483,7 +483,7 @@ The `ZoneFound` rule is checked whenever the player enters a given Zone in a par
     }
 ```
 
-The Level field refers to a single, specific level and must contain only a single letter A-P.
+The Level field refers to a single specific level and must contain only a single letter A-P.
 
 **Example:**
 
