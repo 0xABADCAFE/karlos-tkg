@@ -76,7 +76,7 @@ The `LevelList` type is a string literal that is used to specify a set of Levels
 
 ### SupplyQuantity
 
-The `SupplyQuantity` structure defines an amount of health, fuel and ammunition. These structures are used wherever something modifies with the player inventory.
+The `SupplyQuantity` structure defines an amount of health, fuel and ammunition. These structures are used wherever something modifies the player inventory/limits.
 
 **Structure:**
 
