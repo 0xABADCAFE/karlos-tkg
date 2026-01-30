@@ -34,6 +34,10 @@ These definitions allow the various types to be referred to by name, rather than
         // collectables.
         "<name>": <#id>,
     },
+    PlayerWeapons: {
+        // Assigns names to each of the player weapon slots.
+        "<name>": <#slot>
+    },
     // Other lookups
 }
 ```
