@@ -1,6 +1,6 @@
 # LinkDefs Import
 
-[Back](./SourceFormat.md)
+Please read the [Source Format](./SourceFormat.md) document for further information on the syntax described here.
 
 Since the Game Modification files are an optional modding extension to the original tooling, it is necessary to redefine several key data classes so that the modification files are aligned with the original `test.lnk` data, for example:
 

@@ -1,6 +1,6 @@
 # Game Modification File
 
-[Source Format](./SourceFormat.md)
+Please read the [Source Format](./SourceFormat.md) document for further information on the syntax described here.
 
 The main game modification file lays out various game-wide rules that modify game behaviour. As a primary asset, this must include the correct header and must import the [`LinkDefs`](./LinkDefsImport.md) node.
 
