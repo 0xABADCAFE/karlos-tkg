@@ -80,6 +80,71 @@ final class Header implements BinaryEncodable {
     }
 }
 
+final class LevelSet implements BinaryEncodable {
+
+    private const array CODE_TO_BIT = [
+        'A' => 1 << 0,
+        'B' => 1 << 1,
+        'C' => 1 << 2,
+        'D' => 1 << 3,
+        'E' => 1 << 4,
+        'F' => 1 << 5,
+        'G' => 1 << 6,
+        'H' => 1 << 7,
+        'I' => 1 << 8,
+        'J' => 1 << 9,
+        'K' => 1 << 10,
+        'L' => 1 << 11,
+        'M' => 1 << 12,
+        'N' => 1 << 13,
+        'O' => 1 << 14,
+        'P' => 1 << 15,
+    ];
+
+    private const ALL_MASK = 0xFFFF;
+
+    private int $iLevelMask = 0;
+
+    public function __construct(string $sMatch) {
+        if (!preg_match('/^[\s,]{0,}[A-P\*][A-P\*\s,]{0,}$/', $sMatch)) {
+            throw new RuntimeException('Invalid LevelSet match ' . $sMatch);
+        }
+        $sMatch = preg_replace('/[^A-P\*]/', '', $sMatch);
+
+        $iMask  = 0;
+        $bInvert = false;
+        $i = 0;
+        while (isset($sMatch[$i])) {
+            $sChar = $sMatch[$i++];
+            if ('*' === $sChar) {
+                if ($bInvert) {
+                    throw new RuntimeException('Duplicate wildcard in LevelSet match');
+                } else {
+                    $bInvert = true;
+                }
+            } else {
+                if ($iMask & self::CODE_TO_BIT[$sChar]) {
+                    throw new RuntimeException('Duplicate Level in LevelSet match');
+                } else {
+                    $iMask |= self::CODE_TO_BIT[$sChar];
+                }
+            }
+        }
+        if ($bInvert) {
+            $iMask = ~$iMask;
+        }
+        $this->iLevelMask = $iMask & self::ALL_MASK;
+    }
+
+    public function getMask(): int {
+        return $this->iLevelMask;
+    }
+
+    public function toBinary(): string {
+        return pack('n', $this->iLevelMask);
+    }
+}
+
 interface ChunkIdent {
     public const string CHUNK_INDEX = 'INDX';
     public const string STRING_HEAP = 'STRH';
@@ -226,6 +291,46 @@ final class IndexedFile implements BinaryEncodable {
             $iOffset += $oChunk->size();
         }
         return $sBinary;
+    }
+}
+
+class SupplyQuantity implements BinaryEncodable {
+
+    protected const int MASK = 0xFFFF;
+
+    protected array $aData = [];
+
+    public function __construct(
+        stdClass $oSource,
+        int $iDefaultHealth,
+        int $iDefaultFuel,
+        array $aPlayerAmmoTypes,
+        array $aPlayerSpecialAmmoTypes
+    ) {
+        if (
+            !isset($oSource->Health) && !isset($oSource->Fuel) && empty($oSource->Ammo)
+        ) {
+            throw new RuntimeException('SupplyQuantity definition cannot be empty');
+        }
+
+        if (isset($oSource->Ammo) && !is_iterable($oSource->Ammo)) {
+            throw new RuntimeException('SupplyQuantity.Ammo must be a collection');
+        }
+
+        $this->aData[] = self::MASK & ($oSource->Health ?? $iDefaultHealth);
+        $this->aData[] = self::MASK & ($oSource->Fuel ?? $iDefaultFuel);
+        foreach ($oSource->Ammo as $sName => $iQuantity) {
+            $iAmmoType = $aPlayerAmmoTypes[$sName] ??
+                $aPlayerSpecialAmmoTypes[$sName] ??
+                throw new RuntimeException('Unknown Ammo type: ' . $sName);
+            $this->aData[] = $iAmmoType;
+            $this->aData[] = $iQuantity;
+        }
+        $this->aData[] = self::MASK;
+    }
+
+    public function toBinary(): string {
+        return pack('n*', $aData);
     }
 }
 

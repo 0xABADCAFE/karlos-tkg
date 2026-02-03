@@ -1,0 +1,69 @@
+#!/usr/bin/php
+<?php
+
+declare(strict_types=1);
+
+namespace TKGD;
+
+use stdClass;
+use RuntimeException;
+
+require 'src/Library.php';
+
+//$oSet = new Data\Format\LevelSet("");
+
+$aTestCases = [
+    "A" => 0x0001,
+    "B" => 0x0002,
+    "C" => 0x0004,
+    "D" => 0x0008,
+    "E" => 0x0010,
+    "F" => 0x0020,
+    "G" => 0x0040,
+    "H" => 0x0080,
+    "I" => 0x0100,
+    "J" => 0x0200,
+    "K" => 0x0400,
+    "L" => 0x0800,
+    "M" => 0x1000,
+    "N" => 0x2000,
+    "O" => 0x4000,
+    "P" => 0x8000,
+    "*" => 0xFFFF,
+    "ABC"    => 0x007,
+    "BAC"    => 0x007,
+    "BCA"    => 0x007,
+    "CAB"    => 0x007,
+    "A BC"   => 0x007,
+    "B,AC,"  => 0x007,
+    "B,C,A"  => 0x007,
+    "C A B " => 0x007,
+    "A*"     => 0xFFFE,
+    "AB*C"   => 0xFFF8,
+    "A, B,*, C,"   => 0xFFF8,
+
+];
+
+foreach ($aTestCases as $sCode => $iExpected) {
+    try {
+        $iGot = (new Data\Format\LevelSet($sCode))->getMask();
+
+    } catch (\Exception $oError) {
+        $iGot = 0;
+    }
+    if ($iExpected !== $iGot) {
+        printf(
+            "Test Case '%s' Failed, Expected 0x%04X, Got 0x%04X\n",
+            $sCode,
+            $iExpected,
+            $iGot
+        );
+    } else {
+        printf(
+            "Test Case '%s' Passed, Expected 0x%04X, Got 0x%04X\n",
+            $sCode,
+            $iExpected,
+            $iGot
+        );
+    }
+}
