@@ -145,6 +145,48 @@ final class LevelSet implements BinaryEncodable {
     }
 }
 
+class SupplyQuantity implements BinaryEncodable {
+
+    protected const int MASK = 0xFFFF;
+
+    protected array $aData = [];
+
+    public function __construct(
+        stdClass $oSource,
+        int $iDefaultHealth,
+        int $iDefaultFuel,
+        array $aPlayerAmmoTypes,
+        array $aPlayerSpecialAmmoTypes
+    ) {
+        if (
+            !isset($oSource->Health) && !isset($oSource->Fuel) && empty($oSource->Ammo)
+        ) {
+            throw new RuntimeException('SupplyQuantity definition cannot be empty');
+        }
+
+        if (isset($oSource->Ammo) && !is_iterable($oSource->Ammo)) {
+            throw new RuntimeException('SupplyQuantity.Ammo must be a collection');
+        }
+
+        $this->aData[] = self::MASK & ($oSource->Health ?? $iDefaultHealth);
+        $this->aData[] = self::MASK & ($oSource->Fuel ?? $iDefaultFuel);
+        if (!empty($oSource->Ammo)) {
+            foreach ($oSource->Ammo as $sName => $iQuantity) {
+                $iAmmoType = $aPlayerAmmoTypes[$sName] ??
+                    $aPlayerSpecialAmmoTypes[$sName] ??
+                    throw new RuntimeException('Unknown Ammo type: ' . $sName);
+                $this->aData[] = $iAmmoType;
+                $this->aData[] = $iQuantity;
+            }
+        }
+        $this->aData[] = self::MASK;
+    }
+
+    public function toBinary(): string {
+        return pack('n*', ...$this->aData);
+    }
+}
+
 interface ChunkIdent {
     public const string CHUNK_INDEX = 'INDX';
     public const string STRING_HEAP = 'STRH';
@@ -294,45 +336,7 @@ final class IndexedFile implements BinaryEncodable {
     }
 }
 
-class SupplyQuantity implements BinaryEncodable {
 
-    protected const int MASK = 0xFFFF;
-
-    protected array $aData = [];
-
-    public function __construct(
-        stdClass $oSource,
-        int $iDefaultHealth,
-        int $iDefaultFuel,
-        array $aPlayerAmmoTypes,
-        array $aPlayerSpecialAmmoTypes
-    ) {
-        if (
-            !isset($oSource->Health) && !isset($oSource->Fuel) && empty($oSource->Ammo)
-        ) {
-            throw new RuntimeException('SupplyQuantity definition cannot be empty');
-        }
-
-        if (isset($oSource->Ammo) && !is_iterable($oSource->Ammo)) {
-            throw new RuntimeException('SupplyQuantity.Ammo must be a collection');
-        }
-
-        $this->aData[] = self::MASK & ($oSource->Health ?? $iDefaultHealth);
-        $this->aData[] = self::MASK & ($oSource->Fuel ?? $iDefaultFuel);
-        foreach ($oSource->Ammo as $sName => $iQuantity) {
-            $iAmmoType = $aPlayerAmmoTypes[$sName] ??
-                $aPlayerSpecialAmmoTypes[$sName] ??
-                throw new RuntimeException('Unknown Ammo type: ' . $sName);
-            $this->aData[] = $iAmmoType;
-            $this->aData[] = $iQuantity;
-        }
-        $this->aData[] = self::MASK;
-    }
-
-    public function toBinary(): string {
-        return pack('n*', $aData);
-    }
-}
 
 abstract class Builder {
     protected readonly string $sBase;
