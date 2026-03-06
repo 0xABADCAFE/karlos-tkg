@@ -8,7 +8,7 @@ namespace TKGD;
 use stdClass;
 use RuntimeException;
 
-require 'src/Library.php';
+require 'src/bootstrap.php';
 
 class RewardList implements Data\Format\BinaryEncodable {
 

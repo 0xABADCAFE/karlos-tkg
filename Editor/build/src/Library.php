@@ -8,6 +8,8 @@ use stdClass;
 use RangeException;
 use RuntimeException;
 
+use function \is_iterable, \pack, \preg_replace, \strlen, \str_repeat;
+
 /**
  * File subformat enumeration
  */
@@ -238,54 +240,99 @@ final class Chunk implements BinaryEncodable {
 }
 
 /**
- * StringBlob
+ * Base class for varying length data collections. Blobs are added and if necessary padded
+ * to meet the required alignment before appending to the internal blob. The offset to the
+ * data within that blob is returned.
+ * Adding empty data will return an offset of zero.
  */
-final class StringBlob implements BinaryEncodable {
+abstract class BlobCollector implements BinaryEncodable {
 
-    private const string NULL_TERM = "\0";
+    protected const string PAD_BYTE = "\0";
 
-    private array  $aStrings = [];
-    private string $sHeap    = '';
-    private int    $iOffset  = 0;
+    private int $iNextOffset;
+    private int $iAlignment;
+    private int $iAdded   = 0;
+    private int $iUnique  = 0;
+    private int $iEmpty   = 0;
 
-    private int    $iAdded   = 0;
-    private int    $iUnique  = 0;
-    private int    $iEmpty   = 0;
+    protected array  $aOffsets  = [];
+    protected string $sBlobData = '';
 
-    public function __construct(int $iOffset = Chunk::FIXED_SIZE) {
-        $this->iOffset = $iOffset;
+    public function __construct(int $iInitialOffset, int $iAlignment) {
+        $this->iNextOffset = $iInitialOffset;
+        $this->iAlignment  = $iAlignment;
     }
 
-    public function isEmpty(): bool {
-        return empty($this->aStrings);
+    public final function isEmpty(): bool {
+        return empty($this->aOffsets);
     }
 
-    /**
-     * Adds a string, returning the offset to the start within the heap.
-     * Empty strings are not stored and will always return a zero offset.
-     */
-    public function add(string $sString): int {
+    protected final function addBlob(string $sBlobData): int {
         ++$this->iAdded;
-        if (empty($sString)) {
+
+        if (empty($sBlobData)) {
             ++$this->iEmpty;
             return 0;
-        } else if (isset($this->aStrings[$sString])) {
-            ++$this->iUnique;
-            return $this->aStrings[$sString];
         }
-        $this->sHeap .= $sString . self::NULL_TERM;
-        $iOffset = $this->iOffset;
-        $this->aStrings[$sString] = $iOffset;
-        $this->iOffset += strlen($sString) + self::SIZE_BYTE;
+
+        // Get the length and choose a key.
+        $iBlobLen = strlen($sBlobData);
+        $sBlobKey = $iBlobLen > 20 ? sha1($sBlobData) : bin2hex($sBlobData);
+
+        // Pad out if needed.
+        if ($this->iAlignment > self::SIZE_BYTE) {
+            $iPadLength = $this->iAlignment - ($iBlobLen & ($this->iAlignment - 1));
+            $sBlobData .= str_repeat(
+                self::PAD_BYTE,
+                $iPadLength
+            );
+            $iBlobLen += $iPadLength;
+        }
+
+        // If the same data was added previously, return the existing offset.
+        if (isset($this->aBlobs[$sBlobKey])) {
+            return $this->aBlobs[$sBlobKey];
+        }
+
+        ++$this->iUnique;
+
+        // Append the data, update the next offset and return this one
+        $this->sBlobData .= $sBlobData;
+        $iOffset = $this->iNextOffset;
+        $this->aOffsets[$sBlobKey] = $iOffset;
+        $this->iNextOffset += $iBlobLen;
         return $iOffset;
     }
 
-    /**
-     * Export the actual string heap. This begins with a 4 byte size field (big endian), followed by the set of
-     * strings.
-     */
+    public final function getOffsets(): array {
+        return array_values($this->aOffsets);
+    }
+
+    public final function getStats(): array {
+        return [
+            'Added'      => $this->iAdded,
+            'Unique'     => $this->iUnique,
+            'Empty'      => $this->iEmpty,
+            'TotalSize'  => strlen($this->sBlobData),
+            'NextOffset' => $this->iNextOffset,
+        ];
+    }
+
     public function toBinary(): string {
-        return $this->sHeap;
+        return $this->sBlobData;
+    }
+}
+
+final class StringBlob extends BlobCollector {
+
+    public function __construct(int $iNextOffset = Chunk::FIXED_SIZE)
+    {
+        parent::__construct($iNextOffset, self::SIZE_BYTE);
+    }
+
+    public function add(string $sString): int {
+        // Strings need to be null terminated
+        return $this->addBlob($sString . "\0");
     }
 }
 
