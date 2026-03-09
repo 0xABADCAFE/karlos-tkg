@@ -11,7 +11,7 @@ use \stdClass;
 
 use function \pack, \preg_match, \preg_replace;
 
-final class LevelList implements Common\BinaryEncodable {
+final class LevelList implements Common\IBinaryEncodable {
 
     private const array CODE_TO_BIT = [
         'A' => 1 << 0,

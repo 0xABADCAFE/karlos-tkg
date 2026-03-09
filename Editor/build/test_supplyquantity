@@ -3,12 +3,12 @@
 
 declare(strict_types=1);
 
-namespace TKGD;
+namespace TKG;
 
 use stdClass;
 use RuntimeException;
 
-require 'src/Library.php';
+require 'src/bootstrap.php';
 
 const DEF_HEALTH = 0x1234;
 const DEF_FUEL   = 0x4321;
@@ -65,7 +65,7 @@ $i = 0;
 foreach ($aTestCases as $sExpected => $oData) {
     try {
         $sGot = (
-            new Data\Format\SupplyQuantity(
+            new Mod\File\GameProperties\SupplyQuantity(
                 $oData,
                 DEF_HEALTH,
                 DEF_FUEL,
