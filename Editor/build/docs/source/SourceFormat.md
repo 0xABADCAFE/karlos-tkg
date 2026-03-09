@@ -8,7 +8,7 @@ In order to provide a convenient, human-editable and structured way of represent
 
 - Syntax differentiates between _identifier_ names and _key_ names:
     - An _identifier_ is a structural member of some data type.
-    - A _key_ is a string that is mapped to some other value.
+    - A _key_ is a string that is mapped to some other value in a collection.
 
 - Identifier names may only contain letters, digits and underscore characters.
     - String enclosure quotes are optional.
@@ -41,7 +41,7 @@ In order to provide a convenient, human-editable and structured way of represent
 
 ## Document Conventions
 
-Within this document, names for expected values are enclosed in angle brackets. Where the corresponding type is an integer, `#` is prepended.
+Within this document, names for expected values are enclosed in angle brackets `< >`. Where the corresponding type is an integer, `#` is prepended.
 
 ## Import Support
 

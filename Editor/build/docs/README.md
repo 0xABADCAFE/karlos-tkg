@@ -12,7 +12,7 @@ Rather than change the `test.lnk` format with all the potential backwards compat
 
 When the game starts, the engine will attempt to load the `game.props` file from the `Includes` directory. If the file does not exist, original behaviours are left unchanged.
 
-The `game.props` file contains modifications that include:
+The `game.props` file contains behavioural modifications that include:
 
 - Inventory Limits.
 - Special Bonus definitons.
