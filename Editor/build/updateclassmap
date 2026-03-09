@@ -40,6 +40,7 @@ spl_autoload_register(function(string \$str_class): void {
         '.'  => 1,
         '..' => 1,
         'templates' => 1,
+        'Library.php' => 1,
     ];
 
     const EXCLUDE_DIRS = [
@@ -65,6 +66,7 @@ spl_autoload_register(function(string \$str_class): void {
         $this->aClassMap = [];
         echo "Updating bootstrap...\n";
         foreach ($this->aFiles as $sSourcePath) {
+            echo "Processing ", $sSourcePath, "\n";
             $this->processFile($sSourcePath);
         }
         $sCode = sprintf(self::PROLOGUE, "<?php", $sNameSpace) .
@@ -137,4 +139,4 @@ spl_autoload_register(function(string \$str_class): void {
 
 $bCheckNSOptimisation = isset($_SERVER['argv'][1]);
 
-(new ClassMapBuilder)->execute('src/', 'TKGD\Data\Format', $bCheckNSOptimisation);
+(new ClassMapBuilder)->execute('src/', 'TKG\Mod', $bCheckNSOptimisation);

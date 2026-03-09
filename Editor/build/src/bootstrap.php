@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-namespace TKGD\Data\Format;
+namespace TKG\Mod;
 use \RuntimeException;
 use function \spl_autoload_register;
 
@@ -15,18 +15,22 @@ if (PHP_VERSION_ID < 70400) {
 }
 
 const CLASS_MAP = [
-  'TKGD\\Data\\Format\\SubFormat' => '/Library.php',
-  'TKGD\\Data\\Format\\BinaryEncodable' => '/Library.php',
-  'TKGD\\Data\\Format\\Version' => '/Library.php',
-  'TKGD\\Data\\Format\\Header' => '/Library.php',
-  'TKGD\\Data\\Format\\LevelSet' => '/Library.php',
-  'TKGD\\Data\\Format\\SupplyQuantity' => '/Library.php',
-  'TKGD\\Data\\Format\\ChunkIdent' => '/Library.php',
-  'TKGD\\Data\\Format\\Chunk' => '/Library.php',
-  'TKGD\\Data\\Format\\BlobCollector' => '/Library.php',
-  'TKGD\\Data\\Format\\StringBlob' => '/Library.php',
-  'TKGD\\Data\\Format\\IndexedFile' => '/Library.php',
-  'TKGD\\Data\\Format\\Builder' => '/Library.php',
+  'TKG\\Mod\\Common\\StringList' => '/Common/StringList.php',
+  'TKG\\Mod\\Common\\IBinaryEncodable' => '/Common/IBinaryEncodable.php',
+  'TKG\\Mod\\Common\\IBinaryProperties' => '/Common/IBinaryProperties.php',
+  'TKG\\Mod\\Common\\BlobCollector' => '/Common/BlobCollector.php',
+  'TKG\\Mod\\File\\IChunkIdent' => '/File/IChunkIdent.php',
+  'TKG\\Mod\\File\\Indexed' => '/File/Indexed.php',
+  'TKG\\Mod\\File\\Chunk' => '/File/Chunk.php',
+  'TKG\\Mod\\File\\Builder' => '/File/Builder.php',
+  'TKG\\Mod\\File\\LevelProperties\\Builder' => '/File/LevelProperties/Builder.php',
+  'TKG\\Mod\\File\\GameProperties\\RewardList' => '/File/GameProperties/RewardList.php',
+  'TKG\\Mod\\File\\GameProperties\\SupplyQuantity' => '/File/GameProperties/SupplyQuantity.php',
+  'TKG\\Mod\\File\\GameProperties\\LevelList' => '/File/GameProperties/LevelList.php',
+  'TKG\\Mod\\File\\GameProperties\\Builder' => '/File/GameProperties/Builder.php',
+  'TKG\\Mod\\File\\Header\\Section' => '/File/Header/Section.php',
+  'TKG\\Mod\\File\\Header\\SubFormat' => '/File/Header/SubFormat.php',
+  'TKG\\Mod\\File\\Header\\Version' => '/File/Header/Version.php',
 ];
 
 const PROJ_SRC_BASE = __DIR__;
