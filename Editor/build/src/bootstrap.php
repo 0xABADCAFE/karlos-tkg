@@ -16,6 +16,7 @@ if (PHP_VERSION_ID < 70400) {
 
 const CLASS_MAP = [
   'TKG\\Mod\\Common\\StringList' => '/Common/StringList.php',
+  'TKG\\Mod\\Common\\StructureList' => '/Common/StructureList.php',
   'TKG\\Mod\\Common\\IBinaryEncodable' => '/Common/IBinaryEncodable.php',
   'TKG\\Mod\\Common\\IBinaryProperties' => '/Common/IBinaryProperties.php',
   'TKG\\Mod\\Common\\BlobCollector' => '/Common/BlobCollector.php',

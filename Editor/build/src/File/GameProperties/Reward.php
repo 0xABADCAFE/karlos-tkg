@@ -11,6 +11,9 @@ use \stdClass;
 
 use function \is_string, \pack;
 
+/**
+ * Parses and encodes a Reward structure.
+ */
 class Reward implements Common\IBinaryEncodable {
     private string $sCarryData     = '';
     private string $sImmediateData = '';
@@ -65,20 +68,21 @@ class Reward implements Common\IBinaryEncodable {
             throw new RuntimeException('Invalid Reward Structure: Empty bonuses');
         }
 
-        // Record the description in to the string list
+        // Record the description in to the StringList and capture the location.
         $this->iDescOffset = $oStringList->add($oSource->Description);
     }
 
     /**
      * uint32 uDescriptionOffset
-     * uint16 uCarryOffset, 0 if no carry bonus, 8 if there is.
-     * uint16 uImmediateOffset, 0 if no immediate bonus, 8 + sizeof(carry bonus) if there is.
-     * int16[] aCarryData, -1 terminates
-     * int16[] aImmediateData, -1 terminates
+     * uint16 uCarryOffset, 0 if no carry bonus, 8 if there is. Measured from start of chunk.
+     * uint16 uImmediateOffset, 0 if no immediate bonus, 8 + sizeof(aCarryData) if there is.
+     * int16[] aCarryData, -1 terminates data if present
+     * int16[] aImmediateData
+     * int16 -1 terminates payload
      */
     public function toBinary(): string {
         $iCarryOffset     = empty($this->sCarryData) ? 0 : 8;
-        $iImmediateOffset = empty($this->sImmediateData) ? 0 : 8 + strlen(sCarryData);
+        $iImmediateOffset = empty($this->sImmediateData) ? 0 : 8 + strlen($this->sCarryData);
         return pack(
             self::PACK_LONG . self::PACK_WORD . self::PACK_WORD,
             $this->iDescOffset,

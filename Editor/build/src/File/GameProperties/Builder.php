@@ -21,6 +21,7 @@ class Builder extends File\Builder {
     private const string INVENTORY_LIMITS_IDENT = 'INVL';
     private const string REWARD_LIST_IDENT = 'RWRD';
     private const string SPECIAL_AMMO_BONUS_IDENT = 'SPAB';
+    private const string ACHIEVEMENTS_IDENT = 'ACHV';
 
     private array $aAlienTypes             = [];
     private array $aPlayerAmmoTypes        = [];
@@ -67,11 +68,15 @@ class Builder extends File\Builder {
         $aChunks = [];
 
         if (!empty($oData->DefaultInventoryLimits)) {
-            $aChunks[] = $this->buildDefaultInventoryLimits($oData, $oStringList);
+            $aChunks[] = $this->buildDefaultInventoryLimitsChunk($oData, $oStringList);
         }
 
         if (!empty($oData->SpecialAmmoBonuses)) {
-            $aChunks[] = $this->buildSpecialAmmoBonuses($oData, $oRewardList);
+            $aChunks[] = $this->buildSpecialAmmoBonusesChunk($oData, $oRewardList);
+        }
+
+        if (!empty($oData->Achievements)) {
+            $aChunks[] = $this->buildAchievemntsChunk($oData, $oRewardList, $oStringList);
         }
 
         if (!$oRewardList->isEmpty()) {
@@ -102,7 +107,7 @@ class Builder extends File\Builder {
         }
     }
 
-    private function buildDefaultInventoryLimits(
+    private function buildDefaultInventoryLimitsChunk(
         stdClass $oData,
         Common\StringList $oStringList
     ): File\Chunk {
@@ -148,7 +153,7 @@ class Builder extends File\Builder {
         );
     }
 
-    private function buildSpecialAmmoBonuses(
+    private function buildSpecialAmmoBonusesChunk(
         stdClass $oData,
         RewardList $oRewardList
     ): File\Chunk {
@@ -174,12 +179,37 @@ class Builder extends File\Builder {
                             throw new RuntimeException(
                                 'Unknown Special Ammo Type: ' . $sSpecialAmmoType
                             );
-                        $iOffset = $this->oRewardList->addReward($oRewardData);
+                        $iOffset = $this->oRewardList->add($oRewardData);
                         $sData .= pack($sPack, $i++, $iSpecialAmmoType, $iOffset);
                     }
                     // -1 terminate the list
                     $sData .= pack(self::PACK_WORD, 0xFFFF);
                     return $sData;
+                }
+            }
+        );
+    }
+
+    private function buildAchievemntsChunk(
+        stdClass $oData,
+        RewardList $oRewardList,
+        StringList $oStringList
+    ): File\Chunk {
+        return new File\Chunk(
+            self::ACHIEVEMENTS_IDENT,
+            new class (
+                $oData->Achievements,
+                $oRewardList,
+                $oStringList
+            ) implements Common\IBinaryEncodable {
+                public function __construct(
+                    private stdClass $oAchievements,
+                    private RewardList $oRewardList,
+                    private StringList $oStringList
+                ) {}
+
+                public function toBinary(): string {
+                    return pack('N', 0xABADCAFE);
                 }
             }
         );
