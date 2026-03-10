@@ -27,6 +27,7 @@ const CLASS_MAP = [
   'TKG\\Mod\\File\\GameProperties\\RewardList' => '/File/GameProperties/RewardList.php',
   'TKG\\Mod\\File\\GameProperties\\SupplyQuantity' => '/File/GameProperties/SupplyQuantity.php',
   'TKG\\Mod\\File\\GameProperties\\LevelList' => '/File/GameProperties/LevelList.php',
+  'TKG\\Mod\\File\\GameProperties\\Reward' => '/File/GameProperties/Reward.php',
   'TKG\\Mod\\File\\GameProperties\\Builder' => '/File/GameProperties/Builder.php',
   'TKG\\Mod\\File\\Header\\Section' => '/File/Header/Section.php',
   'TKG\\Mod\\File\\Header\\SubFormat' => '/File/Header/SubFormat.php',

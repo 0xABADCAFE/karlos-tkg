@@ -15,7 +15,9 @@ use function \is_iterable, \pack;
  */
 class SupplyQuantity implements Common\IBinaryEncodable {
 
-    protected array $aData = [];
+    private array $aData = [];
+
+    private bool $bEmpty = true;
 
     public function __construct(
         stdClass $oSource,
@@ -30,12 +32,15 @@ class SupplyQuantity implements Common\IBinaryEncodable {
             throw new RuntimeException('SupplyQuantity definition cannot be empty');
         }
 
-        if (isset($oSource->Ammo) && !is_iterable($oSource->Ammo)) {
-            throw new RuntimeException('SupplyQuantity.Ammo must be a collection');
+        if (isset($oSource->Ammo) && !($oSource->Ammo instanceof stdClass)) {
+            throw new RuntimeException('SupplyQuantity:Ammo must be a collection');
         }
 
         $this->aData[] = self::MASK_WORD & ($oSource->Health ?? $iDefaultHealth);
         $this->aData[] = self::MASK_WORD & ($oSource->Fuel ?? $iDefaultFuel);
+
+        $this->bEmpty = (0 === $this->aData[0]) && (0 === $this->aData[1]);
+
         if (!empty($oSource->Ammo)) {
             foreach ($oSource->Ammo as $sName => $iQuantity) {
                 $iAmmoType = $aPlayerAmmoTypes[$sName] ??
@@ -43,9 +48,19 @@ class SupplyQuantity implements Common\IBinaryEncodable {
                     throw new RuntimeException('Unknown Ammo type: ' . $sName);
                 $this->aData[] = $iAmmoType;
                 $this->aData[] = $iQuantity;
+                $this->bEmpty = $this->bEmpty && (0 === $iQuantity);
             }
         }
+
+        // List termination
         $this->aData[] = self::MASK_WORD;
+    }
+
+    /**
+     * A structurally valid SupplyQuantity can be empty if each defined component is zero.
+     */
+    public function isEmpty(): bool {
+        return $this->bEmpty;
     }
 
     public function toBinary(): string {

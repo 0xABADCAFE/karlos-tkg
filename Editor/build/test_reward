@@ -1,0 +1,45 @@
+#!/usr/bin/php
+<?php
+
+declare(strict_types=1);
+
+namespace TKG;
+
+use stdClass;
+use RuntimeException;
+
+require 'src/bootstrap.php';
+
+$sRSON = "{
+    Description: \"Found Bandolier. Increased ammo carry.\",
+    CarryLimitAdd: {
+        Health: 1,
+        Fuel: 3,
+        Ammo: {
+            \"Bullet\": 5,
+            \"Shot\": 7
+        }
+    }
+}";
+
+$oRewardDef = json_decode(Mod\File\Builder::parseRSON($sRSON));
+
+print_r($oRewardDef);
+
+$aAmmoTypes = [
+    "Bullet" => 1,
+    "Shot" => 3
+];
+$aSpecialAmmoTypes = [];
+$oStringList = new Mod\Common\StringList();
+
+$oReward = new Mod\File\GameProperties\Reward(
+    $oRewardDef,
+    $oStringList,
+    $aAmmoTypes,
+    $aSpecialAmmoTypes
+);
+
+$sOutput = $oReward->toBinary();
+
+print_r(str_split(bin2hex($sOutput), 4));

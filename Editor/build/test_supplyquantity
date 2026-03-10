@@ -41,7 +41,7 @@ $aTestCases = [
     "\xFF\xFF" => (object)[
         "Health" => 0x101,
         "Fuel"   => 0x11,
-        "Ammo" => [
+        "Ammo" => (object)[
             "Type1" => 10
         ]
     ],
@@ -54,7 +54,7 @@ $aTestCases = [
     "\xFF\xFF" => (object)[
         "Health" => 0x102,
         "Fuel"   => 0x12,
-        "Ammo" => [
+        "Ammo" => (object)[
             "Type2" => 15,
             "Spec1" => 17
         ]

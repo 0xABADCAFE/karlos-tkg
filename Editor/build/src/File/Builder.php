@@ -92,33 +92,39 @@ abstract class Builder {
         return new Header\Version((int)$aMatches[1], (int)$aMatches[2]);
     }
 
-    private function loadSource(string $sSourcePath): stdClass {
-        $str_contents = file_get_contents($sSourcePath);
-
+    /**
+     * Convert raw RSON to JSON friendly format
+     */
+    public static function parseRSON(string $sContents): string {
         // Strip line comments
-        $str_contents = preg_replace('/\/\/.*$/m', '', $str_contents);
+        $sContents = preg_replace('/\/\/.*$/m', '', $sContents);
 
         // Strip trailing comma at end of structure definition
-        $str_contents = preg_replace('/,\s*\}/', '}', $str_contents);
+        $sContents = preg_replace('/,\s*\}/', '}', $sContents);
 
         // Strip trailing comma at end of array definition
-        $str_contents = preg_replace('/,\s*\]/', ']', $str_contents);
+        $sContents = preg_replace('/,\s*\]/', ']', $sContents);
 
         // String catenation (cpp style)
-        $str_contents = preg_replace('/"\s*"/', '', $str_contents);
+        $sContents = preg_replace('/"\s*"/', '', $sContents);
 
         // Add quotes to identifier names
-        $str_contents = preg_replace(
+        $sContents = preg_replace(
             '/^\s*([A-Za-z_0-9]+)\:/m',
             '"${1}":',
-            $str_contents
+            $sContents
         );
+        return $sContents;
+    }
 
-        if (empty($str_contents)) {
+    private function loadSource(string $sSourcePath): stdClass {
+        $sContents = self::parseRSON(file_get_contents($sSourcePath));
+
+        if (empty($sContents)) {
             RuntimeException('Unable to load source ' . $SourcePath . ', appears to be empty');
         }
 
-        $oData = json_decode($str_contents);
+        $oData = json_decode($sContents);
         if (empty($oData)) {
             throw new RuntimeException('Unable to load source ' . $this->sSourcePath);
         }
