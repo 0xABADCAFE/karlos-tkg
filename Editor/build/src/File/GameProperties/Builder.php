@@ -140,8 +140,8 @@ class Builder extends File\Builder {
             Chunkable\Achievements::IDENT,
             new Chunkable\Achievements(
                 $oGameProperties->Achievements,
-                $oRewardList,
                 $oStringList,
+                $oRewardList,
                 $this->aPlayerAmmoTypes,
                 $this->aPlayerSpecialAmmoTypes,
                 $this->aAlienTypes

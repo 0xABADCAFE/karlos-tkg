@@ -137,7 +137,7 @@ class Achievement implements Common\IBinaryEncodable {
         array $aPlayerSpecialAmmoTypes,
         array $aAlienTypes
     ): string {
-        $cParser = self::RULE_PARAM_FN[$this->iRuleType];
+        $cParser = [$this, self::RULE_PARAM_FN[$this->iRuleType]];
         return $cParser(
             $oParams,
             $aPlayerAmmoTypes,
@@ -317,7 +317,7 @@ class Achievement implements Common\IBinaryEncodable {
         } else {
             throw new RuntimeException("Invald Achievement.Params.Type for Collected Rule");
         }
-        $iCount = $this->getCount($oParams);
+        $iCount = $this->getCount($oParams, 'Collected');
         return pack(
             self::PACK_WORD .
             self::PACK_MANY,

@@ -58,8 +58,24 @@
             Description: "Test Achievement 1 - ER",
             Rule: "Collected",
             Params: {
-                "Health": 50,
+                Type: "Health",
+                Count: 50,
+            }
+        },
+        {
+            Order: 2,
+            Description: "Test Achievement 2 - ER",
+            Rule: "Collected",
+            Params: {
+                Type: "Health",
+                Count: 1000,
             },
+            Reward: {
+                Description: "Hands of the healer.",
+                CarryLimitAdd: {
+                    "Health": 200
+                }
+            }
         }
     ]
 }

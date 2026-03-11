@@ -28,11 +28,11 @@ class Achievements implements Common\IBinaryEncodable {
         foreach ($this->aAchievements as $oAchievementDef) {
             $aSorted[] = new Achievement(
                 $oAchievementDef,
-                $oStringList,
-                $oRewardList,
-                $aPlayerAmmoTypes,
-                $aPlayerSpecialAmmoTypes,
-                $aAlienTypes
+                $this->oStringList,
+                $this->oRewardList,
+                $this->aPlayerAmmoTypes,
+                $this->aPlayerSpecialAmmoTypes,
+                $this->aAlienTypes
             );
         }
 

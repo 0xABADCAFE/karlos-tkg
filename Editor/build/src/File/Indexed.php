@@ -23,6 +23,9 @@ final class Indexed implements Common\IBinaryEncodable {
         foreach ($this->aChunks as $oChunk) {
             $sBinary .= $oChunk->toBinary();
         }
+
+        printf("Generated binary, %d bytes.\n", strlen($sBinary));
+
         return $sBinary;
     }
 
@@ -49,8 +52,6 @@ final class Indexed implements Common\IBinaryEncodable {
             $sBinary .= $oChunk->sIdent . pack(self::PACK_LONG, $iOffset);
             $iOffset += $oChunk->size();
         }
-
-        printf("Generated binary, %d bytes.\n", strlen($sBinary));
 
         return $sBinary;
     }
