@@ -76,6 +76,32 @@
                     "Health": 200
                 }
             }
-        }
+        },
+        {
+            Order: 100,
+            Description: "Test Achievement 100 - Zone",
+            Rule: "ZoneFound",
+            Params: {
+                Level: "P",
+                Zone: 255,
+            },
+        },
+        {
+            Order: 101,
+            Description: "Test Achievement 101 - Zone",
+            Rule: "ZoneFound",
+            Params: {
+                Level: "P",
+                Zone: 255,
+            },
+            Reward: {
+                Description: "Locator",
+                ImmediateAdd: {
+                    Ammo: {
+                        "Backpack": 1
+                    }
+                }
+            }
+        },
     ]
 }
