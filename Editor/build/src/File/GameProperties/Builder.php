@@ -141,7 +141,10 @@ class Builder extends File\Builder {
             new Chunkable\Achievements(
                 $oGameProperties->Achievements,
                 $oRewardList,
-                $oStringList
+                $oStringList,
+                $this->aPlayerAmmoTypes,
+                $this->aPlayerSpecialAmmoTypes,
+                $this->aAlienTypes
             )
         );
     }

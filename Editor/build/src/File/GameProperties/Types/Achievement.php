@@ -37,7 +37,7 @@ class Achievement implements Common\IBinaryEncodable {
         'parseCollectedParams',
     ];
 
-    private int $iOrder = 0;
+    public int $iOrder = 0;
     private int $iRuleType = 0;
     private int $iDescOffset = 0;
     private int $iRewardOffset = 0;
