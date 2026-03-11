@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TKG\Mod\File\GameProperties;
+namespace TKG\Mod\File\GameProperties\Types;
 
 use TKG\Mod\Common;
 use TKG\Mod\File;

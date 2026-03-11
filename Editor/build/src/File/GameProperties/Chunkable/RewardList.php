@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace TKG\Mod\File\GameProperties;
+namespace TKG\Mod\File\GameProperties\Chunkable;
 
+use TKG\Mod\File\GameProperties\Types;
 use TKG\Mod\Common;
 use TKG\Mod\File;
 use \RuntimeException;
@@ -14,6 +15,8 @@ use \stdClass;
  */
 class RewardList extends Common\StructureList {
 
+    public const string IDENT = 'RWRD';
+
     public function __construct(
         private array $aPlayerAmmoTypes,
         private array $aPlayerSpecialAmmoTypes,
@@ -23,7 +26,7 @@ class RewardList extends Common\StructureList {
     }
 
     protected function parseStructure(stdClass $oRewardDef): Common\IBinaryEncodable {
-        return new Reward(
+        return new Types\Reward(
             $oRewardDef,
             $this->oStringList,
             $this->aPlayerAmmoTypes,

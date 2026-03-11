@@ -51,8 +51,15 @@
                 }
             }
         },
-    }
-    Achievements: {
-
-    }
+    },
+    Achievements: [
+        {
+            Order: 1,
+            Description: "Test Achievement 1 - ER",
+            Rule: "Collected",
+            Params: {
+                "Health": 50,
+            },
+        }
+    ]
 }

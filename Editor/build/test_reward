@@ -21,7 +21,11 @@ $sRSON = "{
         }
     },
     ImmediateAdd: {
-        Fuel: 15
+        Fuel: 15,
+        Ammo: {
+            \"Bullet\": 2,
+            \"Shot\": 4
+        }
     }
 }";
 
@@ -30,14 +34,14 @@ $oRewardDef = json_decode(Mod\File\Builder::parseRSON($sRSON));
 print_r($oRewardDef);
 
 $aAmmoTypes = [
-    "Bullet" => 1,
-    "Shot" => 3
+    "Bullet" => 0x10,
+    "Shot" => 0x100
 ];
 $aSpecialAmmoTypes = [];
 $oStringList = new Mod\Common\StringList();
 $oStringList->add("Dummy");
 
-$oReward = new Mod\File\GameProperties\Reward(
+$oReward = new Mod\File\GameProperties\Types\Reward(
     $oRewardDef,
     $oStringList,
     $aAmmoTypes,
