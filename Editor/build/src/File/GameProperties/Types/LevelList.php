@@ -49,13 +49,13 @@ final class LevelList implements Common\IBinaryEncodable {
             $sChar = $sMatch[$i++];
             if ('*' === $sChar) {
                 if ($bInvert) {
-                    throw new RuntimeException('Duplicate wildcard in LevelSet match');
+                    throw new RuntimeException('Duplicate wildcard in LevelList match');
                 } else {
                     $bInvert = true;
                 }
             } else {
                 if ($iMask & self::CODE_TO_BIT[$sChar]) {
-                    throw new RuntimeException('Duplicate Level in LevelSet match');
+                    throw new RuntimeException('Duplicate Level in LevelList match');
                 } else {
                     $iMask |= self::CODE_TO_BIT[$sChar];
                 }
