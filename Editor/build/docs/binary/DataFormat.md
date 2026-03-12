@@ -24,16 +24,16 @@ This is immediately followed by one or more Chunks.
 | 8 | **Requires** `uint16[2]` Major.Minor |
 | 12 | **Version** `uint16[2]` Major.Minor |
 | 16 | **Description Offset** `uint32`, offset in string heap chunk |
-| 20 | **Chunk 0 Ident** `char[4]` |
-| 24 | **Chunk 0 Length** `uint32`, always a multiple of 4 |
-| 28 | **Chunk 0 Data** varying, tail padded to 4 byte boundary |
-| x \+ 0 | **Chunk 1 Ident** `char[4]` |
-| x \+ 4 | **Chunk 1 Length** `uint32`, always a multiple of 4 |
-| x \+ 8 | **Chunk 1 Data** varying, tail padded to 4 byte boundary |
+| 20 | **Chunk \[0\] Ident** `char[4]` |
+| 24 | **Chunk \[0\] Length** `uint32`, always a multiple of 4 |
+| 28 | **Chunk \[0\] Data** varying, tail padded to 4 byte boundary |
+| x \+ 0 | **Chunk \[1\] Ident** `char[4]` |
+| x \+ 4 | **Chunk \[1\] Length** `uint32`, always a multiple of 4 |
+| x \+ 8 | **Chunk \[1\] Data** varying, tail padded to 4 byte boundary |
 | ... | ... |
-| N \+ 0 | **Chunk N Ident** `char[4]` |
-| N \+ 4 | **Chunk N Length** `uint32`, always a multiple of 4 |
-| N \+ 8 | **Chunk N Data** varying, tail padded to 4 byte boundary |
+| N \+ 0 | **Chunk \[N\] Ident** `char[4]` |
+| N \+ 4 | **Chunk \[N\] Length** `uint32`, always a multiple of 4 |
+| N \+ 8 | **Chunk \[N\] Data** varying, tail padded to 4 byte boundary |
 
 ## Common Chunks
 
@@ -47,13 +47,13 @@ The Index Chunk contains a list of all of the Chunks in the file, complete with 
 | :---- | :---- |
 | 0 | **Ident** `"INDX"` |
 | 4 | **Length** `uint32` |
-| 8 | **Chunk 0 Ident** `char[4]` |
-| 12 | **Chunk 0 Offset** `uint32` |
-| 16 | **Chunk 1 Ident** `char[4]` |
-| 20 | **Chunk 1 Offset** `uint32` |
+| 8 | **Chunk \[0\] Ident** `char[4]` |
+| 12 | **Chunk \[0\] Offset** `uint32` |
+| 16 | **Chunk \[1\] Ident** `char[4]` |
+| 20 | **Chunk \[1\] Offset** `uint32` |
 | ... | ... |
-| N \+ 0 | **Chunk N Ident** `char[4]` |
-| N \+ 8 | **Chunk N Offset** `uint32` |
+| N \+ 0 | **Chunk \[N\] Ident** `char[4]` |
+| N \+ 8 | **Chunk \[N\] Offset** `uint32` |
 
 Notes:
 
@@ -71,7 +71,7 @@ The Chunk comprises of each distinct string that was parsed out of the source as
 | :---- | :---- |
 | 0 | **Ident** `"STRH"` |
 | 4 | **Length** `uint32` |
-| 8 | **Data** |
+| 8 | **Data** `char[]` |
 
 Notes:
 
