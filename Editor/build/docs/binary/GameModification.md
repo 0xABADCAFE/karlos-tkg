@@ -22,7 +22,7 @@ Only the Index, Inventory Limits and String chunks are mandatory.
 
 ### Inventory Limits Chunk
 
-The Inventory Limits Chunk contains the binary encoded limits defined in the source [Default Inventory Limits](../GameModification.md#default-inventory-limits) node. A Limit is defined for each of the 20 Ammunition types, along with Health and Fuel. Where these were not specified in the source, the respective internal default is used.
+The Inventory Limits Chunk contains the binary encoded limits defined in the source [Default Inventory Limits](../source/GameModification.md#default-inventory-limits) node. A Limit is defined for each of the 20 Ammunition types, along with Health and Fuel. Where these were not specified in the source, the respective internal default is used.
 
 | Offset In Chunk | Content |
 | :---- | :---- |
@@ -44,7 +44,7 @@ Notes:
 
 ### Special Ammo Bonuses
 
-The Special Ammo Bonuses Chunk contains the binary encoded values defined in the [Special Ammo Bonuses](./GameModification.md#special-ammo-bonuses) node. If the node is omitted, no Chunk is generated.
+The Special Ammo Bonuses Chunk contains the binary encoded values defined in the [Special Ammo Bonuses](../source/GameModification.md#special-ammo-bonuses) node. If the node is omitted, no Chunk is generated.
 
 | Offset In Chunk | Content |
 | :---- | :---- |
@@ -70,7 +70,7 @@ Notes:
 
 ### Achievements
 
-The Achievenents Chunk cntains the binary encoded achievement data defined in the [Achievements](./GameModification.md#achievements) node.
+The Achievenents Chunk cntains the binary encoded achievement data defined in the [Achievements](../source/GameModification.md#achievements) node.
 
 | Offset In Chunk | Content |
 | :---- | :---- |
