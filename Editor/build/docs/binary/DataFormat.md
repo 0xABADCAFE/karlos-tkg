@@ -10,6 +10,8 @@ The format is inspired by IFF and comprises a chunk based layout. A file contain
 
 - All chunks are aligned to 32-bit offsets.
 
+The Chunk based approach allows for the easy inclusion of new features by encoding the required data into a new Chunk that oder versions of the engine are safe to ignore.
+
 ## Basic File Layout
 
 The general structure of the file is shown in the table below. The first 20 bytes encode the [Document Header](../source/SourceFormat.md#document-header)
