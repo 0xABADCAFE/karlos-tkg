@@ -20,6 +20,8 @@ The `game.props` file contains behavioural modifications that include:
 
 The `game.props` file is a created from a human-readable text file that is described [here](./source/GameModification.md).
 
+The binary format of the file is described [here](./binary/GameModification.md).
+
 ## Level
 
 When a level is played, the engine will attempt to load the following additional files from the level directory:
@@ -56,3 +58,5 @@ If present, the `level.props` file will be loaded. This includes:
     - Does not replace the exsiting mechanism, which is retained for backward compatibility.
 
 The `level.props` file is a created from a human-readable text file that is described [here](./source/LevelModification.md).
+
+The binary format of the file is described [here](./binary/LevelModification.md).
