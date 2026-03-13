@@ -8,20 +8,13 @@ use TKG\Mod\Common;
 use \RuntimeException;
 use \stdClass;
 
-use function \is_iterable, \pack;
+use function \is_array, \pack;
 
 /**
  * WeaponAdjustment
  */
 class WeaponAdjustment implements Common\IBinaryEncodable {
 
-/**
-    - NoRun `0x0001`
-    - NoCrouch `0x0002`
-    - NoFly `0x0004`
-    - NoFireSubmerged `0x0008`
-
- */
     private const int F_NO_RUN            = 0;
     private const int F_NO_CROUCH         = 1;
     private const int F_NO_FLY            = 2;

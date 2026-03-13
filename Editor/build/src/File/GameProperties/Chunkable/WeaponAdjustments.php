@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TKG\Mod\File\GameProperties\Chunkable;
 
+use TKG\Mod\File\GameProperties\Types;
 use TKG\Mod\Common;
 use \stdClass;
 use \RuntimeException;
@@ -21,18 +22,18 @@ class WeaponAdjustments implements Common\IBinaryEncodable {
 
     public function toBinary(): string {
         $sData = '';
-//         $i = 0;
-//         $sPack = self::PACK_WORD . self::PACK_WORD . self::PACK_LONG;
-//         foreach ($this->oSpecialAmmoBonuses as $sSpecialAmmoType => $oRewardData) {
-//             $iSpecialAmmoType = $this->aPlayerSpecialAmmoTypes[$sSpecialAmmoType] ??
-//                 throw new RuntimeException(
-//                     'Unknown Special Ammo Type: ' . $sSpecialAmmoType
-//                 );
-//             $iOffset = $this->oRewardList->add($oRewardData);
-//             $sData .= pack($sPack, $i++, $iSpecialAmmoType, $iOffset);
-//         }
-//         // -1 terminate the list
-//         $sData .= pack(self::PACK_WORD, 0xFFFF);
+        foreach ($this->oWeaponAdjustments as $sWeaponName => $oWeaponAdjustmentDef)
+            if (!isset($this->aPlayerWeapons[$sWeaponName])) {
+
+            $iSlot = $this->aPlayerWeapons[$sWeaponName] ??
+                throw new RuntimeException('Invalid Weapon Name ' . $sWeaponName);
+            $oWeaponAdjustment = new Types\WeaponAdjustment(
+                $oWeaponAdjustmentDef,
+                $iSlot
+            );
+            $sData .= $oWeaponAdjustment->toBinary();
+        }
+
         return $sData;
     }
 
