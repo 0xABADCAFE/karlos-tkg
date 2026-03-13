@@ -162,7 +162,7 @@ The optional `SpecialAmmoBonuses` node defines a set of `Reward` definitions tha
     }
 ```
 
-### WeaponAdjustment (TODO/WIP)
+### WeaponAdjustment
 
 The optional `WeaponAdjustment` node defines per-weapon behavioural changes for the player arsenal:
 
@@ -187,9 +187,14 @@ The optional `WeaponAdjustment` node defines per-weapon behavioural changes for 
 
 **Notes:**
 
+If all values are zero/false, the definition is considered empty and will be discarded. The values defined within these definitions are considered _default_ values for the weapons they apply to. Future updates will record the active values for eahc weapon in the player progression file. This is intended to allow for in-game modification to these values e.g. as a consequence of locating some special item or via achievements or other objectives.
+
+Fields:
+
 - `SpawnOffset`
     - Adjusts the on-screen location that the visible projectile launched from the weapon appears from.
     - Has no effect for hitscanned ammunition types.
+    - Signed values are allowed.
 
 - `Recoil`
     - Sets the force with which firing the weapon will knock the player backwards.

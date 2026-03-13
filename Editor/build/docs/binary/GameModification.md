@@ -66,24 +66,49 @@ Notes:
 - The Ammo Type values can only be those defined in the SpecialAmmoTypes list.
 - After loading, the Special Ammo Bonuses Chunk is parsed to update teh Reward Offset to the corresponding in-memory location of the Reward data.
 
-### Weapon Adjustment (TODO)
+### Weapon Adjustment
+
+The Weapon Adjusment Chunk contains the binary encoded data defined in the  [Weapon Adjustment](../source/GameModification.md#weaponadjustment) node. If the node is ommited, no Chunk is generated.
+
+| Offset In Chunk | Content |
+| :---- | :---- |
+| 0 | **Ident** `"WADJ"` |
+| 4 | **Length** `uint32` |
+| 8 | **Slot ID \[0\]** `uint16` Which weapon slot the adjustment is for |
+| 10 | **XOffset \[0\]** `int16` |
+| 12 | **YOffset \[0\]** `int16` |
+| 14 | **Recoil \[0\]** `int16` |
+| 16 | **Spray \[0\]** `int16` |
+| 18 | **Burst Limit \[0\]** `uint16`, Zero implies no limit |
+| 20 | **Cooldown \[0\]** `uint16`, Zero implies no cooldown |
+| 22 | **Flags \[0\]** `uint16` Flags |
+| 24 | **Slot ID \[1\]** `uint16` |
+| ... | ... |
+
+Notes:
+
+- The Flags field contains the boolean options defined in the source node:
+    - NoRun `0x0001`
+    - NoCrouch `0x0002`
+    - NoFly `0x0004`
+    - NoFireSubmerged `0x0008`
+    - All other bits are reserved.
+
+The data in the Weapon Adjustment node serves as the game default values for the weapons. Future updates may save the active values into the player progression file in order to allow for modification in-game, e.g. locating some special item or accomplishing some objective or achievement.
 
 ### Achievements
 
-The Achievenents Chunk cntains the binary encoded achievement data defined in the [Achievements](../source/GameModification.md#achievements) node.
+The Achievenents Chunk contanns the binary encoded achievement data defined in the [Achievements](../source/GameModification.md#achievements) node.
 
 | Offset In Chunk | Content |
 | :---- | :---- |
 | 0 | **Ident** `"ACHV"` |
 | 4 | **Length** `uint32` |
 | 8 | **Description Offset \[0\]** `uint32` Offset into String Chunk |
-| 12 | **Reward Offset \[0\]** `uint32` Offset into Reard Chunk, 0 if no Reward |
+| 12 | **Reward Offset \[0\]** `uint32` Offset into Reward Chunk, 0 if no Reward |
 | 16 | **Rule Type ID \[0\]** `uint16` |
 | 18 | **Rule Parameters \[0\]** `uint16[3]` |
 | 20 | **Description Offset \[1\]** `uint32` Offset into String Chunk |
-| 24 | **Reward Offset \[1\]** `uint32` Offset into Reard Chunk, 0 if no Reward |
-| 28 | **Rule Type ID \[1\]** `uint16` |
-| 30 | **Rule Parameters \[1\]** `uint16[3]` |
 | ... | ... |
 
 Notes:
