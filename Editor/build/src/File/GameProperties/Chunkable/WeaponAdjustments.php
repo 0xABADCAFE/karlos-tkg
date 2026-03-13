@@ -14,17 +14,15 @@ class WeaponAdjustments implements Common\IBinaryEncodable {
     public const string IDENT = 'WADJ';
 
     public function __construct(
-        private readonly stdClass $oWeaponAdjustments,
-        private readonly array    $aPlayerWeapons
+        private readonly array    $aPlayerWeapons,
+        private readonly stdClass $oWeaponAdjustments
     ) {
 
     }
 
     public function toBinary(): string {
         $sData = '';
-        foreach ($this->oWeaponAdjustments as $sWeaponName => $oWeaponAdjustmentDef)
-            if (!isset($this->aPlayerWeapons[$sWeaponName])) {
-
+        foreach ($this->oWeaponAdjustments as $sWeaponName => $oWeaponAdjustmentDef) {
             $iSlot = $this->aPlayerWeapons[$sWeaponName] ??
                 throw new RuntimeException('Invalid Weapon Name ' . $sWeaponName);
             $oWeaponAdjustment = new Types\WeaponAdjustment(
@@ -33,7 +31,6 @@ class WeaponAdjustments implements Common\IBinaryEncodable {
             );
             $sData .= $oWeaponAdjustment->toBinary();
         }
-
         return $sData;
     }
 

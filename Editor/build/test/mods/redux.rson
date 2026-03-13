@@ -52,6 +52,20 @@
             }
         },
     },
+    WeaponAdjustments: {
+        "RocketLauncher": {
+            SpawnOffset: [10, -10],  // Shift to the right and down slightly
+            Recoil: 10,              // Fairly big kick
+
+            // Weapon is too slow firing to have any spray or cooldown
+            // and too chonky to use just anywhere.
+
+            NoRun: true,             // Too big to run with.
+            NoCrouch: true,          // Too big to crouch with.
+            NoFly: true,             // Too big to fly with.
+            NoFireSubmerged: true    // You'd be suicidal to try.
+        }
+    },
     Achievements: [
 //        {
 //            Order: 1,

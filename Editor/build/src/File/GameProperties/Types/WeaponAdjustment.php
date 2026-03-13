@@ -39,17 +39,21 @@ class WeaponAdjustment implements Common\IBinaryEncodable {
         $iSpawnYOffset    = (int)($oSource->SpawnOffset[1] ?? 0);
         $iRecoil          = (int)($oSource->Recoil ?? 0);
         $iSpray           = (int)($oSource->Spray ?? 0);
+        $iBurstLimit      = (int)($oSource->BurstLimit ?? 0);
         $iCooldown        = (int)($oSource->Cooldown ?? 0);
-        $iFlags           = ((int)(($oSource->NoRun !== false) ?? 0) << self::F_NO_RUN) |
-                            ((int)(($oSource->NoCrouch !== false) ?? 0) << self::F_NO_CROUCH) |
-                            ((int)(($oSource->NoFly !== false) ?? 0) << self::F_NO_FLY) |
-                            ((int)(($oSource->oNoFireSubmerged !== false) ?? 0) << self::F_NO_FIRE_SUBMERGED);
+        $iFlags           = ((int)(($oSource->NoRun !== false) ?? 0)           << self::F_NO_RUN) |
+                            ((int)(($oSource->NoCrouch !== false) ?? 0)        << self::F_NO_CROUCH) |
+                            ((int)(($oSource->NoFly !== false) ?? 0)           << self::F_NO_FLY) |
+                            ((int)(($oSource->NoFireSubmerged !== false) ?? 0) << self::F_NO_FIRE_SUBMERGED);
 
         if ($iRecoil < 0) {
             throw new RuntimeException('WeaponAdjustment.Recoil must not be negative');
         }
         if ($iSpray < 0) {
             throw new RuntimeException('WeaponAdjustment.Spray must not be negative');
+        }
+        if ($iBurstLimit < 0) {
+            throw new RuntimeException('WeaponAdjustment.BurstLimit must not be negative');
         }
         if ($iCooldown < 0) {
             throw new RuntimeException('WeaponAdjustment.Cooldown must not be negative');
@@ -61,6 +65,7 @@ class WeaponAdjustment implements Common\IBinaryEncodable {
             $iSpawnYOffset,
             $iRecoil,
             $iSpray,
+            $iBurstLimit,
             $iCooldown,
             $iFlags
         );
