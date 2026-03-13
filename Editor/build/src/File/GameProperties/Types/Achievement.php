@@ -274,7 +274,7 @@ class Achievement implements Common\IBinaryEncodable {
             throw new RuntimeException("Invald/Empty Achievement.Params.Levels for Rule");
         }
         $oLevelList = new LevelList($oParams->Levels);
-        $iCount   = $this->getCount($oParams);
+        $iCount   = $this->getCount($oParams, 'Rule');
 
         if (
             !isset($oParams->Overall) ||
@@ -327,7 +327,7 @@ class Achievement implements Common\IBinaryEncodable {
         );
     }
 
-    private function getCount(stdClass $oParams, $sRule): int {
+    private function getCount(stdClass $oParams, string $sRule): int {
         if (
             empty($oParams->Count) ||
             !is_int($oParams->Count) ||

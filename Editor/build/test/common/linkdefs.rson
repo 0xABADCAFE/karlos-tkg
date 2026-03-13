@@ -40,6 +40,19 @@
         "Bandolier": 3,
         "Backpack": 4,
     },
+    PlayerWeapons: {
+        // There are 10 weapon slots, 0 - 9
+        "Blaster": 0,
+        "CombatShotgun": 1,
+        "GrenadeLauncher": 2,
+        "AssaultRifle": 3,
+        "PlasmaCannon": 4,
+        "RocketLauncher": 5,
+        "ChargedPlasma": 6,
+        "Mine": 7,
+        "ChainCannon": 8,
+        "PlasmaBouncer": 9,
+    },
     SoundEffects: {
         "Aliens/Marine_Hurt": 0,
         "Aliens/Meat_Debris": 1,
