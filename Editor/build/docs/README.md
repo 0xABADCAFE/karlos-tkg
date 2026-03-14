@@ -26,7 +26,7 @@ The binary format of the file is described [here](./binary/GameModification.md).
 
 When a level is played, the engine will attempt to load the following additional files from the level directory:
 
-### wall_<N>.256wad
+### wall_\<N\>.256wad
 
 If present, any files named `wall_<N>.256wad`, where N is a hexadecimal digit 0-f, in the level directory are loaded. These temporarily override the corresponding global wall texture (one of 16) defined in the original `test.lnk` file. This allows entirely custom wall textures to be used in levels, allowing for more specialised themes.
 
