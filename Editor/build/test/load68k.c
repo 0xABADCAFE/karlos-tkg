@@ -78,10 +78,10 @@ typedef struct {
 /**
  * Custom parsers
  */
-typedef BOOL (*ChunkParser)(ChunkHeader* pChunk, GMFData* gmfData);
+typedef BOOL (*ChunkParser)(ChunkHeader const* pChunkHeader, GMFData* pGMFData);
 
 typedef struct {
-    Ident pe_Ident;
+    ULONG pe_Ident;
     ChunkParser pe_Parser;
 } ALIGN(sizeof(ULONG)) ParserEntry;
 
@@ -106,11 +106,11 @@ static BOOL gmf_CheckData(GMFData* pGMFData, Header const* pAgainst) {
  * Attempts to load the named file, populating the data and length fields of
  * the GMFData and zeroing the rest. Once loaded, the data must be validated.
  */
-static BOOL gmf_ReadFile(char const* filename, GMFData* gmfData)
+static BOOL gmf_ReadFile(char const* filename, GMFData* pGMFData)
 {
     puts("\tgmf_ReadFile()");
 
-    if (!filename || !gmfData) {
+    if (!filename || !pGMFData) {
         return FALSE;
     }
     FILE*  pHandle = NULL;
@@ -152,12 +152,12 @@ static BOOL gmf_ReadFile(char const* filename, GMFData* gmfData)
             break;
         }
 
-        gmfData->gmd_Data      = pBuffer;
-        gmfData->gmd_Length    = iLength;
-        gmfData->gmd_Header    = NULL;
-        gmfData->gmd_Index     = NULL;
-        gmfData->gmd_IndexSize = 0;
-        gmfData->gmd_Strings   = NULL;
+        pGMFData->gmd_Data      = pBuffer;
+        pGMFData->gmd_Length    = iLength;
+        pGMFData->gmd_Header    = NULL;
+        pGMFData->gmd_Index     = NULL;
+        pGMFData->gmd_IndexSize = 0;
+        pGMFData->gmd_Strings   = NULL;
 
         bResult = TRUE;
 
@@ -169,10 +169,10 @@ static BOOL gmf_ReadFile(char const* filename, GMFData* gmfData)
     return bResult;
 }
 
-static BOOL gmf_ProcessDefaultChunks(GMFData* gmfData)
+static BOOL gmf_ProcessDefaultChunks(GMFData* pGMFData)
 {
     puts("\tgmf_ProcessDefaultChunks()");
-    ChunkHeader const* pIndexHeader = (ChunkHeader const*)(gmfData->gmd_Data + sizeof(Header));
+    ChunkHeader const* pIndexHeader = (ChunkHeader const*)(pGMFData->gmd_Data + sizeof(Header));
     if (
         pIndexHeader->ch_Ident.id_Value != IDENT_INDX ||
         pIndexHeader->ch_Length < (sizeof(ChunkHeader) + sizeof(IndexEntry))
@@ -182,16 +182,16 @@ static BOOL gmf_ProcessDefaultChunks(GMFData* gmfData)
     int iNumEntries = (pIndexHeader->ch_Length - sizeof(ChunkHeader))/sizeof(IndexEntry);
 
     IndexEntry* pIndexEntry = (IndexEntry*)(((UBYTE*)pIndexHeader) + sizeof(ChunkHeader));
-    gmfData->gmd_IndexSize  = iNumEntries;
-    gmfData->gmd_Index      = pIndexEntry;
+    pGMFData->gmd_IndexSize  = iNumEntries;
+    pGMFData->gmd_Index      = pIndexEntry;
 
-    gmfData->gmd_Strings = NULL;
+    pGMFData->gmd_Strings = NULL;
 
     /**
      * Convert the offsets in the index to their actual addresses
      */
     for (int i = 0; i < iNumEntries; ++i) {
-        pIndexEntry[i].ie_Offset.do_ByteAddress = gmfData->gmd_Data + pIndexEntry[i].ie_Offset.do_Offset;
+        pIndexEntry[i].ie_Offset.do_ByteAddress = pGMFData->gmd_Data + pIndexEntry[i].ie_Offset.do_Offset;
 
         /* Quick sanity check - ensure the index ident is a match for the in memory location */
         Ident const* pChunkIdent = (Ident const*)pIndexEntry[i].ie_Offset.do_ByteAddress;
@@ -206,64 +206,85 @@ static BOOL gmf_ProcessDefaultChunks(GMFData* gmfData)
         }
 
         if (pIndexEntry[i].ie_Ident.id_Value == IDENT_STRH) {
-            gmfData->gmd_Strings = pIndexEntry[i].ie_Offset.do_Text;
+            pGMFData->gmd_Strings = pIndexEntry[i].ie_Offset.do_Text;
         }
     }
 
-    if (!gmfData->gmd_Strings) {
+    if (!pGMFData->gmd_Strings) {
         printf("String Heap not found in Index\n");
         return FALSE;
     }
 
     /* Patch the description locaton */
-    Header* pHeader = (Header*)gmfData->gmd_Data;
-    pHeader->h_Description.do_Text = gmfData->gmd_Strings + pHeader->h_Description.do_Offset;
-    gmfData->gmd_Header = pHeader;
+    Header* pHeader = (Header*)pGMFData->gmd_Data;
+    pHeader->h_Description.do_Text = pGMFData->gmd_Strings + pHeader->h_Description.do_Offset;
+    pGMFData->gmd_Header = pHeader;
     return TRUE;
 }
 
-ChunkHeader const* GMF_LocateChunk(GMFData const* gmfData, Ident const* pIdent)
+static void* gmf_ChunkData(ChunkHeader const * pHeader)
 {
-    for (int i = 0; i < gmfData->gmd_IndexSize; ++i) {
-        if (gmfData->gmd_Index[i].ie_Ident.id_Value == pIdent->id_Value) {
-            return (ChunkHeader const *)gmfData->gmd_Index[i].ie_Offset.do_ByteAddress;
+    return ((UBYTE*)pHeader) + sizeof(ChunkHeader);
+}
+
+ChunkHeader const* GMF_LocateChunk(GMFData const* pGMFData, ULONG iIdentValue)
+{
+    for (int i = 0; i < pGMFData->gmd_IndexSize; ++i) {
+        if (pGMFData->gmd_Index[i].ie_Ident.id_Value == iIdentValue) {
+            return (ChunkHeader const *)pGMFData->gmd_Index[i].ie_Offset.do_ByteAddress;
         }
     }
     return NULL;
 }
 
 
-GMFData* GMF_LoadFile(char const* filename, Header const* pCheckHeader)
+GMFData* GMF_LoadFile(char const* filename, Header const* pCheckHeader, ParserEntry const* pCustomParsers)
 {
     puts("GMF_LoadFile()");
     if (!filename || !pCheckHeader) {
         return NULL;
     }
-    GMFData* gmfData = (GMFData*)calloc(1, sizeof(GMFData));
-    if (!gmfData) {
+    GMFData* pGMFData = (GMFData*)calloc(1, sizeof(GMFData));
+    if (!pGMFData) {
         return NULL;
     }
     if (
-        !gmf_ReadFile(filename, gmfData) ||
-        !gmf_CheckData(gmfData, pCheckHeader) ||
-        !gmf_ProcessDefaultChunks(gmfData)
+        !gmf_ReadFile(filename, pGMFData) ||
+        !gmf_CheckData(pGMFData, pCheckHeader) ||
+        !gmf_ProcessDefaultChunks(pGMFData)
     ) {
-        free(gmfData);
+        free(pGMFData);
         return NULL;
     }
-    return gmfData;
+
+    if (pCustomParsers) {
+        ChunkHeader const* pChunkHeader = NULL;
+        while (
+            pCustomParsers->pe_Ident &&
+            pCustomParsers->pe_Parser
+        ) {
+            if ( (pChunkHeader = GMF_LocateChunk(pGMFData, pCustomParsers->pe_Ident)) ) {
+                pCustomParsers->pe_Parser(pChunkHeader, pGMFData);
+            }
+            ++pCustomParsers;
+        }
+    }
+
+    return pGMFData;
 }
 
-void GMF_Free(GMFData* gmfData)
+void GMF_Free(GMFData* pGMFData)
 {
     puts("GMF_Free()");
-    if (gmfData) {
-        if (gmfData->gmd_Data) {
-            free(gmfData->gmd_Data);
+    if (pGMFData) {
+        if (pGMFData->gmd_Data) {
+            free(pGMFData->gmd_Data);
         }
-        free(gmfData);
+        free(pGMFData);
     }
 }
+
+/**********************************************************************************************************************/
 
 
 Header const reference = {
@@ -272,34 +293,99 @@ Header const reference = {
     .h_Version            = {1, 255}
 };
 
+enum {
+    IDENT_INVL = 0x494E564C,
+    IDENT_SPAB = 0x53504142,
+    IDENT_RWRD = 0x52575244,
+};
+
+typedef struct {
+    char const* r_Description;
+    UWORD r_CarryOffset;
+    UWORD r_ImmediateOffset;
+    UWORD r_RewardData[1];
+} ALIGN(sizeof(ULONG)) Reward;
+
+typedef struct {
+    UWORD         spab_Index;
+    UWORD         spab_AmmoID;
+    Reward const* spab_Reward;
+} ALIGN(sizeof(ULONG)) SpecialAmmoBonus;
+
+BOOL gmod_ParseDummy(ChunkHeader const* pChunkHeader, GMFData* pGMFData)
+{
+    printf(
+        "\tgmod_ParseDummy() %.*s\n",
+        4, pChunkHeader->ch_Ident.id_Text
+    );
+    return TRUE;
+}
+
+static Reward const* gmod_RelocateReward(Reward const* pReward, ChunkHeader const* pRewardChunk)
+{
+    return (Reward const*)((UBYTE const*)pReward + (ULONG)pRewardChunk);
+}
+
+BOOL gmod_ParseSpecialAmmoBonuses(ChunkHeader const* pChunkHeader, GMFData* pGMFData)
+{
+    printf(
+        "\tgmod_ParseSpecialAmmoBonuses() %.*s\n",
+        4, pChunkHeader->ch_Ident.id_Text
+    );
+    ChunkHeader const* pRewardChunk = GMF_LocateChunk(pGMFData, IDENT_RWRD);
+    SpecialAmmoBonus* pSPAB = (SpecialAmmoBonus*)gmf_ChunkData(pChunkHeader);
+    while (pSPAB->spab_Index != 0xFFFF) {
+        if (pSPAB->spab_Reward > 0) {
+            printf(
+                "Relocating SPAB %d [%d] Reward [%p + %u]\n",
+                (int)pSPAB->spab_Index,
+                (int)pSPAB->spab_AmmoID,
+                pRewardChunk,
+                (ULONG)pSPAB->spab_Reward
+            );
+            pSPAB->spab_Reward = gmod_RelocateReward(pSPAB->spab_Reward, pRewardChunk);
+        }
+        ++pSPAB;
+    }
+    return TRUE;
+}
+
+/**
+ * Zero terminated list of custom parser functions for specific idents
+ */
+ParserEntry parsers[] = {
+    { IDENT_INVL, gmod_ParseDummy },
+    { IDENT_SPAB, gmod_ParseSpecialAmmoBonuses },
+    { 0, NULL },
+};
 
 int main(void) {
 
-    GMFData* gmfData = GMF_LoadFile("mods/redux.props", &reference);
-    if (gmfData) {
+    GMFData* pGMFData = GMF_LoadFile("mods/redux.props", &reference, parsers);
+    if (pGMFData) {
         printf(
             "\nInitial load successful!\n"
             "Mod Description:\n%s\n"
             "Mod Version    : %d.%d\n"
             "Requires TKG   : v%d.%d\n"
             "Chunks Index\n",
-            gmfData->gmd_Header->h_Description.do_Text,
-            (int)gmfData->gmd_Header->h_Version.v_Major,
-            (int)gmfData->gmd_Header->h_Version.v_Minor,
-            (int)gmfData->gmd_Header->h_RequiresVersion.v_Major,
-            (int)gmfData->gmd_Header->h_RequiresVersion.v_Minor
+            pGMFData->gmd_Header->h_Description.do_Text,
+            (int)pGMFData->gmd_Header->h_Version.v_Major,
+            (int)pGMFData->gmd_Header->h_Version.v_Minor,
+            (int)pGMFData->gmd_Header->h_RequiresVersion.v_Major,
+            (int)pGMFData->gmd_Header->h_RequiresVersion.v_Minor
         );
-        for (int i = 0; i < gmfData->gmd_IndexSize; ++i) {
-            ChunkHeader const *pChunkHeader = (ChunkHeader const *)gmfData->gmd_Index[i].ie_Offset.do_ByteAddress;
+        for (int i = 0; i < pGMFData->gmd_IndexSize; ++i) {
+            ChunkHeader const *pChunkHeader = (ChunkHeader const *)pGMFData->gmd_Index[i].ie_Offset.do_ByteAddress;
             printf(
                 "\t%d %.*s : %p %u\n",
                 i,
-                4, gmfData->gmd_Index[i].ie_Ident.id_Text,
+                4, pGMFData->gmd_Index[i].ie_Ident.id_Text,
                 pChunkHeader,
                 pChunkHeader->ch_Length
             );
         }
-        GMF_Free(gmfData);
+        GMF_Free(pGMFData);
     }
 
 	return 0;
