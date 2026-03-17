@@ -75,7 +75,15 @@ typedef struct {
 } ALIGN(sizeof(ULONG)) GMFData;
 
 
+/**
+ * Custom parsers
+ */
+typedef BOOL (*ChunkParser)(ChunkHeader* pChunk, GMFData* gmfData);
 
+typedef struct {
+    Ident pe_Ident;
+    ChunkParser pe_Parser;
+} ALIGN(sizeof(ULONG)) ParserEntry;
 
 static BOOL gmf_CheckData(GMFData* pGMFData, Header const* pAgainst) {
     puts("\tgmf_CheckData()");
@@ -85,23 +93,6 @@ static BOOL gmf_CheckData(GMFData* pGMFData, Header const* pAgainst) {
     }
     Header const* pFrom = (Header const*)pGMFData->gmd_Data;
 
-/*
-    printf(
-        "Ident: %.*s => %.*s\n"
-        "SubfoFormat: %.*s => %.*s\n"
-        "Version: %d.%d => %d.%d\n"
-        "Offset: %d\n",
-        4, pFrom->h_Ident.id_Text,
-        4, pAgainst->h_Ident.id_Text,
-        4, pFrom->h_SubFormat.id_Text,
-        4, pAgainst->h_SubFormat.id_Text,
-        (int) pFrom->h_RequiresVersion.v_Major,
-        (int) pFrom->h_RequiresVersion.v_Minor,
-        (int) pAgainst->h_Version.v_Major,
-        (int) pAgainst->h_Version.v_Minor,
-        (int) pFrom->h_Description.do_Offset
-    );
-*/
     return
         pAgainst->h_Ident.id_Value     == pFrom->h_Ident.id_Value &&
         pAgainst->h_SubFormat.id_Value == pFrom->h_SubFormat.id_Value &&
@@ -229,6 +220,16 @@ static BOOL gmf_ProcessDefaultChunks(GMFData* gmfData)
     pHeader->h_Description.do_Text = gmfData->gmd_Strings + pHeader->h_Description.do_Offset;
     gmfData->gmd_Header = pHeader;
     return TRUE;
+}
+
+ChunkHeader const* GMF_LocateChunk(GMFData const* gmfData, Ident const* pIdent)
+{
+    for (int i = 0; i < gmfData->gmd_IndexSize; ++i) {
+        if (gmfData->gmd_Index[i].ie_Ident.id_Value == pIdent->id_Value) {
+            return (ChunkHeader const *)gmfData->gmd_Index[i].ie_Offset.do_ByteAddress;
+        }
+    }
+    return NULL;
 }
 
 
