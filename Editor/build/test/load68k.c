@@ -227,6 +227,11 @@ static void* gmf_ChunkData(ChunkHeader const * pHeader)
     return ((UBYTE*)pHeader) + sizeof(ChunkHeader);
 }
 
+static const char* gmf_RelocateString(char const* string, GMFData const* pGMFData)
+{
+    return (string < pGMFData->gmd_Strings) ? pGMFData->gmd_Strings + (size_t)string : string;
+}
+
 ChunkHeader const* GMF_LocateChunk(GMFData const* pGMFData, ULONG iIdentValue)
 {
     for (int i = 0; i < pGMFData->gmd_IndexSize; ++i) {
@@ -321,9 +326,9 @@ BOOL gmod_ParseDummy(ChunkHeader const* pChunkHeader, GMFData* pGMFData)
     return TRUE;
 }
 
-static Reward const* gmod_RelocateReward(Reward const* pReward, ChunkHeader const* pRewardChunk)
+static Reward* gmod_RelocateReward(Reward const* pReward, ChunkHeader const* pRewardChunk)
 {
-    return (Reward const*)((UBYTE const*)pReward + (ULONG)pRewardChunk);
+    return (Reward*)((UBYTE*)pReward + (size_t)pRewardChunk);
 }
 
 BOOL gmod_ParseSpecialAmmoBonuses(ChunkHeader const* pChunkHeader, GMFData* pGMFData)
@@ -337,13 +342,16 @@ BOOL gmod_ParseSpecialAmmoBonuses(ChunkHeader const* pChunkHeader, GMFData* pGMF
     while (pSPAB->spab_Index != 0xFFFF) {
         if (pSPAB->spab_Reward > 0) {
             printf(
-                "Relocating SPAB %d [%d] Reward [%p + %u]\n",
+                "Relocating SPAB %d [%d] Reward [%p + %zu] => ",
                 (int)pSPAB->spab_Index,
                 (int)pSPAB->spab_AmmoID,
                 pRewardChunk,
-                (ULONG)pSPAB->spab_Reward
+                (size_t)pSPAB->spab_Reward
             );
-            pSPAB->spab_Reward = gmod_RelocateReward(pSPAB->spab_Reward, pRewardChunk);
+            Reward* pReward        = gmod_RelocateReward(pSPAB->spab_Reward, pRewardChunk);
+            pReward->r_Description = gmf_RelocateString(pReward->r_Description, pGMFData);
+            pSPAB->spab_Reward     = pReward;
+            puts(pReward->r_Description);
         }
         ++pSPAB;
     }
