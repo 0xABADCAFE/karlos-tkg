@@ -302,6 +302,7 @@ enum {
     IDENT_INVL = 0x494E564C,
     IDENT_SPAB = 0x53504142,
     IDENT_RWRD = 0x52575244,
+    IDENT_ACHV = 0x41434856,
 };
 
 typedef struct {
@@ -316,6 +317,8 @@ typedef struct {
     UWORD         spab_AmmoID;
     Reward const* spab_Reward;
 } ALIGN(sizeof(ULONG)) SpecialAmmoBonus;
+
+/**********************************************************************************************************************/
 
 BOOL gmod_ParseDummy(ChunkHeader const* pChunkHeader, GMFData* pGMFData)
 {
@@ -342,7 +345,7 @@ BOOL gmod_ParseSpecialAmmoBonuses(ChunkHeader const* pChunkHeader, GMFData* pGMF
     while (pSPAB->spab_Index != 0xFFFF) {
         if (pSPAB->spab_Reward > 0) {
             printf(
-                "Relocating SPAB %d [%d] Reward [%p + %zu] => ",
+                "\t\tRelocating SPAB %d [%d] Reward [%p + %zu] => ",
                 (int)pSPAB->spab_Index,
                 (int)pSPAB->spab_AmmoID,
                 pRewardChunk,
@@ -358,12 +361,24 @@ BOOL gmod_ParseSpecialAmmoBonuses(ChunkHeader const* pChunkHeader, GMFData* pGMF
     return TRUE;
 }
 
+BOOL gmod_ParseAchievements(ChunkHeader const* pChunkHeader, GMFData* pGMFData)
+{
+    printf(
+        "\tgmod_ParseAchievements() %.*s\n",
+        4, pChunkHeader->ch_Ident.id_Text
+    );
+    ChunkHeader const* pRewardChunk = GMF_LocateChunk(pGMFData, IDENT_RWRD);
+
+    return TRUE;
+}
+
 /**
  * Zero terminated list of custom parser functions for specific idents
  */
 ParserEntry parsers[] = {
     { IDENT_INVL, gmod_ParseDummy },
     { IDENT_SPAB, gmod_ParseSpecialAmmoBonuses },
+    { IDENT_ACHV, gmod_ParseAchievements },
     { 0, NULL },
 };
 
