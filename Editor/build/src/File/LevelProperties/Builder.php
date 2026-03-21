@@ -12,10 +12,6 @@ use \RuntimeException;
 class Builder extends File\Builder implements Common\IBinaryProperties {
 
     private const string SUBFORMAT_NAME = 'Level';
-    private const string PVS_ERRATA_IDENT = 'PVSE';
-    private const string BACKDROP_ERRATA_IDENT = 'BKDE';
-    private const string ZONE_MESSAGE_IDENT = 'ZMSG';
-    private const string OBJECT_MESSAGE_IDENT = 'OMSG';
 
     protected function getSubFormat(stdClass $oData): File\Header\SubFormat {
         if (!isset($oData->DataType) || self::SUBFORMAT_NAME !== $oData->DataType) {
@@ -58,24 +54,10 @@ class Builder extends File\Builder implements Common\IBinaryProperties {
         stdClass $oData,
         Common\StringList $oStringList
     ): File\Chunk {
+        echo "Processing Zone PVS Deletions...\n";
         return new File\Chunk(
-            self::PVS_ERRATA_IDENT,
-            new class($oData->ZoneErrata->PVSDeletions) implements Common\IBinaryEncodable {
-                public function __construct(private stdClass $aPVSErrata) {}
-                public function toBinary(): string {
-                    $sData = '';
-                    foreach ($this->aPVSErrata as $iZoneID => $aRemoveZoneIDs) {
-                        $aRemoveZoneIDs[] = -1;
-                        $sData .= pack(
-                            self::PACK_WORD . self::PACK_MANY,
-                            $iZoneID,
-                            ...$aRemoveZoneIDs
-                        );
-                    }
-                    $sData .= pack(self::PACK_WORD, -1);
-                    return $sData;
-                }
-            }
+            Chunkable\ZonePVSDeletions::IDENT,
+            new Chunkable\ZonePVSDeletions($oData->ZoneErrata->PVSDeletions)
         );
     }
 
@@ -83,18 +65,10 @@ class Builder extends File\Builder implements Common\IBinaryProperties {
         stdClass $oData,
         Common\StringList $oStringList
     ): File\Chunk {
+        echo "Processing Zone Backdrop Errata...\n";
         return new File\Chunk(
-            self::BACKDROP_ERRATA_IDENT,
-            new class($oData->ZoneErrata->NoSkyVisible) implements Common\IBinaryEncodable {
-                public function __construct(private array $aBackdropErrata) {}
-                public function toBinary(): string {
-                    $this->aBackdropErrata[] = -1;
-                    return pack(
-                        self::PACK_WORD . self::PACK_MANY,
-                        ...$this->aBackdropErrata
-                    );
-                }
-            }
+            Chunkable\ZoneBackdropErrata::IDENT,
+            new Chunkable\ZoneBackdropErrata($oData->ZoneErrata->NoSkyVisible)
         );
     }
 
@@ -103,29 +77,10 @@ class Builder extends File\Builder implements Common\IBinaryProperties {
         stdClass $oData,
         Common\StringList $oStringList
     ): File\Chunk {
+        echo "Processing Zone Messages...\n";
         return new File\Chunk(
-            self::ZONE_MESSAGE_IDENT,
-            new class($oData->ZoneMessages, $oStringList) implements Common\IBinaryEncodable {
-                public function __construct(
-                    private stdClass $aZoneMessages,
-                    private Common\StringList $oStringList
-                ) {}
-
-                public function toBinary(): string {
-                    $aData = [];
-                    foreach ($this->aZoneMessages as $iZoneID => $oInfo) {
-                        $aData[] = $iZoneID << 16 | $oInfo->attr | strlen($oInfo->text);
-                        $aData[] = $this->oStringList->add($oInfo->text);
-                    }
-                    // Terminate with a -1 zone reference
-                    $aData[] = 0xFFFF0000;
-
-                    return pack(
-                        self::PACK_LONG . self::PACK_MANY,
-                        ...$aData
-                    );
-                }
-            }
+            Chunkable\ZoneMessages::IDENT,
+            new Chunkable\ZoneMessages($oData->ZoneMessages, $oStringList)
         );
     }
 }

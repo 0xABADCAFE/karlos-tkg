@@ -1,9 +1,8 @@
-#ifndef _TKG_GMOD_H_
-#   define _TKG_GMOD_H_
+#ifndef _TKG_LMOD_H_
+#   define _TKG_LMOD_H_
 
 #include "gmf.h"
 
-#define NUM_BULLET_DEFS 20
 /*
  * These structures are managed by the assembler side and the alignment constraints are to preven the compiler
  * from padding them further for alignment purposes. It does not mean that the structures themselves are only
@@ -58,18 +57,8 @@ typedef struct {
     UWORD              achv_Params[3];
 } ASM_ALIGN(sizeof(ULONG)) GMod_Achievement;
 
-/**
- * GMOD_LoadFile()
- *
- * Attempts to load the specified Game Modification File and process with a null terminated list of user supplied
- * parsers for any custom chunk types that are present.
- */
-extern GMF_Data* GMod_LoadFile(char const* filename);
 
-extern void GMod_ApplyReward(
-    GMod_Reward const* pReward,
-    InventoryConsumables* pInventoryLimits,
-    InventoryConsumables* pInventoryConsumables
-);
+extern GMF_Data* LMod_LoadFile(char const* filename);
+
 
 #endif

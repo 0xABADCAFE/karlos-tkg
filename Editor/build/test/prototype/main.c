@@ -49,7 +49,7 @@ void applyAchievements(GMF_Data const* pGMFData)
             printf("\tCURRENT      ");
             printInventory(&consumables);
             printf("Adding Achievement %d: %s\n", i, pAchievement[i].achv_Description);
-            printf("\tReward: %s\n", pAchievement[i].achv_Reward->r_Description);
+            printf("\tReward: %s\n", pAchievement[i].achv_Reward->rwrd_Description);
             GMod_ApplyReward(
                 pAchievement[i].achv_Reward,
                 &limits,

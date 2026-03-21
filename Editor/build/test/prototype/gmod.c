@@ -35,9 +35,9 @@ BOOL gmod_ParseSpecialAmmoBonuses(GMF_ChunkHeader const* pChunkHeader, GMF_Data*
                 (size_t)pSPAB->spab_Reward
             );
             GMod_Reward* pReward   = gmod_ResolveReward(pSPAB->spab_Reward, pRewardChunk);
-            pReward->r_Description = GMF_ResolveString(pReward->r_Description, pGMFData);
+            pReward->rwrd_Description = GMF_ResolveString(pReward->rwrd_Description, pGMFData);
             pSPAB->spab_Reward     = pReward;
-            puts(pReward->r_Description);
+            puts(pReward->rwrd_Description);
         }
         ++pSPAB;
     }
@@ -72,9 +72,9 @@ BOOL gmod_ParseAchievements(GMF_ChunkHeader const* pChunkHeader, GMF_Data* pGMFD
                 (size_t)pAchievement->achv_Reward
             );
             GMod_Reward* pReward   = gmod_ResolveReward(pAchievement->achv_Reward, pRewardChunk);
-            pReward->r_Description = GMF_ResolveString(pReward->r_Description, pGMFData);
+            pReward->rwrd_Description = GMF_ResolveString(pReward->rwrd_Description, pGMFData);
             pAchievement->achv_Reward = pReward;
-            puts(pReward->r_Description);
+            puts(pReward->rwrd_Description);
         } else {
             printf(
                 "\t\tResolving ACHV %d [Rule %d] [Name %s]\n",
@@ -91,9 +91,9 @@ BOOL gmod_ParseAchievements(GMF_ChunkHeader const* pChunkHeader, GMF_Data* pGMFD
 
 static UWORD const* gmod_GetRewardCarry(GMod_Reward const* pReward)
 {
-    if (pReward->r_CarryOffset >= 8) {
+    if (pReward->rwrd_CarryOffset >= 8) {
         return (UWORD const*) (
-            ((UBYTE const*)pReward) + pReward->r_CarryOffset
+            ((UBYTE const*)pReward) + pReward->rwrd_CarryOffset
         );
     }
     return NULL;
@@ -101,9 +101,9 @@ static UWORD const* gmod_GetRewardCarry(GMod_Reward const* pReward)
 
 static UWORD const* gmod_GetRewardImmediate(GMod_Reward const* pReward)
 {
-    if (pReward->r_ImmediateOffset >= 8) {
+    if (pReward->rwrd_ImmediateOffset >= 8) {
         return (UWORD const*) (
-            ((UBYTE const*)pReward) + pReward->r_ImmediateOffset
+            ((UBYTE const*)pReward) + pReward->rwrd_ImmediateOffset
         );
     }
     return NULL;
