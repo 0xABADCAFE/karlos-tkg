@@ -1,7 +1,7 @@
 {
     Header: {
         DataType: "Game",
-        Requires: "1.255",
+        Requires: "1.1",
         Version: "1.0",
         Description: "AB3DII-TKG Redux:\n"
                      "OCD Special Edition."

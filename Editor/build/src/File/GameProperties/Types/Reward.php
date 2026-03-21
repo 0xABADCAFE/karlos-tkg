@@ -47,7 +47,6 @@ class Reward implements Common\IBinaryEncodable {
                 $aPlayerSpecialAmmoTypes
             );
             if (false === $oCarryLimitAdd->isEmpty()) {
-                print_r($oCarryLimitAdd);
                 $this->sCarryData = $oCarryLimitAdd->toBinary();
             }
         }
@@ -61,7 +60,6 @@ class Reward implements Common\IBinaryEncodable {
                 $aPlayerSpecialAmmoTypes
             );
             if (false === $oImmediateAdd->isEmpty()) {
-                print_r($oImmediateAdd);
                 $this->sImmediateData = $oImmediateAdd->toBinary();
             }
         }

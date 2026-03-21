@@ -131,7 +131,7 @@ static GMF_ParserEntry gmod_Parsers[] = {
 static GMF_Header const gmod_Header = {
     .h_Ident.id_Value     = IDENT_TKGD,
     .h_SubFormat.id_Value = IDENT_GMOD,
-    .h_Version            = {1, 255}
+    .h_Version            = {VERSION, REVISION}
 };
 
 

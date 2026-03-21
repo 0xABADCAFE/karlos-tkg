@@ -18,6 +18,9 @@ typedef int16_t  BOOL;
 #define FALSE 0
 #define TRUE 1
 
+#define VERSION 1
+#define REVISION 2
+
 /**
  * Alignment for structures shared with ASM code
  */
@@ -30,6 +33,7 @@ typedef int16_t  BOOL;
 enum {
     IDENT_TKGD = 0x544b4744,
     IDENT_GMOD = 0x474d4f44,
+    IDENT_LMOD = 0x4C4D4F44,
     IDENT_INDX = 0x494e4458,
     IDENT_STRH = 0x53545248,
 };
