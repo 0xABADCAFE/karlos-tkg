@@ -20,7 +20,7 @@ static BOOL gmf_CheckData(GMF_Data* pGMFData, GMF_Header const* pAgainst) {
         pAgainst->h_SubFormat.id_Value == pFrom->h_SubFormat.id_Value &&
         pAgainst->h_Version.v_Major    == pFrom->h_RequiresVersion.v_Major &&
         pAgainst->h_Version.v_Minor    >= pFrom->h_RequiresVersion.v_Minor &&
-        pFrom->h_Description.do_Offset >= 8;
+        pFrom->h_Description.do_Offset >= sizeof(GMF_ChunkHeader);
 }
 
 /**

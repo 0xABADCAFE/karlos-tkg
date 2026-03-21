@@ -34,8 +34,6 @@
         "Bandolier": {
             Description: "Found Bandolier. Increased ammo carry.",
             CarryLimitAdd: {
-                Health: 11,
-                Fuel: 13,
                 Ammo: {
                     "Bullet": 200,
                     "Shot": 40,
@@ -67,56 +65,6 @@
         }
     },
     Achievements: [
-//        {
-//            Order: 1,
-//            Description: "Test Achievement 1 - ER",
-//            Rule: "Collected",
-//            Params: {
-//                Type: "Health",
-//                Count: 50,
-//            }
-//        },
-//        {
-//            Order: 2,
-//            Description: "Test Achievement 2 - ER",
-//            Rule: "Collected",
-//            Params: {
-//                Type: "Health",
-//                Count: 1000,
-//            },
-//            Reward: {
-//                Description: "Hands of the healer.",
-//                CarryLimitAdd: {
-//                    "Health": 200
-//                }
-//            }
-//        },
-//        {
-//            Order: 100,
-//            Description: "Test Achievement 100 - Zone",
-//            Rule: "ZoneFound",
-//            Params: {
-//                Level: "P",
-//                Zone: 255,
-//            },
-//        },
-//        {
-//            Order: 101,
-//            Description: "Test Achievement 101 - Zone",
-//            Rule: "ZoneFound",
-//            Params: {
-//                Level: "P",
-//                Zone: 255,
-//            },
-//            Reward: {
-//                Description: "Locator",
-//                ImmediateAdd: {
-//                    Ammo: {
-//                        "Backpack": 1
-//                    }
-//                }
-//            }
-//        },
         {
             Order: 1,
             Description: "Kills: First Blood!",
@@ -526,6 +474,44 @@
             Params: {
                 Level: "C",
                 Zone: 223
+            }
+        },
+        {
+            Order: 1000,
+            Description: "Grande! Test Multi Award",
+            Rule: "ZoneFound",
+            Params: {
+                Level: "P",
+                Zone: 1
+            },
+            Reward: {
+                Description: "All Ammo +10, Carry + 50!!",
+                CarryLimitAdd: {
+                    Ammo: {
+                        "Plasma": 50,
+                        "Bullet": 50,
+                        "Rocket": 50,
+                        "Shot": 50,
+                        "Grenade": 50,
+                        "Bouncer": 50,
+                        "Mine": 50,
+                        "Blaster": 50,
+                        "ChargedPlasma": 50
+                    }
+                },
+                ImmediateAdd: {
+                    Ammo: {
+                        "Plasma": 10,
+                        "Bullet": 10,
+                        "Rocket": 10,
+                        "Shot": 10,
+                        "Grenade": 10,
+                        "Bouncer": 10,
+                        "Mine": 10,
+                        "Blaster": 10,
+                        "ChargedPlasma": 10
+                    }
+                }
             }
         }
     ]

@@ -47,6 +47,7 @@ class Reward implements Common\IBinaryEncodable {
                 $aPlayerSpecialAmmoTypes
             );
             if (false === $oCarryLimitAdd->isEmpty()) {
+                print_r($oCarryLimitAdd);
                 $this->sCarryData = $oCarryLimitAdd->toBinary();
             }
         }
@@ -60,6 +61,7 @@ class Reward implements Common\IBinaryEncodable {
                 $aPlayerSpecialAmmoTypes
             );
             if (false === $oImmediateAdd->isEmpty()) {
+                print_r($oImmediateAdd);
                 $this->sImmediateData = $oImmediateAdd->toBinary();
             }
         }
@@ -74,7 +76,7 @@ class Reward implements Common\IBinaryEncodable {
 
     /**
      * uint32 uDescriptionOffset
-     * uint16 uCarryOffset, 0 if no carry bonus, 8 if there is. Measured from start of chunk.
+     * uint16 uCarryOffset, 0 if no carry bonus, 8 if there is. Measured from start of blob.
      * uint16 uImmediateOffset, 0 if no immediate bonus, 8 + sizeof(aCarryData) if there is.
      * int16[] aCarryData, -1 terminates data if present
      * int16[] aImmediateData

@@ -89,6 +89,33 @@ BOOL gmod_ParseAchievements(GMF_ChunkHeader const* pChunkHeader, GMF_Data* pGMFD
     return TRUE;
 }
 
+static UWORD const* gmod_GetRewardCarry(GMod_Reward const* pReward)
+{
+    if (pReward->r_CarryOffset >= 8) {
+        return (UWORD const*) (
+            ((UBYTE const*)pReward) + pReward->r_CarryOffset
+        );
+    }
+    return NULL;
+}
+
+static UWORD const* gmod_GetRewardImmediate(GMod_Reward const* pReward)
+{
+    if (pReward->r_ImmediateOffset >= 8) {
+        return (UWORD const*) (
+            ((UBYTE const*)pReward) + pReward->r_ImmediateOffset
+        );
+    }
+    return NULL;
+}
+
+static inline UWORD gmod_addSaturated(UWORD a, UWORD b, UWORD limit)
+{
+    UWORD sum = a + b;
+    return (sum < a || sum < b || sum > limit) ? limit : sum;
+}
+
+
 /**
  * Zero terminated list of custom parser functions for specific idents
  */
@@ -108,7 +135,59 @@ static GMF_Header const gmod_Header = {
 };
 
 
-GMF_Data* GMOD_LoadFile(char const* filename)
+GMF_Data* GMod_LoadFile(char const* filename)
 {
     return GMF_LoadFile(filename, &gmod_Header, gmod_Parsers);
+}
+
+void GMod_ApplyReward(
+    GMod_Reward const* pReward,
+    InventoryConsumables* pInventoryLimits,
+    InventoryConsumables* pInventoryConsumables
+) {
+    /**
+     * First apply any carry limit updates
+     */
+    UWORD const* pRewardData = gmod_GetRewardCarry(pReward);
+    if (pRewardData) {
+        pInventoryLimits->ic_Health += *pRewardData++;
+        pInventoryLimits->ic_JetpackFuel += *pRewardData++;
+
+        /**
+         * Add ammo
+         */
+        while (*pRewardData != 0xFFFF) {
+            UWORD slot = *pRewardData++;
+            pInventoryLimits->ic_AmmoCounts[slot] += *pRewardData++;
+        }
+    }
+
+    /**
+     * Then apply any immediate updates, not exceeding the carry limits
+     */
+    pRewardData = gmod_GetRewardImmediate(pReward);
+    if (pRewardData) {
+        pInventoryConsumables->ic_Health = gmod_addSaturated(
+            pInventoryConsumables->ic_Health,
+            *pRewardData++,
+            pInventoryLimits->ic_Health
+        );
+        pInventoryConsumables->ic_JetpackFuel = gmod_addSaturated(
+            pInventoryConsumables->ic_JetpackFuel,
+            *pRewardData++,
+            pInventoryLimits->ic_JetpackFuel
+        );
+
+        /**
+         * Add ammo
+         */
+        while (*pRewardData != 0xFFFF) {
+            UWORD slot = *pRewardData++;
+            pInventoryConsumables->ic_AmmoCounts[slot] = gmod_addSaturated(
+                pInventoryConsumables->ic_AmmoCounts[slot],
+                *pRewardData++,
+                pInventoryLimits->ic_AmmoCounts[slot]
+            );
+        }
+    }
 }

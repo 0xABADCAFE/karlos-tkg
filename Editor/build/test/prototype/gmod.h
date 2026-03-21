@@ -3,6 +3,19 @@
 
 #include "gmf.h"
 
+#define NUM_BULLET_DEFS 20
+/*
+ * These structures are managed by the assembler side and the alignment constraints are to preven the compiler
+ * from padding them further for alignment purposes. It does not mean that the structures themselves are only
+ * aligned to a 2 byte boundary,
+ */
+typedef struct {
+    /* Note that we have separate named fields here, but we regard the struct as equivalent to UWORD[]*/
+    UWORD ic_Health;
+    UWORD ic_JetpackFuel;
+    UWORD ic_AmmoCounts[NUM_BULLET_DEFS];
+} ASM_ALIGN(sizeof(WORD)) InventoryConsumables;
+
 enum {
     IDENT_INVL = 0x494E564C,
     IDENT_SPAB = 0x53504142,
@@ -51,6 +64,12 @@ typedef struct {
  * Attempts to load the specified Game Modification File and process with a null terminated list of user supplied
  * parsers for any custom chunk types that are present.
  */
-extern GMF_Data* GMOD_LoadFile(char const* filename);
+extern GMF_Data* GMod_LoadFile(char const* filename);
+
+extern void GMod_ApplyReward(
+    GMod_Reward const* pReward,
+    InventoryConsumables* pInventoryLimits,
+    InventoryConsumables* pInventoryConsumables
+);
 
 #endif
