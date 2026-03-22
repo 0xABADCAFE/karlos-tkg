@@ -8,9 +8,9 @@ use TKG\Mod\Common;
 use \stdClass;
 use \RuntimeException;
 
-class ZoneBackdropErrata implements Common\IBinaryEncodable {
+class ZoneBackdropDeletions implements Common\IBinaryEncodable {
 
-    public const string IDENT = 'BKDE';
+    public const string IDENT = 'BCKD';
 
     public function __construct(private array $aBackdropErrata) {
 

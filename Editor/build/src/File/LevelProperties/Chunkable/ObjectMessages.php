@@ -6,8 +6,8 @@ namespace TKG\Mod\File\LevelProperties\Chunkable;
 
 use TKG\Mod\Common;
 
-class ZoneMessages extends MessageList {
+class ObjectMessages extends MessageList {
 
-    public const string IDENT = 'ZMSG';
+    public const string IDENT = 'OMSG';
 
 }

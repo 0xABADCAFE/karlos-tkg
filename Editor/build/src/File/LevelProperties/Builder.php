@@ -41,11 +41,14 @@ class Builder extends File\Builder implements Common\IBinaryProperties {
         if (isset($oData->ZoneErrata->PVSDeletions)) {
             $aChunks[] = $this->buildZonePVSErrata($oData, $oStringList);
         }
-        if (isset($oData->ZoneErrata->NoSkyVisible)) {
+        if (isset($oData->ZoneErrata->BackdropDeletions)) {
             $aChunks[] = $this->buildZoneBackropErrata($oData, $oStringList);
         }
         if (isset($oData->ZoneMessages)) {
             $aChunks[] = $this->buildZoneMessages($oData, $oStringList);
+        }
+        if (isset($oData->ObjectMessages)) {
+            $aChunks[] = $this->buildObjectMessages($oData, $oStringList);
         }
         return $aChunks;
     }
@@ -65,10 +68,10 @@ class Builder extends File\Builder implements Common\IBinaryProperties {
         stdClass $oData,
         Common\StringList $oStringList
     ): File\Chunk {
-        echo "Processing Zone Backdrop Errata...\n";
+        echo "Processing Zone Backdrop Deletions...\n";
         return new File\Chunk(
-            Chunkable\ZoneBackdropErrata::IDENT,
-            new Chunkable\ZoneBackdropErrata($oData->ZoneErrata->NoSkyVisible)
+            Chunkable\ZoneBackdropDeletions::IDENT,
+            new Chunkable\ZoneBackdropDeletions($oData->ZoneErrata->BackdropDeletions)
         );
     }
 
@@ -81,6 +84,17 @@ class Builder extends File\Builder implements Common\IBinaryProperties {
         return new File\Chunk(
             Chunkable\ZoneMessages::IDENT,
             new Chunkable\ZoneMessages($oData->ZoneMessages, $oStringList)
+        );
+    }
+
+    private function buildObjectMessages(
+        stdClass $oData,
+        Common\StringList $oStringList
+    ): File\Chunk {
+        echo "Processing Zone Messages...\n";
+        return new File\Chunk(
+            Chunkable\ObjectMessages::IDENT,
+            new Chunkable\ObjectMessages($oData->ObjectMessages, $oStringList)
         );
     }
 }

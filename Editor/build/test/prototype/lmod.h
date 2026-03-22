@@ -3,24 +3,27 @@
 
 #include "gmf.h"
 
+/**
+ * ZoneDeletions is used for both PVS and Backdrop deletions
+ */
 typedef struct {
     UWORD zd_Data[1];
-} ASM_ALIGN(sizeof(WORD)) ZonePVSDeletions;
+} ASM_ALIGN(sizeof(WORD)) ZoneDeletions;
 
+/**
+ * LevelMessage is used for both Zone and Object messages
+ */
 typedef struct {
-    UWORD zd_Data[1];
-} ASM_ALIGN(sizeof(WORD)) ZoneBackdropErrata;
-
-typedef struct {
-    UWORD zm_ZoneID;
-    UWORD zm_Attributes;
-    char const* zm_Text;
-} ASM_ALIGN(sizeof(WORD)) ZoneMessage;
+    UWORD lm_ZoneID;
+    UWORD lm_Attributes;
+    char const* lm_Text;
+} ASM_ALIGN(sizeof(WORD)) LevelMessage;
 
 enum {
-    IDENT_PVSE = 0x50565345,
-    IDENT_BKDE = 0x424B4445,
+    IDENT_PVSD = 0x50565345,
+    IDENT_BCKD = 0x424B4444,
     IDENT_ZMSG = 0x5A4D5347,
+    IDENT_OMSG = 0x4F4D5347,
 };
 
 extern GMF_Data* LMod_LoadFile(char const* filename);

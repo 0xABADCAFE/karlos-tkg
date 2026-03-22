@@ -62,8 +62,8 @@ abstract class BlobCollector implements IBinaryEncodable {
         }
 
         // If the same data was added previously, return the existing offset.
-        if (isset($this->aBlobs[$sBlobKey])) {
-            return $this->aBlobs[$sBlobKey];
+        if (isset($this->aOffsets[$sBlobKey])) {
+            return $this->aOffsets[$sBlobKey];
         }
 
         ++$this->iUnique;

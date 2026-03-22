@@ -33,23 +33,46 @@
             183: [ 11 ],
             251: [ 183 ],
         },
-        NoSkyVisible: [
+        BackdropDeletions: [
             // List of Zone ID that should have their backdrop flag cleared as the sky impossible to see.
             13, 17, 29,
         ]
     },
     ZoneMessages: {
         2: {
-            attr: 0,
-            text: "This is a test message for zone 2."
+            Attr: "Narrative",
+            Text: "This is a test message for zone 2 using the Narrarive attribute."
         },
         3: {
-            attr: 0,
-            text: "This one is for zone 3."
+            Attr: "Default",
+            Text: "This one is for zone 3 using the Default attribute."
         },
         5: {
-            attr: 0,
-            text: "Guess what this one is for?"
+            Attr: "Options",
+            Text: "Guess what this one is for?"
+        },
+        7: {
+            Attr: "Other",
+            Text: "And how about this one?"
+        }
+    },
+
+    ObjectMessages: {
+        2: {
+            Attr: "Narrative",
+            Text: "This is a test message for object 2 using the Narrarive attribute."
+        },
+        3: {
+            Attr: "Default",
+            Text: "This one is for object 3 using the Default attribute."
+        },
+        5: {
+            Attr: "Options",
+            Text: "Guess which object this one is for?"
+        },
+        7: {
+            Attr: "Other",
+            Text: "And how about this one?"
         }
     },
 }

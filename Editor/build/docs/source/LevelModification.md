@@ -73,11 +73,20 @@ The original game requires the use of an invisible collection proxy object to di
 ```
     ZoneMessages: {
         <#zone id>: {
-            Attr: 0,
+            Attr: "<attribute>",
             Text: "<message text>"
         },
     }
 ```
+
+Notes:
+
+- The maximum length for the Text field is 240 characters.
+- The following string values are valid for the `Attr` field:
+    - Narrative
+    - Default
+    - Options
+    - Other
 
 ### ObjectMessages
 
@@ -88,9 +97,17 @@ The `ObjectMessages` node provides an alternative to the original mechanism for 
 ```
     ObjectMessages: {
         <#object id>: {
-            Attr: 0,
+            Attr: "<attribute>",
             Text: "<message text>"
         },
     }
 ```
 
+Notes:
+
+- The maximum length for the Text field is 240 characters.
+- The following string values are valid for the `Attr` field:
+    - Narrative
+    - Default
+    - Options
+    - Other

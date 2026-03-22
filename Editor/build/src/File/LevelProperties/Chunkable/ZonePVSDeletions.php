@@ -10,7 +10,7 @@ use \RuntimeException;
 
 class ZonePVSDeletions implements Common\IBinaryEncodable {
 
-    public const string IDENT = 'PVSE';
+    public const string IDENT = 'PVSD';
 
     public function __construct(private stdClass $aPVSErrata) {
 
