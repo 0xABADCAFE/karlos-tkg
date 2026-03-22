@@ -57,7 +57,7 @@ The Zone Backdrop Deletions Chunk contains the binary encoded data from the sour
 | 8 | **Zone ID \[0\]** `int16` |
 | 10 | **Zone ID \[1\]** `int16` |
 | ... | ... |
-| x | **List End Marker ** `int16` 0xFFFF |
+| x | **List End Marker** `int16` 0xFFFF |
 
 ### Zone Messages
 
@@ -67,9 +67,9 @@ The Zone Messages Chunk contains the binary encoded data from the source [ZoneMe
 | :---- | :---- |
 | 0 | **Ident** `"ZMSG"` |
 | 4 | **Length** `uint32` |
-| 8 | **Zone \[0\].Zone ID `int16` |
-| 10 | **Zone \[0\].Attributes `uint16` |
-| 12 | **Zone \[0\].Message Offset `uint32` Offset into String Chunk |
+| 8 | **Zone \[0\].Zone ID** `int16` |
+| 10 | **Zone \[0\].Attributes** `uint16` |
+| 12 | **Zone \[0\].Message Offset** `uint32` Offset into String Chunk |
 
 **Notes:**
 
