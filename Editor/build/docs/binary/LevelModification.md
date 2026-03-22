@@ -14,6 +14,7 @@ The following Chunks are included:
 - Zone PVS Deletions
 - Zone Backdrop Deletions
 - Zone Messages
+- Object Messages
 - [String](./DataFormat.md#string-chunk)
 
 Only the Index, Inventory Limits and String chunks are mandatory.

@@ -6,6 +6,8 @@ Please read the [Source Format](./SourceFormat.md) document for further informat
 
 The main game modification file lays out various game-wide rules that modify game behaviour. As a primary asset, this must include the correct header and must import the [`LinkDefs`](./LinkDefsImport.md) node.
 
+The resulting binary format for this asset is desribed [here](../binary/GameModification.md).
+
 **Example:**
 
 ```

@@ -6,6 +6,9 @@ Please read the [Source Format](./SourceFormat.md) document for further informat
 
 The level modification file lays out various level-specific modifications that apply to a specific level. As a primary asset, this must include the correct header and must import the [`LinkDefs`](./LinkDefsImport.md) node.
 
+The resulting binary format for this asset is desribed [here](../binary/LevelModification.md).
+
+
 **Example:**
 
 ```
@@ -79,7 +82,7 @@ The original game requires the use of an invisible collection proxy object to di
     }
 ```
 
-Notes:
+**Notes:**
 
 - The maximum length for the Text field is 240 characters.
 - The following string values are valid for the `Attr` field:
@@ -103,7 +106,7 @@ The `ObjectMessages` node provides an alternative to the original mechanism for 
     }
 ```
 
-Notes:
+**Notes:**
 
 - The maximum length for the Text field is 240 characters.
 - The following string values are valid for the `Attr` field:
