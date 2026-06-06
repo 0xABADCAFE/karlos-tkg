@@ -1,0 +1,519 @@
+{
+    Header: {
+        DataType: "Game",
+        Requires: "1.1",
+        Version: "1.0",
+        Description: "AB3DII-TKG Redux:\n"
+                     "OCD Special Edition."
+    },
+    Target: "AB3:HighSpec/Includes/game_mod.tgkd",
+    Import: {
+        // Definitions become acessible as Import->LinkDefs->...
+        LinkDefs: "common/linkdefs.rson",
+    },
+    DefaultInventoryLimits: {
+        // When starting a new game, these are the maximum carry limits for each class of collectable.
+        // These can be increased by completing various achievements or collectint special ammo types.
+        MaxHealth: 300,
+        MaxJetpackFuel: 250,
+        MaxAmmo: {
+            "Blaster": 60,
+            "Shot": 40,
+            "Grenade": 12,
+            "Bullet": 240,
+            "Plasma": 100,
+            "Rocket": 6,
+            "ChargedPlasma": 10,
+            "Mine": 5,
+            "Bouncer": 30,
+            "Bandolier": 1,
+            "Backpack": 1,
+        },
+    },
+    SpecialAmmoBonuses: {
+        // Reward definitions for collecting each type of special ammo.
+        "Bandolier": {
+            Description: "Found Bandolier. Increased ammo carry.",
+            CarryLimitAdd: {
+                Ammo: {
+                    "Bullet": 200,
+                    "Shot": 40,
+                }
+            }
+        },
+        "Backpack": {
+            Description: "Found Backpack. Increased explosives carry.",
+            CarryLimitAdd: {
+                Ammo: {
+                    "Grenade": 12,
+                    "Rocket": 6,
+                }
+            }
+        },
+    },
+    WeaponAdjustments: {
+        "RocketLauncher": {
+            SpawnOffset: [10, -10],  // Shift to the right and down slightly
+            Recoil: 10,              // Fairly big kick
+
+            // Weapon is too slow firing to have any spray or cooldown
+            // and too chonky to use just anywhere.
+
+            NoRun: true,             // Too big to run with.
+            NoCrouch: true,          // Too big to crouch with.
+            NoFly: true,             // Too big to fly with.
+            NoFireSubmerged: true    // You'd be suicidal to try.
+        }
+    },
+    Achievements: [
+        {
+            Order: 1,
+            Description: "Kills: First Blood!",
+            Rule: "GroupKillCount",
+            Params: {
+                Aliens: ["Beast", "BasicGuard"],
+                Count: 1
+            }
+        },
+        {
+            Order: 2,
+            Description: "Kills: Beast Bashin' (Pest control 10/200)",
+            Rule: "KillCount",
+            Params: {
+                Alien: "Beast",
+                Count: 10
+            }
+        },
+        {
+            Order: 3,
+            Description: "Kills: Alien Bleed (Pest control 50/200)",
+            Rule: "KillCount",
+            Params: {
+                Alien: "Beast",
+                Count: 50
+            }
+        },
+        {
+            Order: 4,
+            Description: "Kills: Endangered Species (Pest control 100/200)",
+            Rule: "KillCount",
+            Params: {
+                Alien: "Beast",
+                Count: 100
+            },
+            Reward: {
+                //"ammoType": "Blaster",
+                //"addAmmo": 40,
+                //"addMaxAmmo": 40
+                Description: "Blaster +40, Carry +40",
+                CarryLimitAdd: {
+                    Ammo: {
+                        "Blaster": 40
+                    }
+                },
+                ImmediateAdd: {
+                    Ammo: {
+                        "Blaster": 40
+                    }
+                }
+            }
+        },
+        {
+            Order: 5,
+            Description: "Kills: Xenocide! (Pest control 200/200)",
+            Rule: "KillCount",
+            Params: {
+                Alien: "Beast",
+                Count: 200
+            },
+            Reward: {
+                //"addMaxHealth": 200,
+                //"addHealth": 200
+                Description: "Health Cap +200, HP: +200",
+                CarryLimitAdd: {
+                    "Health": 200
+                },
+                ImmediateAdd: {
+                    Health: 200
+                }
+            }
+        },
+        {
+            Order: 6,
+            Description: "Kills: Warranty Voided (Robots 10/200)",
+            Rule: "GroupKillCount",
+            Params: {
+                Aliens: ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
+                Count: 10
+            }
+        },
+        {
+            Order: 7,
+            Description: "Kills: Raze Of The Robots (Robots 50/200)",
+            Rule: "GroupKillCount",
+            Params: {
+                Aliens: ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
+                Count: 50
+            }
+        },
+        {
+            Order: 8,
+            Description: "Kills: Demise Of The Machines (Robots 100/200)",
+            Rule: "GroupKillCount",
+            Params: {
+                Aliens: ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
+                Count: 100
+            },
+            Reward: {
+                //"ammoType": "Plasma",
+                //"addAmmo": 40,
+                //"addMaxAmmo": 40
+                Description: "Plasma +40, Max Carry +40",
+                CarryLimitAdd: {
+                    Ammo: {
+                        "Plasma": 40,
+                    }
+                },
+                ImmediateAdd: {
+                    Ammo: {
+                        "Plasma": 40,
+                    }
+                }
+            }
+        },
+        {
+            Order: 9,
+            Description: "Kills: Red Menace (Other red things 10/50)",
+            Rule: "GroupKillCount",
+            Params: {
+                Aliens: ["ShotgunGuard", "RedDemon", "InsectBoss"],
+                Count: 10
+            }
+        },
+        {
+            Order: 10,
+            Description: "Kills: Red's Dead, Baby (Other red things, 25/50)",
+            Rule: "GroupKillCount",
+            Params: {
+                Aliens: ["ShotgunGuard", "RedDemon", "InsectBoss"],
+                Count: 25
+            }
+        },
+        {
+            Order: 11,
+            Description: "Kills: Dead Red Redemption (Other red things 50/50)",
+            Rule: "GroupKillCount",
+            Params: {
+                Aliens: ["ShotgunGuard", "RedDemon", "InsectBoss"],
+                Count: 50
+            }
+        },
+        {
+            Order: 12,
+            Description: "Kills: Clear Skies (Flying things 10/50)",
+            Rule: "GroupKillCount",
+            Params: {
+                Aliens: ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
+                Count: 10
+            }
+        },
+        {
+            Order: 13,
+            Description: "Kills: No Fly Zone (Flying things 25/50)",
+            Rule: "GroupKillCount",
+            Params: {
+                Aliens: ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
+                Count: 25
+            }
+        },
+        {
+            Order: 14,
+            Description: "Kills: Death From Below (Flying things 50/50)",
+            Rule: "GroupKillCount",
+            Params: {
+                Aliens: ["GreenDemon", "RedDemon", "Drone", "Wasp", "Old"],
+                Count: 50
+            }
+        },
+
+        {
+            Order: 15,
+            Description: "Found: Hey, nice desk, Picard.",
+            Rule: "ZoneFound",
+            Params: {
+                Level: "A",
+                Zone: 173
+            }
+        },
+        {
+            Order: 16,
+            Description: "Found: The Clithercube (Locator: 1/?)",
+            Rule: "ZoneFound",
+            Params: {
+                Level: "B",
+                Zone: 210
+            }
+        },
+        {
+            Order: 17,
+            Description: "Again: Action Replay (Beat any previous level time)",
+            Rule: "TimeImproved",
+            Params: {
+                Levels: "*",
+                Count: 1,
+                Overall: true
+            }
+        },
+        {
+            Order: 18,
+            Description: "Again: Optimiser (Improve a previous level time 5 times)",
+            Rule: "TimeImproved",
+            Params: {
+                Levels: "*",
+                Count: 5,
+                Overall: true
+            }
+        },
+        {
+            Order: 19,
+            Description: "Again: Perfectionist (Improve any single previous level time 5 times)",
+            Rule: "TimeImproved",
+            Params: {
+                Levels: "*",
+                Count: 5,
+                Overall: false
+            }
+        },
+        {
+            Order: 20,
+            Description: "Died: 'Tis but a scratch!",
+            Rule: "PlayerDied",
+            Params: {
+                Levels: "*",
+                Count: 1,
+                Overall: false
+            }
+        },
+        {
+            Order: 21,
+            Description: "Died: I've had worse!",
+            Rule: "PlayerDied",
+            Params: {
+                Levels: "*",
+                Count: 2,
+                Overall: true
+            }
+        },
+        {
+            Order: 22,
+            Description: "Died: It's just a flesh wound!",
+            Rule: "PlayerDied",
+            Params: {
+                Levels: "*",
+                Count: 3,
+                Overall: true
+            }
+        },
+        {
+            Order: 23,
+            Description: "Died: Right! I'll do you for that!",
+            Rule: "PlayerDied",
+            Params: {
+                Levels: "*",
+                Count: 4,
+                Overall: true
+            }
+        },
+        {
+            Order: 24,
+            Description: "Died: Die Hard",
+            Rule: "PlayerDied",
+            Params: {
+                Levels: "*",
+                Count: 10,
+                Overall: true
+            }
+        },
+        {
+            Order: 25,
+            Description: "Items: Shell Collector",
+            Rule: "Collected",
+            Params: {
+                Type: "Shot",
+                Count: 800
+            },
+            Reward: {
+                //"ammoType": "Shot",
+                //"addAmmo": 20,
+                //"addMaxAmmo": 40
+                Description: "Shot carry +40",
+                CarryLimitAdd: {
+                    Ammo: {
+                        "Shot": 40
+                    }
+                },
+                ImmediateAdd: {
+                    Ammo: {
+                        "Shot": 20
+                    }
+                }
+            }
+        },
+        {
+            Order: 26,
+            Description: "Items: Full Metal Jacket (400/800)",
+            Rule: "Collected",
+            Params: {
+                Type: "Bullet",
+                Count: 400
+            }
+        },
+        {
+            Order: 27,
+            Description: "Items: Top Brass (800/800)",
+            Rule: "Collected",
+            Params: {
+                Type: "Bullet",
+                Count: 800
+            },
+            Reward: {
+                //"ammoType": "Bullet",
+                //"addAmmo": 40,
+                //"addMaxAmmo": 40
+                Description: "Bullet carry +40",
+                CarryLimitAdd: {
+                    Ammo: {
+                        "Bullet": 40,
+                    }
+                },
+                ImmediateAdd: {
+                    Ammo: {
+                        "Bullet": 40,
+                    }
+                }
+            }
+        },
+        {
+            Order: 28,
+            Description: "Items: Air Miles Collector",
+            Rule: "Collected",
+            Params: {
+                Type: "Fuel",
+                Count: 1000
+            }
+        },
+        {
+            Order: 29,
+            Description: "Items: Frequent Flier",
+            Rule: "Collected",
+            Params: {
+                Type: "Fuel",
+                Count: 2000
+            },
+            Reward: {
+                Description: "Fuel carry +250",
+                //"addMaxFuel": 250
+                CarryLimitAdd: {
+                    "Fuel": 250,
+                }
+            }
+        },
+        {
+            Order: 30,
+            Description: "Kills: Droid Rage (Robots 200/200)",
+            Rule: "GroupKillCount",
+            Params: {
+                Aliens: ["BasicGuard", "PlasmaGuard", "ShotgunGuard", "Defender", "Drone"],
+                Count: 200
+            },
+            Reward: {
+                Description: "Charged Plasma +10, Max Carry +10",
+                //"ammoType": "ChargedPlasma",
+                //"addAmmo": 10,
+                //"addMaxAmmo": 10
+                CarryLimitAdd: {
+                    Ammo: {
+                        "ChargedPlasma": 10,
+                    }
+                },
+                ImmediateAdd: {
+                    Ammo: {
+                        "ChargedPlasma": 10,
+                    }
+                }
+            }
+        },
+        {
+            Order: 31,
+            Description: "Kills: Giant Killer (Big Things)",
+            Rule: "GroupKillCount",
+            Params: {
+                Aliens: ["BigInsect", "InsectBoss", "Crab", "Wasp", "Mantis"],
+                Count: 20
+            },
+            Reward: {
+                Description: "Rocket +6, Max Carry +6",
+                //"ammoType": "Rocket",
+                //"addAmmo": 6,
+                //"addMaxAmmo": 6
+                CarryLimitAdd: {
+                    Ammo: {
+                        "Rocket": 6,
+                    }
+                },
+                ImmediateAdd: {
+                    Ammo: {
+                        "Rocket": 6,
+                    }
+                }
+            }
+        },
+        {
+            Order: 32,
+            Description: "Don't mind the gap!",
+            Rule: "ZoneFound",
+            Params: {
+                Level: "C",
+                Zone: 223
+            }
+        },
+        {
+            Order: 1000,
+            Description: "Grande! Test Multi Award",
+            Rule: "ZoneFound",
+            Params: {
+                Level: "P",
+                Zone: 1
+            },
+            Reward: {
+                Description: "All Ammo +10, Carry + 50!!",
+                CarryLimitAdd: {
+                    Ammo: {
+                        "Plasma": 50,
+                        "Bullet": 50,
+                        "Rocket": 50,
+                        "Shot": 50,
+                        "Grenade": 50,
+                        "Bouncer": 50,
+                        "Mine": 50,
+                        "Blaster": 50,
+                        "ChargedPlasma": 50
+                    }
+                },
+                ImmediateAdd: {
+                    Ammo: {
+                        "Plasma": 10,
+                        "Bullet": 10,
+                        "Rocket": 10,
+                        "Shot": 10,
+                        "Grenade": 10,
+                        "Bouncer": 10,
+                        "Mine": 10,
+                        "Blaster": 10,
+                        "ChargedPlasma": 10
+                    }
+                }
+            }
+        }
+    ]
+}

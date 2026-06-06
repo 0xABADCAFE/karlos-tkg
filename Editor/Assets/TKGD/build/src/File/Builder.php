@@ -16,18 +16,23 @@ use function \is_file, \is_readable, \is_writeable, \pack, \preg_match, \preg_re
 abstract class Builder {
     protected readonly string $sBase;
     protected readonly string $sSourceBase;
-    protected readonly string $sTargetPath;
+    protected readonly string $sTargetBase;
+
+    protected string $sTargetPath = '';
 
     public function __construct(
         string $sSourceBase,
         string $sSource,
-        string $sTarget
+        string $sTargetBase
     ) {
+        $sSourceBase = rtrim($sSourceBase, '/') . '/';
+        $sTargetBase = rtrim($sTargetBase, '/') . '/';
+
         $this->assertSourceReadable($sSourceBase . $sSource);
-        $this->assertTargetWritable($sTarget);
+        //$this->assertTargetWritable($sTargetBase);
         $this->sSourceBase = $sSourceBase;
         $this->sSourcePath = $sSourceBase . $sSource;
-        $this->sTargetPath = $sTarget;
+        $this->sTargetBase = $sTargetBase;
     }
 
     public function build() {
@@ -36,6 +41,15 @@ abstract class Builder {
         if (empty($oData->Header)) {
             throw new RuntimeException('Missing Header section');
         }
+
+        if (empty($oData->Target)) {
+            throw new RuntimeException('Missing requird Target property');
+        }
+
+        $sTargetPath = $this->sTargetBase . $oData->Target;
+        $this->assertTargetWritable($sTargetPath);
+        $this->sTargetPath = $sTargetPath;
+
 
         $oStringList = new Common\StringList(Chunk::FIXED_SIZE);
         $oFile = new Indexed(
@@ -157,9 +171,9 @@ abstract class Builder {
                 throw new RuntimeException('Target ' . $sTarget . ' is not writable');
             }
         } else {
-            $sTargetPath = dirname($sTarget);
-            if (!is_writable($sTargetPath)) {
-                throw new RuntimeException('Target directory ' . $sTargetPath . ' is not writable');
+            $sTargetBase = dirname($sTarget);
+            if (!is_writable($sTargetBase)) {
+                throw new RuntimeException('Target directory ' . $sTargetBase . ' is not writable');
             }
         }
     }
