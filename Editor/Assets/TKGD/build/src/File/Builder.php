@@ -29,7 +29,7 @@ abstract class Builder {
         $sTargetBase = rtrim($sTargetBase, '/') . '/';
 
         $this->assertSourceReadable($sSourceBase . $sSource);
-        //$this->assertTargetWritable($sTargetBase);
+        $this->assertTargetDirectory($sTargetBase);
         $this->sSourceBase = $sSourceBase;
         $this->sSourcePath = $sSourceBase . $sSource;
         $this->sTargetBase = $sTargetBase;
@@ -160,6 +160,15 @@ abstract class Builder {
         if (!is_file($sSource)) {
             throw new RuntimeException('Source ' . $sSource . ' is not a file');
         }
+    }
+
+    private function assertTargetDirectory(string $sTarget): void {
+            if (!is_dir($sTarget)) {
+                throw new RuntimeException('Target ' . $sTarget . ' is not a directory');
+            }
+            if (!is_writable($sTarget)) {
+                throw new RuntimeException('Target ' . $sTarget . ' is not writable');
+            }
     }
 
     private function assertTargetWritable(string $sTarget): void {

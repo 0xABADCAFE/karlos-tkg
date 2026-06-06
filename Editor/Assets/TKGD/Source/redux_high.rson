@@ -6,7 +6,7 @@
         Description: "AB3DII-TKG Redux:\n"
                      "OCD Special Edition."
     },
-    Target: "AB3:HighSpec/Includes/game_mod.tgkd",
+    Target: "HighSpec/Includes/game_mod.tgkd",
     Import: {
         // Definitions become acessible as Import->LinkDefs->...
         LinkDefs: "common/linkdefs.rson",
