@@ -1,3 +1,2 @@
 #!/usr/bin/sh
-./MakeModProperties -i ../Assets/ModProperties/game.props.json -o ../../Game/HighSpec/Includes/game.props
-./MakeModProperties -i ../Assets/ModProperties/game.props.low.json -o ../../Game/LowSpec/Includes/game.props
+./MakeGameProperties -b ../Source/ -f redux_high.rson -t ../../../../Game/HighSpec/Includes/game_mod.tkgd

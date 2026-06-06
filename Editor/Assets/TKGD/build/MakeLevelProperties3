@@ -21,7 +21,7 @@ if (!preg_match('/^[A-P]$/', $sLevel)) {
 }
 
 $sSource = sprintf('levels/level_%s.rson', $sLevel);
-$sTarget = sprintf('test/levels/level_%s.props', $sLevel);
+$sTarget = sprintf('test/levels/level_%s.tkgd', $sLevel);
 $oBuilder = new Mod\File\LevelProperties\Builder(
     'test/',
     $sSource,

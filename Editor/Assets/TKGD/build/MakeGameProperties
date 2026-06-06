@@ -4,24 +4,20 @@
 declare(strict_types=1);
 
 namespace TKG;
-
 use stdClass;
 use RuntimeException;
 
+$aOpts = getopt('b:f:t:');
+$sBase = $aOpts['b'] ?? throw new RuntimeException('Missing base location. Use -b<path to source base>');
+$sFrom = $aOpts['f'] ?? throw new RuntimeException('Missing from location. Use -f<path to source file>');
+$sTo   = $aOpts['t'] ?? throw new RuntimeException('Missing target location.   Use -t<path to target file>');
+
 require 'src/bootstrap.php';
 
-$sName = $_SERVER['argv'][1];
-
-if (empty($sName)) {
-    throw new RuntimeException('Invalid modification name');
-}
-
-$sSource = sprintf('mods/%s.rson', $sName);
-$sTarget = sprintf('test/mods/%s.props', $sName);
 $oBuilder = new Mod\File\GameProperties\Builder(
-    'test/',
-    $sSource,
-    $sTarget
+    $sBase,
+    $sFrom,
+    $sTo
 );
 
 $oBuilder->build();

@@ -17,7 +17,10 @@ use function \pack, \strlen;
  */
 class Achievement implements Common\IBinaryEncodable {
 
-    private const ENC_SIZE = 16;
+    private const ENC_SIZE = 32;
+
+    // Count arguments are generally uint32 but we need to scale back a bit!
+    private const MAX_COUNT = 1000000; // For now.
 
     private const array RULE_TYPES = [
         'KillCount'      => 0,
@@ -80,21 +83,31 @@ class Achievement implements Common\IBinaryEncodable {
      * uint32 iDescOffset
      * uint32 iRewardOffset
      * uint16 iRuleType
-     * uint16[3] | { uint16, uint32 } aParams
+     * uint16 iReserved
+     * uint8[12] (varying) aParams
      */
     public function toBinary(): string {
         $sPayload = pack(
-            self::PACK_LONG .
-            self::PACK_LONG .
+            self::PACK_LONG . // Description Offset
+            self::PACK_LONG . // Reward Offset
+            self::PACK_WORD .
             self::PACK_WORD,
             $this->iDescOffset,
             $this->iRewardOffset,
-            $this->iRuleType
+            $this->iRuleType,
+            0x000
         ) . $this->sEncParams;
 
         $iLength = strlen($sPayload);
-        if (self::ENC_SIZE !== $iLength) {
+
+        if ($iLength > self::ENC_SIZE) {
             throw new LogicException('Unexpected encoding size for Achievement: ' . $iLength);
+        }
+        else if ($iLength < self::ENC_SIZE) {
+
+            $sPad = chr(0xF0|$this->iRuleType);
+
+            $sPayload = str_pad($sPayload, self::ENC_SIZE, $sPad, STR_PAD_RIGHT);
         }
         return $sPayload;
     }
@@ -147,15 +160,8 @@ class Achievement implements Common\IBinaryEncodable {
     }
 
     /**
-     *   Aliens: [
-     *       // Multiple entries
-     *       "<alien name>",
-     *   ],
-     *   Count: <#count>
-     *
-     *   uint16 iAlienType
-     *   uint16 Count
-     *   uint16 zeroPad
+     * Count: uint32
+     * Alien ID: uint16
      */
     private function parseKillCountParams(
         stdClass $oParams,
@@ -172,23 +178,16 @@ class Achievement implements Common\IBinaryEncodable {
         }
         $iCount = $this->getCount($oParams, 'KillCount');
         return pack(
-            self::PACK_WORD .
-            self::PACK_MANY,
-            $aAlienTypes[$oParams->Alien],
+            self::PACK_LONG .
+            self::PACK_WORD,
             $oParams->Count,
-            0
+            $aAlienTypes[$oParams->Alien]
         );
     }
 
     /**
-     *   Aliens: [
-     *       // Multiple entries
-     *       "<alien name>",
-     *   ],
-     *   Count: <#count>
-     *
-     *   uint16 Count
-     *   uint32 AlienMask - will be long aligned in complete structure
+     * Count: uint32
+     * Mask: uint32
      */
     private function parseGroupKillCountParams(
         stdClass $oParams,
@@ -217,7 +216,7 @@ class Achievement implements Common\IBinaryEncodable {
         $iCount = $this->getCount($oParams, 'GroupKillCount');
 
         return pack(
-            self::PACK_WORD .
+            self::PACK_LONG .
             self::PACK_LONG,
             $iCount,
             $iMask
@@ -249,10 +248,9 @@ class Achievement implements Common\IBinaryEncodable {
         }
         return pack(
             self::PACK_WORD .
-            self::PACK_MANY,
+            self::PACK_WORD,
             $iLevel,
-            $oParams->Zone,
-            0
+            $oParams->Zone
         );
     }
 
@@ -284,11 +282,12 @@ class Achievement implements Common\IBinaryEncodable {
         }
         $iOverall = $oParams->Overall ? self::MASK_WORD : 0;
         return pack(
+            self::PACK_LONG .
             self::PACK_WORD .
-            self::PACK_MANY,
-            $oLevelList->getMask(),
+            self::PACK_WORD,
             $iCount,
-            $iOverall
+            $iOverall,
+            $oLevelList->getMask()
         );
     }
 
@@ -319,11 +318,10 @@ class Achievement implements Common\IBinaryEncodable {
         }
         $iCount = $this->getCount($oParams, 'Collected');
         return pack(
-            self::PACK_WORD .
-            self::PACK_MANY,
-            $iTypeID,
+            self::PACK_LONG .
+            self::PACK_WORD,
             $iCount,
-            0
+            $iTypeID
         );
     }
 
@@ -332,7 +330,7 @@ class Achievement implements Common\IBinaryEncodable {
             empty($oParams->Count) ||
             !is_int($oParams->Count) ||
             $oParams->Count < 1 ||
-            $oParams->Count > 65535
+            $oParams->Count > self::MAX_COUNT
         ) {
             throw new RuntimeException("Invald/Empty Achievement.Params.Count for " . $sRule . " Rule");
         }
