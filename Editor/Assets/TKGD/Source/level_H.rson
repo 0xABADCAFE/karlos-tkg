@@ -1,0 +1,23 @@
+{
+    Header: {
+        DataType: "Level",
+        Requires: "1.1",
+        Version: "1.0",
+        Description: "Arena",
+    },
+    Target: "Levels/LEVEL_H/level_mod.tkgd",
+    Import: {
+        // Definitions become acessible as Import->LinkDefs->...
+        LinkDefs: "common/linkdefs.rson",
+    },
+    ZoneErrata: {
+        PVSDeletions: {
+            // Zone ID => [ List of zone ID in PVS to be removed ]
+            "134": [ 6, 7, 8 ]
+        },
+        BackdropDeletions: [
+            // Zone ID
+            2, 3, 4, 5, 83, 129
+        ]
+    },
+}

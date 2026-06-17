@@ -5,7 +5,7 @@
         Version: "1.0",
         Description: "The Awakening",
     },
-    Target: "HighSpec/Levels/level_mod.tgkd",
+    Target: "HighSpec/Levels/LEVEL_A/level_mod.tgkd",
     Import: {
         // Definitions become acessible as Import->LinkDefs->...
         LinkDefs: "common/linkdefs.rson",
