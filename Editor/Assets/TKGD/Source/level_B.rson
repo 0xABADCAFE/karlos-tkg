@@ -1,0 +1,24 @@
+{
+    Header: {
+        DataType: "Level",
+        Requires: "1.2",
+        Version: "1.0",
+        Description: "Docking Ring",
+    },
+    Target: "Levels/LEVEL_B/level_mod.tkgd",
+    Import: {
+        // Definitions become acessible as Import->LinkDefs->...
+        LinkDefs: "common/linkdefs.rson",
+    },
+    ZoneErrata: {
+        PVSDeletions: {
+            // Zone ID => [ List of zone ID in PVS to be removed ]
+            "54": [ 98 ],
+            "60": [ 76 ],
+            "170": [ 109 ],
+            "171": [ 109 ],
+            "175": [ 109 ],
+            "176": [ 109 ]
+        }
+    },
+}

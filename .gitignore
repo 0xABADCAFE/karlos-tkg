@@ -1,10 +1,16 @@
 Game/intro.exe
 Game/tkgpatch.exe
 Game/junk/*
+Editor/*.kdev*
 Editor/LevelEdit/*
 Editor/Storage/XC-data/*
-Editor/ActiveData/Graphics/*/*.info
+Editor/Assets/Graphics/*/*.info
+Editor/Asssts/TKGD/builder/*
 Editor/**/_UAEFSDB.___
 Game/**/_UAEFSDB.___
 Game/game.stats
 Game/game.prefs
+Game/game.prefs.info
+Game/prefs.cfg
+Game/prefs.cfg.info
+Game/progress.tkgd
