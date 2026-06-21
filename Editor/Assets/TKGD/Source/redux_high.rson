@@ -477,43 +477,43 @@
                 Zone: 223
             }
         },
-        {
-            Order: 1000,
-            Description: "Grande! Test Multi Award",
-            Rule: "ZoneFound",
-            Params: {
-                Level: "P",
-                Zone: 1
-            },
-            Reward: {
-                Description: "All Ammo +10, Carry + 50!!",
-                CarryLimitAdd: {
-                    Ammo: {
-                        "Plasma": 50,
-                        "Bullet": 50,
-                        "Rocket": 50,
-                        "Shot": 50,
-                        "Grenade": 50,
-                        "Bouncer": 50,
-                        "Mine": 50,
-                        "Blaster": 50,
-                        "ChargedPlasma": 50
-                    }
-                },
-                ImmediateAdd: {
-                    Ammo: {
-                        "Plasma": 10,
-                        "Bullet": 10,
-                        "Rocket": 10,
-                        "Shot": 10,
-                        "Grenade": 10,
-                        "Bouncer": 10,
-                        "Mine": 10,
-                        "Blaster": 10,
-                        "ChargedPlasma": 10
-                    }
-                }
-            }
-        }
+//        {
+//            Order: 1000,
+//            Description: "Grande! Test Multi Award",
+//            Rule: "ZoneFound",
+//            Params: {
+//                Level: "P",
+//                Zone: 1
+//            },
+//            Reward: {
+//                Description: "All Ammo +10, Carry + 50!!",
+//                CarryLimitAdd: {
+//                    Ammo: {
+//                        "Plasma": 50,
+//                        "Bullet": 50,
+//                        "Rocket": 50,
+//                        "Shot": 50,
+//                        "Grenade": 50,
+//                        "Bouncer": 50,
+//                        "Mine": 50,
+//                        "Blaster": 50,
+//                        "ChargedPlasma": 50
+//                    }
+//                },
+//                ImmediateAdd: {
+//                    Ammo: {
+//                        "Plasma": 10,
+//                        "Bullet": 10,
+//                        "Rocket": 10,
+//                        "Shot": 10,
+//                        "Grenade": 10,
+//                        "Bouncer": 10,
+//                        "Mine": 10,
+//                        "Blaster": 10,
+//                        "ChargedPlasma": 10
+//                    }
+//                }
+//            }
+//        }
     ]
 }
