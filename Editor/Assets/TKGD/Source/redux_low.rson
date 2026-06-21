@@ -4,9 +4,9 @@
         Requires: "1.2",
         Version: "1.0",
         Description: "AB3DII-TKG Redux:\n"
-                     "OCD Special Edition."
+                     "OCD Special Edition, Low Spec."
     },
-    Target: "HighSpec/Includes/game_mod.tkgd",
+    Target: "LowSpec/Includes/game_mod.tkgd",
     Import: {
         // Definitions become acessible as Import->LinkDefs->...
         LinkDefs: "common/linkdefs.rson",
@@ -242,7 +242,7 @@
             Rule: "ZoneFound",
             Params: {
                 Level: "A",
-                Zone: 173
+                Zone: 135
             }
         },
         {

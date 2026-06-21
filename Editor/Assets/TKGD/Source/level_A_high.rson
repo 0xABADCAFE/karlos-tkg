@@ -1,11 +1,11 @@
 {
     Header: {
         DataType: "Level",
-        Requires: "1.1",
+        Requires: "1.2",
         Version: "1.0",
         Description: "The Awakening",
     },
-    Target: "HighSpec/Levels/LEVEL_A/level_mod.tgkd",
+    Target: "HighSpec/Levels/LEVEL_A/level_mod.tkgd",
     Import: {
         // Definitions become acessible as Import->LinkDefs->...
         LinkDefs: "common/linkdefs.rson",
