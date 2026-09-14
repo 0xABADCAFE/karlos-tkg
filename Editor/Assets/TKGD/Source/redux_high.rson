@@ -11,6 +11,13 @@
         // Definitions become acessible as Import->LinkDefs->...
         LinkDefs: "common/linkdefs.rson",
     },
+    DefaultGlobals: {
+        "Player.StandHeight": 70,
+        "Player.CrouchHeight": 32,
+        "Physics.BaseGravityAcceleration": 64,
+        "Physics.BaseAirResistance": 4,
+        "Physics.BaseWaterResistance": 13,
+    },
     DefaultInventoryLimits: {
         // When starting a new game, these are the maximum carry limits for each class of collectable.
         // These can be increased by completing various achievements or collectint special ammo types.
