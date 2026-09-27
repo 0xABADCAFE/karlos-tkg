@@ -1,8 +1,8 @@
 {
     Header: {
         DataType: "Game",
-        Requires: "1.2",
-        Version: "1.0",
+        Requires: "1.4",
+        Version: "1.1",
         Description: "AB3DII-TKG Redux:\n"
                      "OCD Special Edition, Low Spec."
     },
@@ -12,7 +12,7 @@
         LinkDefs: "common/linkdefs.rson",
     },
     DefaultGlobals: {
-        "Player.StandHeight": 70,
+        "Player.StandHeight": 72,
         "Player.CrouchHeight": 32,
         "Physics.BaseGravityAcceleration": 64,
         "Physics.BaseAirResistance": 4,
