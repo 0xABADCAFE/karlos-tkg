@@ -12,7 +12,7 @@
         LinkDefs: "common/linkdefs.rson",
     },
     DefaultGlobals: {
-        "Player.StandHeight": 72,
+        "Player.StandHeight": 68,
         "Player.CrouchHeight": 32,
         "Physics.BaseGravityAcceleration": 64,
         "Physics.BaseAirResistance": 4,
