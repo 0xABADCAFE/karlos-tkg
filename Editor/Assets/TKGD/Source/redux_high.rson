@@ -59,6 +59,7 @@
         },
     },
     AlienAdjustments: {
+        // Since the player is scaled up, we need to scale up some of the beasties.
         "BasicGuard": {
             ScaleWidth: 125,
             ScaleHeight: 125,
@@ -70,10 +71,16 @@
             VertOffset: 0,
         },
         "ShotgunGuard": {
-            ScaleWidth: 125,
-            ScaleHeight: 125,
+            ScaleWidth: 150,
+            ScaleHeight: 150,
             VertOffset: 0,
         },
+        "Marine": {
+            ScaleWidth: 125,
+            ScaleHeight: 150,
+            VertOffset: -40,
+            AuxYOffset: -10
+        }
     },
     WeaponAdjustments: {
         "RocketLauncher": {
