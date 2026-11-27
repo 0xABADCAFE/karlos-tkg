@@ -1,7 +1,7 @@
 {
     Header: {
         DataType: "Game",
-        Requires: "1.4",
+        Requires: "1.5",
         Version: "1.1",
         Description: "AB3DII-TKG Redux:\n"
                      "OCD Special Edition, Low Spec."
@@ -12,7 +12,7 @@
         LinkDefs: "common/linkdefs.rson",
     },
     DefaultGlobals: {
-        "Player.StandHeight": 72,
+        "Player.StandHeight": 68,
         "Player.CrouchHeight": 32,
         "Physics.BaseGravityAcceleration": 64,
         "Physics.BaseAirResistance": 4,
@@ -57,6 +57,30 @@
                 }
             }
         },
+    },
+    AlienAdjustments: {
+        // Since the player is scaled up, we need to scale up some of the beasties.
+        "BasicGuard": {
+            ScaleWidth: 125,
+            ScaleHeight: 125,
+            VertOffset: 0,
+        },
+        "PlasmaGuard": {
+            ScaleWidth: 125,
+            ScaleHeight: 125,
+            VertOffset: 0,
+        },
+        "ShotgunGuard": {
+            ScaleWidth: 150,
+            ScaleHeight: 150,
+            VertOffset: 0,
+        },
+        "Marine": {
+            ScaleWidth: 125,
+            ScaleHeight: 150,
+            VertOffset: -40,
+            AuxYOffset: -10
+        }
     },
     WeaponAdjustments: {
         "RocketLauncher": {

@@ -20,6 +20,38 @@
         "Crab": 18,
         "Old": 19,
     },
+    ObjectTypes: {
+        "Message": 0,
+        "Medikit": 1,
+        "Shells": 2,
+        "Computer": 3,
+        "PlasmaCannon": 4,
+        "PlasmaCell": 5,
+        "Ventfan": 6,
+        "Shotgun": 7,
+        "Generator": 8,
+        "Passkey": 9,
+        "GrenadeClip": 10,
+        "Things": 11,
+        "GlareLights1": 12,
+        "CeilingLights": 13,
+        "GlareBox": 14,
+        "AssaultRifle": 15,
+        "Switch": 16,
+        "GrenadeLauncher": 17,
+        "Jetpack": 18,
+        "Bullets": 19,
+        "Charger": 20,
+        "GlareLights2": 21,
+        "Collectables": 22,
+        "Blaster": 23,
+        "RocketLauncher": 24,
+        "Rocket": 25,
+        "Indicators": 26,
+        "Mine": 27,
+        "ChainCannon": 28,
+        "PlasmaBouncer": 29,
+    },
     PlayerAmmoTypes: {
         // There are 20 possible ammo types defined in the GameLink file but only 10 of them
         // can be used for the player weapon slots.
@@ -113,6 +145,5 @@
         "Pickups/Collect_Ammo": 56,
         "Pickups/Collect_Health": 57,
         "Pickups/Collect_Key": 58,
-
     }
 }

@@ -1,7 +1,7 @@
 {
     Header: {
         DataType: "Level",
-        Requires: "1.2",
+        Requires: "1.5",
         Version: "1.0",
         Description: "Arena",
     },
